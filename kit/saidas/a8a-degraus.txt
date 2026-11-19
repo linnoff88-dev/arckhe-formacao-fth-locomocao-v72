@@ -1,0 +1,8 @@
+política: unitree_rl_lab velocity v0 (ONNX) · comando vx = 0.5 m/s · 8 s · degrau a 1.5 m
+degrau    2 cm: passou (pelve em x = 3.4 m)
+degrau    3 cm: passou (pelve em x = 4.1 m)
+degrau    4 cm: caiu (pelve em x = 2.0 m)
+degrau    6 cm: caiu (pelve em x = 2.0 m)
+degrau   10 cm: caiu (pelve em x = 2.2 m)
+degraus vencidos: 2/5
+saída: 0

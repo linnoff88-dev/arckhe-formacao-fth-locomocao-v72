@@ -1,0 +1,6 @@
+sobressinal: 49 % · posição após 1 s: 0.78 rad (erro 0.02 rad)
+assentou (erro < 0.02 rad): em 992 ms
+sobressinal: 1 % · posição após 1 s: 0.77 rad (erro 0.03 rad)
+assentou (erro < 0.02 rad): não, em 1 s
+sobressinal: 0 % · posição após 1 s: 0.77 rad (erro 0.03 rad)
+assentou (erro < 0.02 rad): não, em 1 s

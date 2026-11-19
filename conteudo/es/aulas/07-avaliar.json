@@ -1,0 +1,283 @@
+{
+  "slug": "avaliar",
+  "num": 7,
+  "menu": "Evaluar",
+  "titulo": "Evaluar de verdad: velocidad, giro y empujón",
+  "titulo_curto": "Evaluar",
+  "minutos": 16,
+  "lead": "Una policy solo está lista cuando pasa una prueba que escribiste antes de mirar el resultado. En esta clase evalúas la policy lista en 20 episodios con semillas fijas: error de velocidad, giro y empujón de 1,0, 1,5 y 2,0 m/s. Después pasas tu checkpoint de la clase 5 por la misma prueba.",
+  "objetivo": "evaluar una policy en 20 episodios con semillas fijas, midiendo el error de velocidad y la supervivencia a empujones de fuerza creciente.",
+  "competencias": [
+    "escrever-teste-antes-do-resultado",
+    "medir-sobrevivencia-a-empurrao",
+    "comparar-politicas-no-mesmo-teste"
+  ],
+  "aprende": [
+    {
+      "icone": "alvo",
+      "t": "Error de velocidad: 0,05 m/s entre lo pedido y lo medido"
+    },
+    {
+      "icone": "x",
+      "t": "Empujón de 1,0 m/s: 20/20 de pie; 1,5: 16/20; 2,0: 9/20"
+    },
+    {
+      "icone": "lupa",
+      "t": "Semillas fijas: los mismos 20 episodios para cualquier policy"
+    },
+    {
+      "icone": "portao",
+      "t": "Dónde termina la evaluación en sim y empieza el sim2sim (curso 2)"
+    }
+  ],
+  "hero_alt": "Robot humanoide de pie en un laboratorio oscuro recibiendo un empujón lateral de una vara acolchada, dando un paso para recuperar el equilibrio.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "Qué mide una prueba de marcha",
+      "sub": "Haz clic en cada bloque. El avaliar.py ejecuta los cuatro en cada episodio.",
+      "nos": [
+        {
+          "icone": "lista",
+          "titulo": "Semillas",
+          "sub": "fijas",
+          "detalhe": "El episodio i usa la semilla i: mismo comando sorteado (vx entre 0,3 y 1,0 m/s), misma dirección de empujón. Dos policies en la misma prueba enfrentan exactamente los mismos 20 episodios.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "--episodios 20"
+            }
+          ]
+        },
+        {
+          "icone": "alvo",
+          "titulo": "Seguimiento",
+          "sub": "error",
+          "detalhe": "Diferencia media entre la velocidad pedida y la medida, solo de quienes no cayeron. Mide si la policy hace lo que dice el comando.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "m/s"
+            }
+          ]
+        },
+        {
+          "icone": "seta",
+          "titulo": "Giro",
+          "sub": "giro",
+          "detalhe": "Con --giro, el comando incluye rotación. El deploy.yaml de la política lista declara giro de −0,2 a 0,2 rad/s; en el código de entrenamiento de unitree_rl_lab el currículo solo abre la velocidad lineal, y el giro queda en ±0,1 rad/s. 0,2 ya está fuera del rango entrenado.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "--giro 0.2"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Empujón",
+          "sub": "a los 4 s",
+          "forte": true,
+          "detalhe": "A los 4 s, la base gana de repente una velocidad horizontal de N m/s, en una dirección sorteada. unitree_rl_lab entrena con empujones de hasta ±0,5 m/s en x e y cada 5 s; probar por encima de eso es medir el margen.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "--empurrao 1.0"
+            }
+          ]
+        }
+      ],
+      "legenda": "La prueba se escribe antes del resultado: número de episodios, rango de comando, fuerza y criterio de aprobación (p. ej.: 18/20)."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "La policy lista en la prueba",
+      "sub": "20 episodios de 10 s, empujón de 1,0 m/s. Devuelve 0 cuando todos sobreviven.",
+      "blocos": [
+        {
+          "rot": "Terminal · evaluar con empujón",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/avaliar.py --episodios 20 --empurrao 1.0; echo \"saída: $?\""
+        },
+        {
+          "rot": "Terminal · empujones más fuertes",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nfor e in 1.5 2.0; do python3 kit/avaliar.py --episodios 20 --empurrao $e | tail -1; done"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Salida capturada (19/10/2026)",
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrão de 1.0 m/s aos 4 s\nerro médio de velocidade (quem não caiu): 0.05 m/s\nsobreviveu: 20/20\nsaída: 0</pre><p>20 de 20 de pie con un empujón de 1,0 m/s, por encima del entrenamiento (hasta 0,5 m/s por eje, cerca de 0,71 m/s en la diagonal), errando la velocidad por 0,05 m/s en promedio.</p>"
+          },
+          {
+            "rot": "1,5 y 2,0 m/s",
+            "html": "<pre>sobreviveu: 16/20\nsobreviveu: 9/20</pre><p>Con 1,5 m/s, 16 de 20; con 2,0 m/s, 9 de 20. El margen se acaba entre 1,0 y 1,5 m/s. Es este tipo de curva, y no un solo número, lo que dice cuánto aguanta la policy.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Tu checkpoint en la misma prueba",
+      "sub": "avaliar.py acepta un .pt entrenado por el kit en lugar de la policy lista. Mismas semillas.",
+      "blocos": [
+        {
+          "rot": "Terminal · tu policy",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/avaliar.py --politica $F/treino/ppo/modelo_20.pt --episodios 5 | tail -2"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Salida capturada (19/10/2026)",
+            "html": "<pre>quedas: ep 0 em 1.3 s, ep 1 em 1.4 s, ep 2 em 1.4 s, ep 3 em 1.4 s, ep 4 em 1.3 s\nsobreviveu: 0/5</pre><p>0 de 5, todas las caídas antes de 1,5 s, incluso sin empujón. Es lo esperado para 20 iteraciones: la prueba confirma lo que las curvas ya decían. El valor importa menos que el hábito: toda policy, lista o tuya, pasa por la misma prueba.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "passos",
+      "titulo": "Hasta dónde llega la evaluación en sim",
+      "sub": "Qué demuestra esta prueba y qué queda para el curso 2.",
+      "passos": [
+        {
+          "titulo": "Demuestra",
+          "sub": "en este motor",
+          "texto": [
+            "Que la policy sigue el comando y aguanta empujones en MuJoCo, con el G1 de Menagerie. La policy lista fue entrenada en Isaac Lab: pasar aquí ya es una primera señal de robustez."
+          ]
+        },
+        {
+          "titulo": "No demuestra",
+          "sub": "el robot",
+          "texto": [
+            "Que ande en el robot. Retraso, actuador, fricción y masa distintos son el tema del curso 2, que mide ese gap y pasa la policy por una compuerta sim2sim con DDS antes del suelo."
+          ]
+        },
+        {
+          "titulo": "Concepto",
+          "sub": "reality gap",
+          "texto": [
+            "El concepto de evaluar en simulación y de reality gap, para policies de manipulación, está en vla-v72, clase 6."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Práctica",
+      "sub": "Escribir el criterio antes de ver el número.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Prueba con empujón",
+          "min": "5 min",
+          "texto": "Escribe tu criterio de aprobación (p. ej.: 18/20) y solo entonces ejecuta la evaluación con empujón de 1,0 m/s.",
+          "pronto": "<code>python3 kit/avaliar.py --episodios 20 --empurrao 1.0; echo \"saída: $?\"</code> → <code>sobreviveu: 20/20</code> y <code>saída: 0</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · El margen",
+          "min": "5 min",
+          "texto": "Ejecuta 1,5 y 2,0 m/s y escribe entre qué fuerzas se acaba el margen de la policy.",
+          "pronto": "las dos líneas muestran <code>sobreviveu: 16/20</code> y <code>sobreviveu: 9/20</code>; escribiste \"entre 1,0 y 1,5 m/s\"."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · Andar en curva",
+          "min": "5 min",
+          "texto": "Ejecuta la misma prueba con <code>--giro 0.2</code> y compara el error de velocidad con el de la recta.",
+          "pronto": "<code>python3 kit/avaliar.py --episodios 20 --giro 0.2 --empurrao 1.0</code> → la primera línea muestra <code>giro +0.2 rad/s</code> y la última <code>sobreviveu: 20/20</code> (el 19/10/2026, error de 0.04 m/s)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Prueba de la clase",
+      "sub": "La explicación aparece después de tu respuesta.",
+      "perguntas": [
+        {
+          "p": "¿Por qué las semillas de la prueba son fijas?",
+          "opcoes": [
+            "Para que las policies comparadas enfrenten exactamente los mismos episodios.",
+            "Porque MuJoCo no acepta semillas aleatorias cuando ejecuta varios episodios seguidos.",
+            "Para que la prueba corra más rápido en CPU.",
+            "Para que la policy memorice los episodios de la prueba."
+          ],
+          "certa": 0,
+          "explica": "Con semillas distintas, una diferencia de 16/20 a 18/20 puede ser solo suerte. Fijarlas hace la comparación justa y repetible.",
+          "ref": "diagrama",
+          "cert": true
+        },
+        {
+          "p": "20/20 con 1,0 m/s, 16/20 con 1,5 y 9/20 con 2,0. ¿Qué muestra eso?",
+          "opcoes": [
+            "Que la política tiene un defecto de fábrica con cualquier empujón superior a 1,0 m/s.",
+            "Que el margen se acaba entre 1,0 y 1,5 m/s, por encima del empujón usado en el entrenamiento.",
+            "Que la prueba con 1,0 m/s era demasiado fácil y no vale.",
+            "Que MuJoCo exagera los empujones en comparación con Isaac Lab."
+          ],
+          "certa": 1,
+          "explica": "El entrenamiento usó empujones de hasta 0,5 m/s por eje (cerca de 0,71 m/s en la diagonal); aguantar 1,0 m/s es margen. La curva de fuerza creciente dice hasta dónde llega.",
+          "ref": "codigo"
+        },
+        {
+          "p": "La política pasó 20/20 en MuJoCo. ¿Qué falta todavía antes del robot?",
+          "opcoes": [
+            "Nada: dos motores de física distintos ya prueban el robot.",
+            "Entrenar de nuevo en MuJoCo para quitar la dependencia de Isaac Lab.",
+            "Medir y cubrir el gap y pasar por la compuerta sim2sim del curso 2.",
+            "Aumentar el empujón hasta 20/20 con 2,0 m/s."
+          ],
+          "certa": 2,
+          "explica": "La evaluación en sim prueba el comportamiento en el simulador. El camino hasta el suelo, con el gap medido y una escalera de pruebas, es el curso 2.",
+          "ref": "passos"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "En tres frases",
+      "itens": [
+        {
+          "t": "Prueba",
+          "texto": "Criterio escrito antes, 20 episodios con semillas fijas, seguimiento y empujón."
+        },
+        {
+          "t": "Medida",
+          "texto": "La política lista: 20/20 con 1,0 m/s, 16/20 con 1,5, 9/20 con 2,0."
+        },
+        {
+          "t": "Límite",
+          "texto": "Pasar en sim es el primer nivel; el sim2sim y el gap son del curso 2."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Para ir más allá",
+      "links": [
+        {
+          "t": "Curso 2 de la FTH, clase 6: la compuerta sim2sim con DDS",
+          "href": "https://inematds.github.io/formacao-fth-sim2real-v72/es/aulas/sim2sim/",
+          "icone": "portao"
+        },
+        {
+          "t": "vla-v72, clase 6: evaluar en simulación y reality gap",
+          "href": "https://inematds.github.io/vla-v72/es/aulas/simulacao/",
+          "icone": "seta"
+        },
+        {
+          "t": "unitree_rl_lab: el evento push_robot del entrenamiento",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/blob/main/source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py",
+          "icone": "git"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+rollout: andando.npz · 500 passos (10 s) · comando vx = 0.7 m/s
+termo                     weight  valor médio    total
+track_linear_velocity          2        0.930    18.59
+track_angular_velocity         2        0.814    16.28
+upright                        1        0.995     9.95
+pose                           1        0.925     9.25
+dof_pos_limits                -1        0.000     0.00
+action_rate_l2              -0.1        0.421    -0.42
+foot_slip                   -0.1        0.054    -0.05
+RECOMPENSA DO EPISÓDIO                           53.60
+saída: 0

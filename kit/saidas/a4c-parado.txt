@@ -1,0 +1,10 @@
+rollout: parado.npz · 500 passos (10 s) · comando vx = 0.7 m/s (trocado na conta)
+termo                     weight  valor médio    total
+track_linear_velocity          2        0.140     2.80
+track_angular_velocity         2        0.999    19.98
+upright                        1        0.999     9.99
+pose                           1        0.956     9.56
+dof_pos_limits                -1        0.000     0.00
+action_rate_l2              -0.1        0.003    -0.00
+foot_slip                   -0.1        0.000    -0.00
+RECOMPENSA DO EPISÓDIO                           42.32

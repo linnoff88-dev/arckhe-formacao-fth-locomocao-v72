@@ -1,0 +1,30 @@
+{
+  "en": {
+    "REGRA: tudo dentro de <pre> e de <code> é saída ou comando real do kit (em português) e fica IGUAL, sem traduzir": "RULE: everything inside <pre> and <code> is real kit output or command (in Portuguese) and stays EXACTLY as is, untranslated (e.g. caiu: não, caiu: sim, andou, de pé, sobressinal, assentou, observação, episódio terminou por: queda, tempo, RECOMPENSA DO EPISÓDIO, checkpoint salvo:, arquivo existe:, ALERTA: recompensa hackeada, alertas:, sobreviveu:, degrau, passou, caiu, degraus vencidos, campos ok, incompleto, ok, saída: 0)",
+    "nomes de arquivos, pastas, juntas, termos de recompensa e chaves de YAML": "never translate (file, folder, joint, reward term and YAML key names): kit/ fth.py andar_demo.py degrau_junta.py ficar_em_pe.py checar_ambiente.py termos.py treinar.py ppo.py curvas.py avaliar.py terreno.py conferir_plano.py capturar.sh recompensa.yaml recompensa-viva.yaml plano-treino-modelo.md plano-treino.md progresso.csv modelo_20.pt andando.npz parado.npz cai-cedo com-vivo exemplos/ treino/ ppo/ ~/fth locomocao mujoco_menagerie unitree_g1 unitree_rl_lab deploy.yaml policy.onnx joint_ids_map stiffness damping default_joint_pos velocity_env_cfg.py rl_cfg.py curriculums.py track_linear_velocity track_angular_velocity upright pose dof_pos_limits action_rate_l2 foot_slip is_alive alive base_height flat_orientation_l2 gait air_time weight std fell_over time_out terrain_levels_vel lin_vel_cmd_levels push_robot base_ang_vel projected_gravity velocity_commands joint_pos_rel joint_vel_rel last_action recompensa_media episodio_medio vx_media left_knee_joint pelvis Robô Comando Recompensa Currículo Avaliação",
+    "termos técnicos que ficam em inglês": "keep in English as is: sim-to-real, sim2sim, domain randomization, whole-body control, policy, reward, checkpoint, rollout, MJCF, URDF, DDS, ONNX, PD, PPO, GAE, KL, MPC, ZMP, IMU, kp, kd, manager-based, reward hacking",
+    "pronto quando": "done when",
+    "recompensa hackeada": "reward hacking",
+    "currículo de terreno": "terrain curriculum",
+    "pose padrão": "default pose",
+    "empurrão": "push",
+    "sobressinal": "overshoot",
+    "pórtico": "gantry",
+    "relatado": "reported",
+    "mostrado": "shown (not run here)"
+  },
+  "es": {
+    "REGRA: tudo dentro de <pre> e de <code> é saída ou comando real do kit (em português) e fica IGUAL, sem traduzir": "REGLA: todo lo que está dentro de <pre> y de <code> es salida o comando real del kit (en portugués) y queda IGUAL, sin traducir (p. ej. caiu: não, caiu: sim, andou, de pé, sobressinal, assentou, observação, episódio terminou por: queda, tempo, RECOMPENSA DO EPISÓDIO, checkpoint salvo:, arquivo existe:, ALERTA: recompensa hackeada, alertas:, sobreviveu:, degrau, passou, caiu, degraus vencidos, campos ok, incompleto, ok, saída: 0)",
+    "nomes de arquivos, pastas, juntas, termos de recompensa e chaves de YAML": "nunca traducir (nombres de archivos, carpetas, articulaciones, términos de recompensa y claves YAML): kit/ fth.py andar_demo.py degrau_junta.py ficar_em_pe.py checar_ambiente.py termos.py treinar.py ppo.py curvas.py avaliar.py terreno.py conferir_plano.py capturar.sh recompensa.yaml recompensa-viva.yaml plano-treino-modelo.md plano-treino.md progresso.csv modelo_20.pt andando.npz parado.npz cai-cedo com-vivo exemplos/ treino/ ppo/ ~/fth locomocao mujoco_menagerie unitree_g1 unitree_rl_lab deploy.yaml policy.onnx joint_ids_map stiffness damping default_joint_pos velocity_env_cfg.py rl_cfg.py curriculums.py track_linear_velocity track_angular_velocity upright pose dof_pos_limits action_rate_l2 foot_slip is_alive alive base_height flat_orientation_l2 gait air_time weight std fell_over time_out terrain_levels_vel lin_vel_cmd_levels push_robot base_ang_vel projected_gravity velocity_commands joint_pos_rel joint_vel_rel last_action recompensa_media episodio_medio vx_media left_knee_joint pelvis Robô Comando Recompensa Currículo Avaliação",
+    "termos técnicos que ficam em inglês": "mantener en inglés tal cual: sim-to-real, sim2sim, domain randomization, whole-body control, policy, reward, checkpoint, rollout, MJCF, URDF, DDS, ONNX, PD, PPO, GAE, KL, MPC, ZMP, IMU, kp, kd, manager-based, reward hacking",
+    "pronto quando": "listo cuando",
+    "recompensa hackeada": "recompensa hackeada (reward hacking)",
+    "currículo de terreno": "currículo de terreno",
+    "pose padrão": "pose por defecto",
+    "empurrão": "empujón",
+    "sobressinal": "sobreimpulso",
+    "pórtico": "pórtico",
+    "relatado": "reportado",
+    "mostrado": "mostrado (no se ejecuta aquí)"
+  }
+}

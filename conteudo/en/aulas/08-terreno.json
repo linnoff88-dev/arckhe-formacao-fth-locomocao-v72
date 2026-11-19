@@ -1,0 +1,406 @@
+{
+  "slug": "terreno",
+  "num": 8,
+  "menu": "Terrain and plan",
+  "titulo": "Terrain curriculum and your training plan",
+  "titulo_curto": "Terrain and plan",
+  "minutos": 16,
+  "lead": "Nobody trains stair walking on day one: the terrain and the requested speed grow as the policy succeeds. In this lesson you measure how far up the ladder the ready-made policy goes, read how mjlab and unitree_rl_lab level up, and write your own training plan in a file that a script checks.",
+  "objetivo": "measure the ready-made policy's maximum step, read the curriculum rules, and write a training plan with 5 fields that conferir_plano.py approves.",
+  "competencias": [
+    "medir-limite-de-terreno",
+    "ler-regras-de-curriculo",
+    "escrever-plano-de-treino"
+  ],
+  "aprende": [
+    {
+      "icone": "grafico",
+      "t": "Steps of 2 and 3 cm pass; from 4 cm up, it falls"
+    },
+    {
+      "icone": "camadas",
+      "t": "Curriculum: it moves up if it walked more than 80% of the request, down if it walked less than 50%"
+    },
+    {
+      "icone": "alvo",
+      "t": "Command curriculum: the speed range opens 0.1 m/s at a time"
+    },
+    {
+      "icone": "arquivo",
+      "t": "The plano-treino.md with robot, command, reward, curriculum and evaluation"
+    }
+  ],
+  "hero_alt": "Test track in a dark lab with a wooden ramp, low steps and pebbles, and a humanoid robot climbing the first step attached to a safety rail.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "A terrain curriculum",
+      "sub": "Click each level. Each robot moves up or down a level on its own, based on how far it walked.",
+      "nos": [
+        {
+          "icone": "camadas",
+          "titulo": "Flat",
+          "sub": "level 0",
+          "detalhe": "Every training run starts on flat ground. The terrain generator in unitree_rl_lab (commit 4960b84) has a single sub-terrain, flat: the ready-made policy was trained on flat ground only.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "unitree_rl_lab: flat only"
+            }
+          ]
+        },
+        {
+          "icone": "seta",
+          "titulo": "Step",
+          "sub": "low",
+          "detalhe": "Steps a few centimeters high. The ready-made policy, trained only on flat ground, clears 2 and 3 cm in the kit's test and falls from 4 cm on.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "2–3 cm pass"
+            }
+          ]
+        },
+        {
+          "icone": "grafico",
+          "titulo": "Ramp",
+          "sub": "slope",
+          "detalhe": "Ramps require the policy to adjust its stride to the slope. Next level of a typical curriculum.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "degrees"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Uneven",
+          "sub": "pebbles",
+          "forte": true,
+          "detalhe": "Uneven terrain (pebbles, blocks). The next level only opens for those who passed the previous one: in mjlab, you move up if you walked more than 80% of the requested distance, and you move down if you walked less than 50%.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "terrain_levels_vel"
+            }
+          ]
+        }
+      ],
+      "legenda": "Rules read from the code: mjlab mdp/curriculums.py (commit 8bb2bc9) and unitree_rl_lab velocity_env_cfg.py (commit 4960b84)."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "How far up the steps the ready-made policy goes",
+      "sub": "terreno.py uses MjSpec to build a platform of height h 1.5 m from the robot and tells it to walk for 8 s at 0.5 m/s. Passed = it did not fall and the pelvis ended up on top (x > 2.5 m).",
+      "blocos": [
+        {
+          "rot": "Terminal · five steps",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/terreno.py --degraus 0.02 0.03 0.04 0.06 0.10; echo \"saída: $?\""
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · comando vx = 0.5 m/s · 8 s · degrau a 1.5 m\ndegrau    2 cm: passou (pelve em x = 3.4 m)\ndegrau    3 cm: passou (pelve em x = 4.1 m)\ndegrau    4 cm: caiu (pelve em x = 2.0 m)\ndegrau    6 cm: caiu (pelve em x = 2.0 m)\ndegrau   10 cm: caiu (pelve em x = 2.2 m)\ndegraus vencidos: 2/5\nsaída: 0</pre><p>2 and 3 cm pass; from 4 cm up, the robot falls at x ≈ 2 m, before getting onto the platform. The steps that fail are the next levels of a curriculum: that is what you retrain for.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "passos",
+      "titulo": "How the repositories move up a level",
+      "sub": "Two curricula run together in real training. Click each one.",
+      "passos": [
+        {
+          "titulo": "Terrain",
+          "sub": "by distance",
+          "texto": [
+            "In mjlab, at the end of each episode, a robot that walked more than 80% of the requested distance moves up one terrain level; one that walked less than 50% moves down. Each robot has its own level: in the same training run, some are on flat ground and others on pebbles."
+          ]
+        },
+        {
+          "titulo": "Command",
+          "sub": "by success",
+          "texto": [
+            "In unitree_rl_lab, the requested velocity starts at ±0.1 m/s. When velocity tracking passes 80% of the maximum, the range opens 0.1 m/s on each side, up to the limit of −0.5 to 1.0 m/s."
+          ]
+        },
+        {
+          "titulo": "Push",
+          "sub": "fixed",
+          "texto": [
+            "The push is not part of the curriculum in these two repositories: ±0.5 m/s in x and y, every 5 s in unitree_rl_lab; in mjlab, every 1 to 3 s, with ±0.4 m/s in z as well and roll, pitch, and yaw rotations."
+          ]
+        },
+        {
+          "titulo": "Flat",
+          "sub": "before training",
+          "texto": [
+            "Before spending GPU: which robot, what command range, which terms and weights, what terrain levels, and which test approves. It is the file you write now."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Your training plan",
+      "sub": "Copy the template to ~/fth/treino, replace each [bracket] with your value, and check it. The kit example shows a plan that passes.",
+      "blocos": [
+        {
+          "rot": "File · kit/plano-treino-modelo.md",
+          "icone": "arquivo",
+          "conteudo": "# Plano de treino de locomoção\n\nRobô: [qual humanoide e qual arquivo, ex.: Unitree G1 29 GDL, unitree_g1/scene.xml do Menagerie 62ab00f]\nComando: [faixa de velocidade, ex.: vx de -0.5 a 1.0 m/s, vy de -0.3 a 0.3 m/s, giro de -0.2 a 0.2 rad/s]\nRecompensa: [termos e pesos, ex.: track_linear_velocity 2.0, upright 1.0, action_rate_l2 -0.1]\nCurrículo: [níveis em ordem, separados por →, ex.: plano → degrau de 5 cm → rampa → pedriscos]\nAvaliação: [critério de aprovação com número, ex.: 18/20 episódios de pé com empurrão de 1.0 m/s]"
+        },
+        {
+          "rot": "Terminal · copy and check",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\n[ -f $F/treino/plano-treino.md ] || cp kit/plano-treino-modelo.md $F/treino/plano-treino.md\npython3 kit/conferir_plano.py $F/treino/plano-treino.md; echo \"saída: $?\""
+        },
+        {
+          "rot": "Terminal · the kit example",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/conferir_plano.py kit/exemplos/plano-treino.md; echo \"saída: $?\""
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>FALTA Robô: não preenchido\nFALTA Comando: não preenchido\nFALTA Recompensa: não preenchido\nFALTA Currículo: não preenchido\nFALTA Avaliação: não preenchido\ncampos ok: 0/5\nincompleto\nsaída: 1</pre><p>With the template still full of [brackets], all five fields are missing and the script exits with 1. Rules: command with a number and m/s, reward with 2 or more kit terms, curriculum with 3 or more levels separated by →, evaluation with a numeric criterion (X/N or %).</p>"
+          },
+          {
+            "rot": "Example that passes",
+            "html": "<pre>campos ok: 5/5\nok\nsaída: 0</pre><p>The kit example (kit/exemplos/plano-treino.md) uses the command ranges from unitree_rl_lab and the 18/20 criterion from lesson 7.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "mapa",
+      "titulo": "What you built in this course",
+      "sub": "Four deliverables. Click each one to see the \"done when\".",
+      "degraus": [
+        {
+          "aula": "por-que-rl",
+          "icone": "robo",
+          "quando": "Lessons 1–2",
+          "titulo": "Policy",
+          "sub": "and PD",
+          "saida": "caiu: não; de pé com PD.",
+          "passo": "The ready-made policy walking in MuJoCo and the joint PD measured, with the policy's gains understood."
+        },
+        {
+          "aula": "recompensa",
+          "icone": "lista",
+          "quando": "Lessons 3–4",
+          "titulo": "Environment",
+          "sub": "and reward",
+          "saida": "96 → 29; parado 42,32.",
+          "passo": "The four pieces of the environment and the reward measured term by term, with the weight that turns the game around."
+        },
+        {
+          "aula": "curvas",
+          "icone": "grafico",
+          "quando": "Lessons 5–6",
+          "titulo": "Training",
+          "sub": "and curves",
+          "saida": "modelo_20.pt; 1 alerta lido.",
+          "passo": "A PPO training run on CPU with a checkpoint and the curves read, with the reward hacking recognized."
+        },
+        {
+          "aula": "terreno",
+          "icone": "alvo",
+          "quando": "Lessons 7–8",
+          "titulo": "Test",
+          "sub": "and plan",
+          "saida": "20/20; plan ok.",
+          "passo": "The policy evaluated with a push and a step, and your training plan checked."
+        }
+      ],
+      "resultado": {
+        "titulo": "At the end of the course",
+        "texto": "Policy run, reward measured, training read, test and plan written.",
+        "total": "8 lessons"
+      },
+      "rolagem_fim": {
+        "titulo": "The whole course",
+        "texto": "Four deliverables in sequence. Course 2 takes this course's policy from the simulator to the floor."
+      },
+      "legenda": "Order matters: the lesson 8 plan uses the reward from lesson 4 and the test from lesson 7."
+    },
+    {
+      "tipo": "gerador",
+      "titulo": "Generate your study plan with dates",
+      "sub": "Pick a start date and how much time you have per week. The plan lists the practices for each lesson.",
+      "curso": "FTH 1 · Teaching it to walk",
+      "horas_padrao": 3,
+      "degraus": [
+        {
+          "titulo": "Lesson 1 · Ready-made policy",
+          "aula": "por-que-rl"
+        },
+        {
+          "titulo": "Lesson 2 · PD on the joints",
+          "aula": "pd"
+        },
+        {
+          "titulo": "Lesson 3 · The environment",
+          "aula": "ambiente"
+        },
+        {
+          "titulo": "Lesson 4 · The reward",
+          "aula": "recompensa"
+        },
+        {
+          "titulo": "Lesson 5 · PPO on CPU",
+          "aula": "ppo"
+        },
+        {
+          "titulo": "Lesson 6 · Reading the curves",
+          "aula": "curvas"
+        },
+        {
+          "titulo": "Lesson 7 · Evaluating",
+          "aula": "avaliar"
+        },
+        {
+          "titulo": "Lesson 8 · Terrain and plan",
+          "aula": "terreno"
+        }
+      ],
+      "txt": {
+        "titulo": "Plan — FTH 1 · Teaching it to walk",
+        "inicio": "Start",
+        "ritmo": "Pace",
+        "termino": "Expected finish",
+        "ate": "by",
+        "pronto": "done when",
+        "semanas": "weeks",
+        "travou": "## What got stuck and the rule I created",
+        "h": "h per week",
+        "exs": "exercises"
+      }
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Practice",
+      "sub": "Measure the limit and plan the next training run.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · The maximum step",
+          "min": "5 min",
+          "texto": "Run the five steps and note the highest one the policy clears.",
+          "pronto": "<code>python3 kit/terreno.py --degraus 0.02 0.03 0.04 0.06 0.10; echo \"saída: $?\"</code> → <code>degraus vencidos: 2/5</code> and <code>saída: 0</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · The failed plan",
+          "min": "2 min",
+          "texto": "Copy the template and check it before filling it in, so you see the script fail it.",
+          "pronto": "the output shows <code>campos ok: 0/5</code>, <code>incompleto</code> and <code>saída: 1</code>."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · Your plan",
+          "min": "20 min",
+          "texto": "Fill in ~/fth/treino/plano-treino.md with your choices: a curriculum that starts on flat ground and goes through the steps that failed in E1, and an evaluation with a number.",
+          "pronto": "<code>python3 kit/conferir_plano.py $F/treino/plano-treino.md; echo \"saída: $?\"</code> → <code>campos ok: 5/5</code>, <code>ok</code> and <code>saída: 0</code>."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Lesson quiz",
+      "sub": "The explanation appears after your answer.",
+      "perguntas": [
+        {
+          "p": "In mjlab's terrain curriculum, when does a robot move up a level?",
+          "opcoes": [
+            "Every 1,000 training iterations, for all robots in the training run at the same time.",
+            "When the training's average reward goes above zero.",
+            "When the operator changes the level in the configuration file.",
+            "When, at the end of the episode, it walked more than 80 % of the requested distance."
+          ],
+          "certa": 3,
+          "explica": "The level is per robot and decided by what it did. A robot that walks less than 50 % of what was asked moves down: the curriculum adjusts itself.",
+          "ref": "passos",
+          "cert": true
+        },
+        {
+          "p": "The finished policy clears 3 cm steps and falls at 4 cm. In a training plan, what do you do with that?",
+          "opcoes": [
+            "Swap the robot for another one with longer legs.",
+            "Make the steps that failed the next levels of the curriculum.",
+            "Raise the ankle kp until the policy can climb the 4 cm without falling.",
+            "Take the steps out of the evaluation so the policy passes."
+          ],
+          "certa": 1,
+          "explica": "The terrain test shows where the policy stops; the curriculum is the way to get past that point. Changing the gains invalidates the policy (lesson 2).",
+          "ref": "codigo"
+        },
+        {
+          "p": "Why does unitree_rl_lab start by asking for only ±0.1 m/s?",
+          "opcoes": [
+            "Because the G1 doesn't walk above 0.1 m/s at the start of the run.",
+            "Because Isaac Lab limits the robot's speed during the first thousand training iterations.",
+            "To learn the easy part first; the range opens when tracking passes 80 %.",
+            "Because higher speeds call for a different robot in training."
+          ],
+          "certa": 2,
+          "explica": "It's a command curriculum: it starts where the policy can get it right and opens 0.1 m/s at a time up to −0.5 to 1.0 m/s.",
+          "ref": "passos"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "In three sentences",
+      "itens": [
+        {
+          "t": "Limit",
+          "texto": "The finished policy clears 2 cm and 3 cm steps and falls from 4 cm on."
+        },
+        {
+          "t": "Curriculum",
+          "texto": "Terrain moves up at 80 % of the distance and down below 50 %; the command opens 0.1 m/s at a time."
+        },
+        {
+          "t": "Flat",
+          "texto": "Robot, command, reward, curriculum, and evaluation written and checked before training."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Going further",
+      "links": [
+        {
+          "t": "Next FTH course: From the simulator to the ground (sim-to-real on humanoids)",
+          "href": "https://inematds.github.io/formacao-fth-sim2real-v72/en/",
+          "icone": "robo"
+        },
+        {
+          "t": "mjlab: terrain curriculum (mdp/curriculums.py)",
+          "href": "https://github.com/mujocolab/mjlab/blob/main/src/mjlab/tasks/velocity/mdp/curriculums.py",
+          "icone": "git"
+        },
+        {
+          "t": "unitree_rl_lab: command and terrain curriculum for the G1",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/blob/main/source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/mdp/curriculums.py",
+          "icone": "git"
+        },
+        {
+          "t": "Previous FTH course: the humanoid's body",
+          "href": "https://inematds.github.io/formacao-fth-anatomia-v72/en/",
+          "icone": "seta"
+        }
+      ]
+    }
+  ]
+}

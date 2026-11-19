@@ -1,0 +1,3 @@
+andou: 9.0 m para a frente · desvio lateral: 1.2 m · velocidade média: 0.90 m/s
+altura final da pelve: 0.76 m
+caiu: não

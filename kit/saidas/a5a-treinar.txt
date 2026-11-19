@@ -1,0 +1,26 @@
+PPO em CPU: 16 ambientes × 24 passos = 384 amostras por iteração · obs 96 → ação 29
+it   1/20 · recompensa média  -1.75 · episódio médio  24.0 passos · quedas  0
+it   2/20 · recompensa média  -3.33 · episódio médio  42.8 passos · quedas  5
+it   3/20 · recompensa média  -4.85 · episódio médio  58.6 passos · quedas 10
+it   4/20 · recompensa média  -3.90 · episódio médio  50.2 passos · quedas  4
+it   5/20 · recompensa média  -4.38 · episódio médio  52.6 passos · quedas  7
+it   6/20 · recompensa média  -4.38 · episódio médio  56.5 passos · quedas  4
+it   7/20 · recompensa média  -5.37 · episódio médio  69.7 passos · quedas  9
+it   8/20 · recompensa média  -5.28 · episódio médio  68.0 passos · quedas  4
+it   9/20 · recompensa média  -4.68 · episódio médio  56.8 passos · quedas  9
+it  10/20 · recompensa média  -4.73 · episódio médio  61.6 passos · quedas  7
+it  11/20 · recompensa média  -4.45 · episódio médio  52.6 passos · quedas  5
+it  12/20 · recompensa média  -4.68 · episódio médio  56.9 passos · quedas  9
+it  13/20 · recompensa média  -4.22 · episódio médio  52.6 passos · quedas  7
+it  14/20 · recompensa média  -4.56 · episódio médio  55.0 passos · quedas  5
+it  15/20 · recompensa média  -4.81 · episódio médio  57.1 passos · quedas  8
+it  16/20 · recompensa média  -4.88 · episódio médio  59.0 passos · quedas  4
+it  17/20 · recompensa média  -4.56 · episódio médio  56.6 passos · quedas  9
+it  18/20 · recompensa média  -5.19 · episódio médio  63.4 passos · quedas  7
+it  19/20 · recompensa média  -4.47 · episódio médio  51.8 passos · quedas  6
+it  20/20 · recompensa média  -4.64 · episódio médio  57.5 passos · quedas  8
+checkpoint salvo: ~/fth/treino/ppo/modelo_20.pt
+log: ~/fth/treino/ppo/progresso.csv (20 linhas) · tempo total: 9 s
+saída: 0
+arquivo existe: modelo_20.pt
+21

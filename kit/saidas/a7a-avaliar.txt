@@ -1,0 +1,4 @@
+política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrão de 1.0 m/s aos 4 s
+erro médio de velocidade (quem não caiu): 0.05 m/s
+sobreviveu: 20/20
+saída: 0

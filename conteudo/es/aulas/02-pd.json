@@ -1,0 +1,305 @@
+{
+  "slug": "pd",
+  "num": 2,
+  "menu": "PD en las articulaciones",
+  "titulo": "La capa de abajo: control PD en las articulaciones",
+  "titulo_curto": "PD en las articulaciones",
+  "minutos": 16,
+  "lead": "Entre la política y el motor hay un controlador PD por articulación, con kp y kd elegidos en el entrenamiento. En esta clase mides la respuesta de una rodilla a un escalón con tres valores de kd, dejas al G1 de pie solo con el PD y descubres por qué los ganancias de la política, por sí solos, no sostienen al robot.",
+  "objetivo": "medir el efecto de kp y kd en una articulación y dejar al G1 de pie solo con el PD, entendiendo por qué los ganancias de la política no bastan sin ella.",
+  "competencias": [
+    "ler-kp-kd-por-junta",
+    "medir-sobressinal-e-erro",
+    "separar-pd-de-politica"
+  ],
+  "aprende": [
+    {
+      "icone": "chip",
+      "t": "Torque = kp × (objetivo − posición) − kd × velocidad, limitado por el motor"
+    },
+    {
+      "icone": "grafico",
+      "t": "Sobreimpulso de 49 % sin kd; 1 % con kd 2"
+    },
+    {
+      "icone": "lista",
+      "t": "Las ganancias por articulación del deploy.yaml (rodilla 150/4, tobillo 40/2)"
+    },
+    {
+      "icone": "robo",
+      "t": "Un PD rígido sostiene al G1; las ganancias de la política, solas, no"
+    }
+  ],
+  "hero_alt": "Rodilla mecánica de robot humanoide sujeta a un soporte de aluminio sobre una mesa de trabajo, con un osciloscopio desenfocado al fondo que muestra una curva amortiguada.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "Del objetivo al torque",
+      "sub": "Haz clic en cada bloque. Es el lazo que corre dentro de cada una de las 29 articulaciones.",
+      "nos": [
+        {
+          "icone": "robo",
+          "titulo": "Objetivo",
+          "sub": "50 Hz",
+          "detalhe": "La política envía la posición deseada de la articulación (en radianes) cada 20 ms: pose por defecto + 0,25 × acción, como en el unitree_rl_lab.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "q* en rad"
+            }
+          ]
+        },
+        {
+          "icone": "alvo",
+          "titulo": "Error",
+          "sub": "q* − q",
+          "detalhe": "El encoder lee la posición actual q. El término P multiplica el error por kp: cuanto más lejos del objetivo, más torque.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "kp en N·m/rad"
+            }
+          ]
+        },
+        {
+          "icone": "relogio",
+          "titulo": "Freno",
+          "sub": "kd × q̇",
+          "detalhe": "El término D resta kd × velocidad de la articulación: es un freno que evita pasarse del objetivo y oscilar. Sin él, la articulación es un resorte.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "kd en N·m·s/rad"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Límite",
+          "sub": "torque máx.",
+          "forte": true,
+          "detalhe": "El motor no entrega cualquier torque: el MJCF del Menagerie limita cada articulación (actuatorfrcrange). Un pedido por encima del límite se corta, y ahí el PD deja de ser lineal. Los actuadores son del curso 0, clase 4.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "el pedido se corta"
+            }
+          ]
+        },
+        {
+          "icone": "chip",
+          "titulo": "Articulación",
+          "sub": "500 Hz",
+          "detalhe": "En el kit, MuJoCo integra a 500 Hz con el PD dentro del actuador de posición. En el robot, el PD corre en el driver del motor, aún más rápido; el curso 2 mide el retraso entre los dos.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "sin término integral"
+            }
+          ]
+        }
+      ],
+      "legenda": "No hay término I: el PID completo con integral y ajuste clásico es tema del curso robot. En los robots de RL, quien corrige el error que sobra es la política."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Una rodilla, tres frenos",
+      "sub": "El degrau_junta.py saca la articulación libre de la pelvis (el G1 queda colgado en el aire) y manda la rodilla izquierda de 0,3 a 0,8 rad con kp 100 y kd 0, 2 y 10.",
+      "blocos": [
+        {
+          "rot": "Terminal · escalón en la rodilla",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nfor kd in 0 2 10; do python3 kit/degrau_junta.py --kp 100 --kd $kd | tail -2; done"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Salida capturada (19/10/2026)",
+            "html": "<pre>sobressinal: 49 % · posição após 1 s: 0.78 rad (erro 0.02 rad)\nassentou (erro &lt; 0.02 rad): em 992 ms\nsobressinal: 1 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s\nsobressinal: 0 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s</pre><p>Dos líneas por kd (0, 2 y 10). Sin kd, la rodilla pasa 49 % del escalón y tarda casi 1 s en asentarse. Con kd 2, pasa solo 1 %. Con kd 2 o 10, la articulación se detiene a 0,03 rad del objetivo: sin término integral, el PD necesita un error para generar el torque que sostiene el peso de la pierna.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "El G1 de pie solo con el PD",
+      "sub": "El ficar_em_pe.py pone al robot en el suelo en la pose por defecto y sostiene cada articulación durante 5 s, sin política. De pie = pelvis entre 0,70 y 0,85 m e inclinación menor de 20°.",
+      "blocos": [
+        {
+          "rot": "Terminal · kp 300, kd 5 en todas",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\""
+        },
+        {
+          "rot": "Terminal · las ganancias de la policy",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/ficar_em_pe.py --ganhos rl_lab; echo \"saída: $?\""
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Salida capturada (19/10/2026)",
+            "html": "<pre>ganhos: kp = 300 · kd = 5 em todas as juntas\naltura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinação: 1°\nmaior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim\nsaída: 0</pre><p>Con kp 300 en todas las articulaciones, el G1 se vuelve una estatua: se queda de pie, inclinado 1°, pidiendo como máximo 12 N·m.</p>"
+          },
+          {
+            "rot": "Ganancias de unitree_rl_lab",
+            "html": "<pre>ganhos: kp/kd por junta do unitree_rl_lab\naltura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinação: 95°\nmaior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): não\nsaída: 1</pre><p>Con las ganancias por articulación del <code>deploy.yaml</code> (cadera 100/2, rodilla 150/4, tobillo 40/2, cintura 200/5, brazos 40/10), el robot se desploma y dos articulaciones llegan al límite de torque. Medido aquí con el mismo kp en todas las articulaciones, el G1 quieto solo se mantiene de pie con un kp desde unos 200.</p><p>No es un defecto: la política fue entrenada con esas ganancias y es ella la que cierra el equilibrio. Cambiar las ganancias invalida la política.</p>"
+          },
+          {
+            "rot": "Error común: faltó el kd",
+            "html": "<pre>ERRO: passe --kp e --kd (ex.: --kp 100 --kd 2) ou --ganhos rl_lab.\nsaída: 1</pre><p>El script exige las dos ganancias o el conjunto listo. PD es un par: kp sin kd es un resorte sin freno.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "passos",
+      "titulo": "Cómo guardan el PD los repositorios de RL",
+      "sub": "Qué cambia cuando lees un deploy.yaml de verdad.",
+      "passos": [
+        {
+          "titulo": "Por articulación",
+          "sub": "29 pares",
+          "texto": [
+            "En el <code>deploy.yaml</code> de unitree_rl_lab, <code>stiffness</code> (kp) y <code>damping</code> (kd) vienen en una lista con un valor por articulación, en el orden del SDK de Unitree.",
+            "En el robot, el deploy manda q, dq, kp, kd y tau por motor en cada ciclo; el driver hace el PD."
+          ]
+        },
+        {
+          "titulo": "Orden",
+          "sub": "la trampa",
+          "texto": [
+            "La pose por defecto y las acciones vienen en el orden de Isaac Lab, y <code>joint_ids_map</code> las convierte. Mezclar los órdenes tumba al robot en 1 s: el curso 2, clase 6, muestra el error."
+          ]
+        },
+        {
+          "titulo": "Fijos",
+          "sub": "parte de la policy",
+          "texto": [
+            "Las ganancias entran en el entrenamiento: la policy aprende a caminar con ese PD. En el robot, usar otros kp/kd es correr una policy distinta de la entrenada."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Práctica",
+      "sub": "Sentir el PD antes de ponerle una red encima.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Tres frenos",
+          "min": "5 min",
+          "texto": "Corre el escalón en la rodilla con kd 0, 2 y 10 y anota el sobreimpulso de cada uno.",
+          "pronto": "la salida muestra <code>sobressinal: 49 %</code> (kd 0) y <code>sobressinal: 1 %</code> (kd 2)."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · De pie con PD",
+          "min": "3 min",
+          "texto": "Deja el G1 de pie 5 s solo con el PD rígido.",
+          "pronto": "<code>python3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\"</code> → <code>de pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim</code> y <code>saída: 0</code>."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · Encuentra el límite",
+          "min": "10 min",
+          "texto": "Baja el kp (manteniendo kd 5) hasta que el robot se caiga. Anota el menor kp que todavía lo sostiene y compáralo con los 40 del tobillo de la policy.",
+          "pronto": "tienes un kp con <code>de pé (…): sim</code> y uno menor con <code>de pé (…): não</code> y <code>saída: 1</code> (el 19/10/2026: 200 sostiene, 175 cae)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Prueba de la clase",
+      "sub": "La explicación aparece después de tu respuesta.",
+      "perguntas": [
+        {
+          "p": "Con kd 2, la rodilla se detiene a 0,03 rad del objetivo y no llega. ¿Por qué?",
+          "opcoes": [
+            "Un kd demasiado alto traba la articulación antes del objetivo final.",
+            "MuJoCo redondea las posiciones de las articulaciones a dos decimales en cada paso.",
+            "Sin término integral, el PD necesita un error para hacer el torque contra el peso.",
+            "El encoder de Menagerie tiene una resolución de 0,03 rad."
+          ],
+          "certa": 2,
+          "explica": "Quieto, el torque del PD es kp × error. Para sostener el peso de la pierna, tiene que sobrar un error. En los robots de RL, quien corrige esto es la policy, que aprende a pedir un objetivo un poco más allá.",
+          "ref": "codigo",
+          "cert": true
+        },
+        {
+          "p": "Con las ganancias del deploy.yaml y sin policy, el G1 se cae. ¿Qué dice eso?",
+          "opcoes": [
+            "Las ganancias se eligieron para el lazo con la policy, que cierra el equilibrio.",
+            "El deploy.yaml publicado está mal y necesita kp mayores en todas las articulaciones de las piernas.",
+            "Menagerie modela el G1 más pesado que el robot de verdad.",
+            "El kd de los brazos (10) es lo que tumba al robot cuando está quieto."
+          ],
+          "certa": 0,
+          "explica": "PD blando + policy es un sistema; PD blando solo no lo es. Por eso no se cambian las ganancias de una policy entrenada.",
+          "ref": "codigo"
+        },
+        {
+          "p": "¿Dónde corren el PD el kit y el robot?",
+          "opcoes": [
+            "En la policy, junto con la red, cada 20 ms.",
+            "En la computadora de a bordo, dentro de un nodo de ROS 2 que corre a 50 Hz junto con la policy.",
+            "Solo en el simulador; en el robot la policy envía el torque directamente.",
+            "En el kit, dentro del actuador de MuJoCo a 500 Hz; en el robot, en el driver del motor."
+          ],
+          "certa": 3,
+          "explica": "La policy solo decide objetivos. El PD queda debajo, más rápido; en el robot, el deploy envía q, dq, kp, kd y tau por motor y el driver cierra el lazo.",
+          "ref": "diagrama"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "En tres frases",
+      "itens": [
+        {
+          "t": "PD",
+          "texto": "Torque = kp × error − kd × velocidad, recortado al límite del motor."
+        },
+        {
+          "t": "Medida",
+          "texto": "Sin kd, 49 % de sobreimpulso; con kd 2, 1 %, y un error de 0,03 rad que solo la policy corrige."
+        },
+        {
+          "t": "Regla",
+          "texto": "Las ganancias forman parte de la policy: si cambias las ganancias, cambias la policy."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Para ir más allá",
+      "links": [
+        {
+          "t": "unitree_rl_lab: deploy.yaml y el estado RLBase del deploy",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/tree/main/deploy",
+          "icone": "git"
+        },
+        {
+          "t": "MuJoCo: actuador de posición (kp, kv) en la referencia del XML",
+          "href": "https://mujoco.readthedocs.io/en/stable/XMLreference.html#actuator-position",
+          "icone": "arquivo"
+        },
+        {
+          "t": "Curso robot: PID y control básico",
+          "href": "https://inematds.github.io/robot/",
+          "icone": "seta"
+        },
+        {
+          "t": "Curso 0 de la FTH: actuadores y límites de torque",
+          "href": "https://inematds.github.io/formacao-fth-anatomia-v72/es/aulas/atuadores/",
+          "icone": "robo"
+        }
+      ]
+    }
+  ]
+}

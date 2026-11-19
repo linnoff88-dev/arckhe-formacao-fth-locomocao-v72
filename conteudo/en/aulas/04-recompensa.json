@@ -1,0 +1,335 @@
+{
+  "slug": "recompensa",
+  "num": 4,
+  "menu": "Reward",
+  "titulo": "Designing the gait reward",
+  "titulo_curto": "The reward",
+  "minutos": 16,
+  "lead": "The policy learns what the reward pays for, not what you meant. In this lesson you read the gait terms of the mjlab velocity task, record one rollout walking and another standing still, measure how much each term paid, and find out that, with one weight swapped, standing still becomes worth more than walking.",
+  "objetivo": "measure how much each reward term pays in a recorded rollout and predict the effect of changing a weight before you train.",
+  "competencias": [
+    "ler-termos-de-recompensa",
+    "medir-recompensa-num-rollout",
+    "antecipar-recompensa-hackeada"
+  ],
+  "aprende": [
+    {
+      "icone": "lista",
+      "t": "The 7 gait terms the kit copies from mjlab, with name, weight and scale"
+    },
+    {
+      "icone": "grafico",
+      "t": "Walking: 53.60. Standing still with the same command: 42.32"
+    },
+    {
+      "icone": "x",
+      "t": "One swapped weight: standing still (40.22) beats walking (39.65)"
+    },
+    {
+      "icone": "camadas",
+      "t": "How unitree_rl_lab chose different terms for the same robot"
+    }
+  ],
+  "hero_alt": "Humanoid robot walking in a dark lab on a floor with rectangular footprint marks in sequence, next to a yellow safety tape.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "Rewards and penalties",
+      "sub": "Click each block. Each term is worth weight × value × 0.02 s per policy step.",
+      "nos": [
+        {
+          "icone": "alvo",
+          "titulo": "Track",
+          "sub": "+2 and +2",
+          "forte": true,
+          "detalhe": "track_linear_velocity and track_angular_velocity: exp(−error²/std²) between the command and the measured velocity. It is 1 when it hits the target and drops fast when it misses. This is the term that says \"walk\".",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "std 0.5 and 0.707"
+            }
+          ]
+        },
+        {
+          "icone": "robo",
+          "titulo": "Posture",
+          "sub": "+1 and +1",
+          "detalhe": "upright (torso upright, gravity with no x and y component in the body frame) and pose (joints close to the default pose). They pay even for a robot that doesn't walk.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "upright, pose"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Limits",
+          "sub": "−1",
+          "detalhe": "dof_pos_limits penalizes how far the joints went past the model's limit, in radians.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "dof_pos_limits"
+            }
+          ]
+        },
+        {
+          "icone": "relogio",
+          "titulo": "Smoothness",
+          "sub": "−0.1",
+          "detalhe": "action_rate_l2 penalizes an action that changes a lot from one step to the next. Without it, the policy learns to shake, which heats up the motor and drains the battery on the real robot.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "action_rate_l2"
+            }
+          ]
+        },
+        {
+          "icone": "camadas",
+          "titulo": "Contact",
+          "sub": "−0.1",
+          "detalhe": "foot_slip penalizes a foot that slides while it is on the ground. mjlab also has terms the kit left out: foot height during the swing (foot_clearance, weight −2.0), soft landing, angular momentum, and foot air time (air_time, weight 0 on the G1).",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "foot_slip"
+            }
+          ]
+        }
+      ],
+      "legenda": "Names, weights, and std copied from the mjlab velocity task (commit 8bb2bc9, 10/18/2026). The kit uses a single std for pose."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "The kit's reward",
+      "sub": "A YAML file with one term per line. This is the file you will copy and change.",
+      "blocos": [
+        {
+          "rot": "File · kit/recompensa.yaml",
+          "icone": "arquivo",
+          "conteudo": "# Recompensa de marcha do kit (FTH 1). Nomes, pesos e std seguem a tarefa de velocidade do mjlab\n# (src/mjlab/tasks/velocity/velocity_env_cfg.py, commit 8bb2bc9, 18/10/2026); \"pose\" usa um std só.\n# Cada termo vale weight × valor × 0,02 s por passo da política. Positivo = prêmio; negativo = punição.\ntrack_linear_velocity: {weight: 2.0, std: 0.5}     # exp(-erro² / std²) entre comando e velocidade xy\ntrack_angular_velocity: {weight: 2.0, std: 0.707}  # o mesmo para a rotação em z\nupright: {weight: 1.0, std: 0.447}                 # tronco em pé (gravidade sem componente x/y)\npose: {weight: 1.0, std: 0.3}                      # juntas perto da pose padrão\ndof_pos_limits: {weight: -1.0}                     # quanto as juntas passaram do limite (rad)\naction_rate_l2: {weight: -0.1}                     # ação que muda de um passo para o outro\nfoot_slip: {weight: -0.1}                          # pé que escorrega enquanto está no chão"
+        }
+      ]
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Record two rollouts and measure each term",
+      "sub": "The finished policy walks for 10 s at 0.7 m/s and then stands still with command 0. termos.py redoes the math term by term; --comando-vx redoes the standing-still math as if the request were 0.7 m/s.",
+      "blocos": [
+        {
+          "rot": "Terminal · record walking and standing still",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nmkdir -p $F/treino\npython3 kit/andar_demo.py --vx 0.7 --gravar $F/treino/andando.npz | tail -1\npython3 kit/andar_demo.py --vx 0 --gravar $F/treino/parado.npz | tail -1"
+        },
+        {
+          "rot": "Terminal · terms of the walking rollout",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/termos.py $F/treino/andando.npz; echo \"saída: $?\""
+        },
+        {
+          "rot": "Terminal · standing still, charged as if it should walk",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/termos.py $F/treino/parado.npz --comando-vx 0.7"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>gravado: ~/fth/treino/andando.npz (500 passos)\ngravado: ~/fth/treino/parado.npz (500 passos)</pre><pre>rollout: andando.npz · 500 passos (10 s) · comando vx = 0.7 m/s\ntermo                     weight  valor médio    total\ntrack_linear_velocity          2        0.930    18.59\ntrack_angular_velocity         2        0.814    16.28\nupright                        1        0.995     9.95\npose                           1        0.925     9.25\ndof_pos_limits                -1        0.000     0.00\naction_rate_l2              -0.1        0.421    -0.42\nfoot_slip                   -0.1        0.054    -0.05\nRECOMPENSA DO EPISÓDIO                           53.60\nsaída: 0</pre><p>While walking, the biggest payers are tracking velocity (18.59) and turning (16.28). The penalties barely weigh: the policy is already smooth.</p>"
+          },
+          {
+            "rot": "Standing still",
+            "html": "<pre>rollout: parado.npz · 500 passos (10 s) · comando vx = 0.7 m/s (trocado na conta)\ntermo                     weight  valor médio    total\ntrack_linear_velocity          2        0.140     2.80\ntrack_angular_velocity         2        0.999    19.98\nupright                        1        0.999     9.99\npose                           1        0.956     9.56\ndof_pos_limits                -1        0.000     0.00\naction_rate_l2              -0.1        0.003    -0.00\nfoot_slip                   -0.1        0.000    -0.00\nRECOMPENSA DO EPISÓDIO                           42.32</pre><p>Standing still with a 0.7 m/s request, linear tracking drops from 18.59 to 2.80, but turning, upright, and pose pay even more. The total is 42.32 versus 53.60: standing still already earns 79% of walking.</p>"
+          },
+          {
+            "rot": "Common error: rollout not recorded",
+            "html": "<pre>ERRO: não achei ~/fth/treino/nao-existe.npz. Grave antes com: python3 kit/andar_demo.py --gravar ~/fth/treino/nao-existe.npz\nsaída: 1</pre><p>termos.py reads a .npz file recorded by andar_demo.py. Record first; the error tells you the command.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Change one weight and redo the math",
+      "sub": "A copy of the YAML with track_linear_velocity at 0.5 instead of 2.0. Nothing is trained: only the math changes.",
+      "blocos": [
+        {
+          "rot": "Terminal · weight 0.5 on tracking",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nsed \"s/track_linear_velocity: {weight: 2.0/track_linear_velocity: {weight: 0.5/\" kit/recompensa.yaml > $F/treino/minha.yaml\npython3 kit/termos.py $F/treino/andando.npz --recompensa $F/treino/minha.yaml | tail -1\npython3 kit/termos.py $F/treino/parado.npz --comando-vx 0.7 --recompensa $F/treino/minha.yaml | tail -1"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>RECOMPENSA DO EPISÓDIO                           39.65\nRECOMPENSA DO EPISÓDIO                           40.22</pre><p>First line: walking, 39.65. Second: standing still, 40.22. With this weight, a training run that finds \"stand still and upright\" is rewarded for it: that is reward hacking before any training. Doing this math takes seconds; finding out after a training run costs hours of GPU.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "passos",
+      "titulo": "Same robot, different recipe",
+      "sub": "unitree_rl_lab (commit 4960b84) trains the same G1 with different terms. Click to compare.",
+      "passos": [
+        {
+          "titulo": "Alive",
+          "sub": "+0,15",
+          "texto": [
+            "<code>alive</code> with weight 0.15: a small reward for each step spent upright. Lesson 6 shows what happens when it is missing and when it is too large."
+          ]
+        },
+        {
+          "titulo": "Height",
+          "sub": "−10",
+          "texto": [
+            "<code>base_height</code> with weight −10 and a target of 0.78 m: penalizes the pelvis being off height. It keeps the robot from learning to walk crouched or on its knees."
+          ]
+        },
+        {
+          "titulo": "Tilt",
+          "sub": "−5",
+          "texto": [
+            "<code>flat_orientation_l2</code> with weight −5 penalizes a tilted torso, the role <code>upright</code> plays in mjlab."
+          ]
+        },
+        {
+          "titulo": "Gait",
+          "sub": "+0,5",
+          "texto": [
+            "<code>gait</code> with weight 0.5 rewards the stepping pattern: a period of 0.8 s, with the two feet half a period out of phase (alternating). Without a term like this, the policy may find a strange way to get around, like dragging its feet."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Practice",
+      "sub": "Check the reward before spending a training run.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Term by term",
+          "min": "5 min",
+          "texto": "Record both rollouts and run termos.py on the walking rollout.",
+          "pronto": "<code>python3 kit/termos.py $F/treino/andando.npz; echo \"saída: $?\"</code> → <code>RECOMPENSA DO EPISÓDIO … 53.60</code> and <code>saída: 0</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · Standing still",
+          "min": "5 min",
+          "texto": "Run the standing-still rollout charged as if it should walk, and work out how much it is worth compared to walking.",
+          "pronto": "the output ends in <code>42.32</code> and you wrote \"standing still is worth 79% of walking\"."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · The weight that flips the game",
+          "min": "10 min",
+          "texto": "Run the block with a weight of 0.5. Then, in your own copy of the YAML, find the lowest track_linear_velocity weight at which walking is still worth more than standing still.",
+          "pronto": "with 0.5, the second line (<code>40.22</code>) is greater than the first (<code>39.65</code>); you noted the weight at which walking starts winning again (on 10/19/2026: 0.55 still loses, 0.6 wins)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Lesson quiz",
+      "sub": "The explanation appears after your answer.",
+      "perguntas": [
+        {
+          "p": "Standing still with a command of 0.7 m/s, the robot still adds up to 42.32. Where does most of it come from?",
+          "opcoes": [
+            "From linear velocity tracking, which pays even when the robot doesn't leave its spot.",
+            "From dof_pos_limits, which rewards staying far from the limits.",
+            "From foot_slip, because a stationary foot never slips on the ground.",
+            "From turning, upright, and pose, which pay off for staying upright and still."
+          ],
+          "certa": 3,
+          "explica": "A turn command of 0 is \"met\" by a robot that doesn't turn, and upright and pose reward posture. All of them pay without walking: that's why the linear tracking has to carry weight.",
+          "ref": "codigo",
+          "cert": true
+        },
+        {
+          "p": "With track_linear_velocity at 0.5, standing still is worth 40.22 and walking 39.65. What is a training run likely to learn?",
+          "opcoes": [
+            "To walk faster, to make up for the lower weight.",
+            "To stand still and upright, because that pays the most.",
+            "To fall early on, to end the episode.",
+            "Nothing changes, because PPO normalizes the weights on its own."
+          ],
+          "certa": 1,
+          "explica": "The algorithm maximizes the sum. If standing still pays more, that's what it figures out. Doing the math on a recorded rollout shows you the risk before training.",
+          "ref": "codigo"
+        },
+        {
+          "p": "What is action_rate_l2 for?",
+          "opcoes": [
+            "To reward the policy for changing its action often.",
+            "To limit the maximum torque the PD can ask of the motor.",
+            "To punish an action that changes a lot from one step to the next, which turns into jitter.",
+            "To measure how many actions per second the policy can send to the robot's motors."
+          ],
+          "certa": 2,
+          "explica": "Jitter costs little in the simulator; on the robot it heats up the motors and drains the battery. The term exists so the gait comes out smooth.",
+          "ref": "diagrama"
+        },
+        {
+          "p": "Why does unitree_rl_lab have base_height with a weight of −10?",
+          "opcoes": [
+            "To prevent a crouched or on-the-knees gait, which would pay well in the other terms.",
+            "To measure the height of the terrain ahead of the robot while walking on steps and ramps.",
+            "To adjust the height of the robot's camera while walking.",
+            "Because the Isaac Lab G1 is shorter than the Menagerie one."
+          ],
+          "certa": 0,
+          "explica": "Each term closes a door to a shortcut. Walking on its knees can still track velocity; the height term removes that path.",
+          "ref": "passos"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "In three sentences",
+      "itens": [
+        {
+          "t": "Sum",
+          "texto": "The reward is a sum of weighted terms; each term pays or punishes at every step."
+        },
+        {
+          "t": "Measure",
+          "texto": "Walking 53.60, standing still 42.32; with tracking at 0.5, standing still starts to win."
+        },
+        {
+          "t": "Habit",
+          "texto": "Before training, measure the reward of a good rollout and a bad one."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Going further",
+      "links": [
+        {
+          "t": "mjlab: reward terms for the velocity task",
+          "href": "https://github.com/mujocolab/mjlab/blob/main/src/mjlab/tasks/velocity/velocity_env_cfg.py",
+          "icone": "git"
+        },
+        {
+          "t": "unitree_rl_lab: rewards for the 29-DoF G1",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/blob/main/source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py",
+          "icone": "git"
+        },
+        {
+          "t": "vla-v72, lesson 7: RL after imitation",
+          "href": "https://inematds.github.io/vla-v72/en/aulas/fronteira/",
+          "icone": "seta"
+        }
+      ]
+    }
+  ]
+}

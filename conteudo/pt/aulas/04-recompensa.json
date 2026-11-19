@@ -1,0 +1,335 @@
+{
+  "slug": "recompensa",
+  "num": 4,
+  "menu": "Recompensa",
+  "titulo": "Desenhar a recompensa de marcha",
+  "titulo_curto": "A recompensa",
+  "minutos": 16,
+  "lead": "A política aprende o que a recompensa paga, não o que você quis dizer. Nesta aula você lê os termos de marcha da tarefa de velocidade do mjlab, grava um rollout andando e outro parado, mede quanto cada termo pagou e descobre que, com um peso trocado, ficar parado passa a valer mais do que andar.",
+  "objetivo": "medir quanto cada termo da recompensa paga num rollout gravado e prever o efeito de mudar um peso antes de treinar.",
+  "competencias": [
+    "ler-termos-de-recompensa",
+    "medir-recompensa-num-rollout",
+    "antecipar-recompensa-hackeada"
+  ],
+  "aprende": [
+    {
+      "icone": "lista",
+      "t": "Os 7 termos de marcha que o kit copia do mjlab, com nome, peso e escala"
+    },
+    {
+      "icone": "grafico",
+      "t": "Andando: 53,60. Parado com o mesmo comando: 42,32"
+    },
+    {
+      "icone": "x",
+      "t": "Um peso trocado: parado (40,22) passa a ganhar de andar (39,65)"
+    },
+    {
+      "icone": "camadas",
+      "t": "Como o unitree_rl_lab escolheu termos diferentes para o mesmo robô"
+    }
+  ],
+  "hero_alt": "Robô humanoide andando num laboratório escuro sobre um piso com marcas retangulares de pegadas em sequência, ao lado de uma fita amarela de segurança.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "Prêmios e punições",
+      "sub": "Clique em cada bloco. Cada termo vale peso × valor × 0,02 s por passo da política.",
+      "nos": [
+        {
+          "icone": "alvo",
+          "titulo": "Rastrear",
+          "sub": "+2 e +2",
+          "forte": true,
+          "detalhe": "track_linear_velocity e track_angular_velocity: exp(−erro²/std²) entre o comando e a velocidade medida. Vale 1 quando acerta, cai rápido quando erra. É o termo que diz \"ande\".",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "std 0,5 e 0,707"
+            }
+          ]
+        },
+        {
+          "icone": "robo",
+          "titulo": "Postura",
+          "sub": "+1 e +1",
+          "detalhe": "upright (tronco ereto, gravidade sem componente x e y no corpo) e pose (juntas perto da pose padrão). Pagam até para quem não anda.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "upright, pose"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Limites",
+          "sub": "−1",
+          "detalhe": "dof_pos_limits pune quanto as juntas passaram do limite do modelo, em radianos.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "dof_pos_limits"
+            }
+          ]
+        },
+        {
+          "icone": "relogio",
+          "titulo": "Suavidade",
+          "sub": "−0,1",
+          "detalhe": "action_rate_l2 pune ação que muda muito de um passo para o outro. Sem ele, a política aprende a tremer, o que no robô aquece motor e gasta bateria.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "action_rate_l2"
+            }
+          ]
+        },
+        {
+          "icone": "camadas",
+          "titulo": "Contato",
+          "sub": "−0,1",
+          "detalhe": "foot_slip pune o pé que escorrega enquanto está no chão. O mjlab tem ainda termos que o kit deixou de fora: altura do pé no balanço (foot_clearance, peso −2,0), pouso suave, momento angular e tempo de pé no ar (air_time, peso 0 no G1).",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "foot_slip"
+            }
+          ]
+        }
+      ],
+      "legenda": "Nomes, pesos e std copiados da tarefa de velocidade do mjlab (commit 8bb2bc9, 18/10/2026). O kit usa um std só para pose."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "A recompensa do kit",
+      "sub": "Um YAML com um termo por linha. É o arquivo que você vai copiar e mudar.",
+      "blocos": [
+        {
+          "rot": "Arquivo · kit/recompensa.yaml",
+          "icone": "arquivo",
+          "conteudo": "# Recompensa de marcha do kit (FTH 1). Nomes, pesos e std seguem a tarefa de velocidade do mjlab\n# (src/mjlab/tasks/velocity/velocity_env_cfg.py, commit 8bb2bc9, 18/10/2026); \"pose\" usa um std só.\n# Cada termo vale weight × valor × 0,02 s por passo da política. Positivo = prêmio; negativo = punição.\ntrack_linear_velocity: {weight: 2.0, std: 0.5}     # exp(-erro² / std²) entre comando e velocidade xy\ntrack_angular_velocity: {weight: 2.0, std: 0.707}  # o mesmo para a rotação em z\nupright: {weight: 1.0, std: 0.447}                 # tronco em pé (gravidade sem componente x/y)\npose: {weight: 1.0, std: 0.3}                      # juntas perto da pose padrão\ndof_pos_limits: {weight: -1.0}                     # quanto as juntas passaram do limite (rad)\naction_rate_l2: {weight: -0.1}                     # ação que muda de um passo para o outro\nfoot_slip: {weight: -0.1}                          # pé que escorrega enquanto está no chão"
+        }
+      ]
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Gravar dois rollouts e medir cada termo",
+      "sub": "A política pronta anda 10 s com 0,7 m/s e depois fica parada com comando 0. O termos.py refaz a conta termo a termo; --comando-vx refaz a conta do parado como se o pedido fosse 0,7 m/s.",
+      "blocos": [
+        {
+          "rot": "Terminal · gravar andando e parado",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nmkdir -p $F/treino\npython3 kit/andar_demo.py --vx 0.7 --gravar $F/treino/andando.npz | tail -1\npython3 kit/andar_demo.py --vx 0 --gravar $F/treino/parado.npz | tail -1"
+        },
+        {
+          "rot": "Terminal · termos do rollout andando",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/termos.py $F/treino/andando.npz; echo \"saída: $?\""
+        },
+        {
+          "rot": "Terminal · parado, cobrado como se devesse andar",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/termos.py $F/treino/parado.npz --comando-vx 0.7"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Saída capturada (19/10/2026)",
+            "html": "<pre>gravado: ~/fth/treino/andando.npz (500 passos)\ngravado: ~/fth/treino/parado.npz (500 passos)</pre><pre>rollout: andando.npz · 500 passos (10 s) · comando vx = 0.7 m/s\ntermo                     weight  valor médio    total\ntrack_linear_velocity          2        0.930    18.59\ntrack_angular_velocity         2        0.814    16.28\nupright                        1        0.995     9.95\npose                           1        0.925     9.25\ndof_pos_limits                -1        0.000     0.00\naction_rate_l2              -0.1        0.421    -0.42\nfoot_slip                   -0.1        0.054    -0.05\nRECOMPENSA DO EPISÓDIO                           53.60\nsaída: 0</pre><p>Andando, quem mais paga é rastrear a velocidade (18,59) e o giro (16,28). As punições quase não pesam: a política já é suave.</p>"
+          },
+          {
+            "rot": "Parado",
+            "html": "<pre>rollout: parado.npz · 500 passos (10 s) · comando vx = 0.7 m/s (trocado na conta)\ntermo                     weight  valor médio    total\ntrack_linear_velocity          2        0.140     2.80\ntrack_angular_velocity         2        0.999    19.98\nupright                        1        0.999     9.99\npose                           1        0.956     9.56\ndof_pos_limits                -1        0.000     0.00\naction_rate_l2              -0.1        0.003    -0.00\nfoot_slip                   -0.1        0.000    -0.00\nRECOMPENSA DO EPISÓDIO                           42.32</pre><p>Parado com pedido de 0,7 m/s, o rastreio linear cai de 18,59 para 2,80, mas giro, upright e pose pagam até mais. O total fica em 42,32 contra 53,60: ficar parado já vale 79 % de andar.</p>"
+          },
+          {
+            "rot": "Erro comum: rollout não gravado",
+            "html": "<pre>ERRO: não achei ~/fth/treino/nao-existe.npz. Grave antes com: python3 kit/andar_demo.py --gravar ~/fth/treino/nao-existe.npz\nsaída: 1</pre><p>O termos.py lê um arquivo .npz gravado pelo andar_demo.py. Grave antes; o erro diz o comando.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Mude um peso e refaça a conta",
+      "sub": "Uma cópia do YAML com track_linear_velocity em 0,5 em vez de 2,0. Nada é treinado: só a conta muda.",
+      "blocos": [
+        {
+          "rot": "Terminal · peso 0,5 no rastreio",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nsed \"s/track_linear_velocity: {weight: 2.0/track_linear_velocity: {weight: 0.5/\" kit/recompensa.yaml > $F/treino/minha.yaml\npython3 kit/termos.py $F/treino/andando.npz --recompensa $F/treino/minha.yaml | tail -1\npython3 kit/termos.py $F/treino/parado.npz --comando-vx 0.7 --recompensa $F/treino/minha.yaml | tail -1"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Saída capturada (19/10/2026)",
+            "html": "<pre>RECOMPENSA DO EPISÓDIO                           39.65\nRECOMPENSA DO EPISÓDIO                           40.22</pre><p>Primeira linha: andando, 39,65. Segunda: parado, 40,22. Com esse peso, um treino que encontre \"ficar parado e ereto\" é recompensado por isso: é recompensa hackeada antes de qualquer treino. Fazer essa conta custa segundos; descobrir depois de um treino custa horas de GPU.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "passos",
+      "titulo": "Mesmo robô, outra receita",
+      "sub": "O unitree_rl_lab (commit 4960b84) treina o mesmo G1 com termos diferentes. Clique para comparar.",
+      "passos": [
+        {
+          "titulo": "Vivo",
+          "sub": "+0,15",
+          "texto": [
+            "<code>alive</code> com peso 0,15: um prêmio pequeno por passo de pé. A aula 6 mostra o que acontece quando ele falta e quando ele é grande demais."
+          ]
+        },
+        {
+          "titulo": "Altura",
+          "sub": "−10",
+          "texto": [
+            "<code>base_height</code> com peso −10 e alvo de 0,78 m: pune a pelve fora da altura. Evita o robô aprender a andar agachado ou de joelhos."
+          ]
+        },
+        {
+          "titulo": "Inclinação",
+          "sub": "−5",
+          "texto": [
+            "<code>flat_orientation_l2</code> com peso −5 pune o tronco inclinado, o papel que o <code>upright</code> faz no mjlab."
+          ]
+        },
+        {
+          "titulo": "Marcha",
+          "sub": "+0,5",
+          "texto": [
+            "<code>gait</code> com peso 0,5 premia o padrão de passo: período de 0,8 s, com os dois pés defasados em meio período (alternar). Sem um termo assim, a política pode achar um jeito estranho de se deslocar, como arrastar os pés."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Prática",
+      "sub": "Conferir a recompensa antes de gastar um treino.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Termo a termo",
+          "min": "5 min",
+          "texto": "Grave os dois rollouts e rode o termos.py no rollout andando.",
+          "pronto": "<code>python3 kit/termos.py $F/treino/andando.npz; echo \"saída: $?\"</code> → <code>RECOMPENSA DO EPISÓDIO … 53.60</code> e <code>saída: 0</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · O parado",
+          "min": "5 min",
+          "texto": "Rode o rollout parado cobrado como se devesse andar e calcule quanto ele vale em relação ao andando.",
+          "pronto": "a saída termina em <code>42.32</code> e você escreveu \"ficar parado vale 79 % de andar\"."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · O peso que vira o jogo",
+          "min": "10 min",
+          "texto": "Rode o bloco do peso 0,5. Depois, numa cópia sua do YAML, procure o menor peso de track_linear_velocity em que andar ainda vale mais que ficar parado.",
+          "pronto": "com 0,5, a segunda linha (<code>40.22</code>) é maior que a primeira (<code>39.65</code>); você anotou o peso a partir do qual andando volta a ganhar (em 19/10/2026: 0,55 ainda perde, 0,6 ganha)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Teste da aula",
+      "sub": "A explicação aparece depois da sua resposta.",
+      "perguntas": [
+        {
+          "p": "Parado com pedido de 0,7 m/s, o robô ainda soma 42,32. De onde vem a maior parte?",
+          "opcoes": [
+            "Do rastreio de velocidade linear, que paga mesmo quando o robô não sai do lugar.",
+            "De dof_pos_limits, que dá prêmio a quem fica longe dos limites.",
+            "De foot_slip, porque o pé parado nunca escorrega no chão.",
+            "Do giro, de upright e de pose, que pagam a quem fica ereto e parado."
+          ],
+          "certa": 3,
+          "explica": "Comando de giro 0 é \"acertado\" por quem não gira, e upright e pose premiam a postura. Todos pagam sem andar: por isso o rastreio linear precisa pesar.",
+          "ref": "codigo",
+          "cert": true
+        },
+        {
+          "p": "Com track_linear_velocity em 0,5, parado vale 40,22 e andando 39,65. O que um treino tende a aprender?",
+          "opcoes": [
+            "A andar mais rápido, para compensar o peso menor.",
+            "A ficar parado e ereto, porque é o que mais paga.",
+            "A cair logo no início, para encerrar o episódio.",
+            "Nada muda, porque o PPO normaliza os pesos sozinho."
+          ],
+          "certa": 1,
+          "explica": "O algoritmo maximiza a soma. Se ficar parado paga mais, é isso que ele acha. A conta num rollout gravado mostra o risco antes do treino.",
+          "ref": "codigo"
+        },
+        {
+          "p": "Para que serve action_rate_l2?",
+          "opcoes": [
+            "Premiar a política por mudar de ação com frequência.",
+            "Limitar o torque máximo que o PD pode pedir ao motor.",
+            "Punir ação que muda muito de um passo para o outro, o que vira tremor.",
+            "Medir quantas ações por segundo a política consegue mandar para os motores do robô."
+          ],
+          "certa": 2,
+          "explica": "Tremor no simulador custa pouco; no robô aquece motor e gasta bateria. O termo existe para a marcha sair suave.",
+          "ref": "diagrama"
+        },
+        {
+          "p": "Por que o unitree_rl_lab tem base_height com peso −10?",
+          "opcoes": [
+            "Para evitar marcha agachada ou de joelhos, que pagaria bem nos outros termos.",
+            "Para medir a altura do terreno à frente do robô durante a marcha em degraus e rampas.",
+            "Para ajustar a altura da câmera do robô durante a marcha.",
+            "Porque o G1 do Isaac Lab é mais baixo que o do Menagerie."
+          ],
+          "certa": 0,
+          "explica": "Cada termo fecha uma porta para um atalho. Andar de joelhos pode rastrear a velocidade; o termo de altura tira esse caminho.",
+          "ref": "passos"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "Em três frases",
+      "itens": [
+        {
+          "t": "Soma",
+          "texto": "A recompensa é uma soma de termos com peso; cada termo paga ou pune por passo."
+        },
+        {
+          "t": "Medida",
+          "texto": "Andando 53,60, parado 42,32; com o rastreio em 0,5, parado passa a ganhar."
+        },
+        {
+          "t": "Hábito",
+          "texto": "Antes de treinar, meça a recompensa de um rollout bom e de um ruim."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Para ir além",
+      "links": [
+        {
+          "t": "mjlab: termos de recompensa da tarefa de velocidade",
+          "href": "https://github.com/mujocolab/mjlab/blob/main/src/mjlab/tasks/velocity/velocity_env_cfg.py",
+          "icone": "git"
+        },
+        {
+          "t": "unitree_rl_lab: recompensas do G1 29 GDL",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/blob/main/source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py",
+          "icone": "git"
+        },
+        {
+          "t": "vla-v72, aula 7: RL depois da imitação",
+          "href": "https://inematds.github.io/vla-v72/aulas/fronteira/",
+          "icone": "seta"
+        }
+      ]
+    }
+  ]
+}

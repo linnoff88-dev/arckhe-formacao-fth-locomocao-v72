@@ -1,0 +1,6 @@
+treino: ppo · 20 iterações (médias do primeiro e do último quarto)
+recompensa inicial: -3.64 · final: -4.75
+episódio médio: 46 → 58 passos (de 1000)
+velocidade para a frente no fim: 0.14 m/s · termo que mais pagou no fim: pose (1.00)
+alertas: 0
+saída: 0

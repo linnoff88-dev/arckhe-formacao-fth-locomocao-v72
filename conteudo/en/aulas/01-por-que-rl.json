@@ -1,0 +1,334 @@
+{
+  "slug": "por-que-rl",
+  "num": 1,
+  "menu": "Why RL",
+  "titulo": "Why locomotion became RL",
+  "titulo_curto": "Why RL",
+  "minutos": 16,
+  "lead": "The Unitree G1 in this course walks because a neural network sends 29 joint targets every 20 ms. In this lesson you set up the bench, run the ready-made Unitree G1 gait policy in MuJoCo, watch the same robot fall without it, and see why classical control gave way to RL in massive simulation.",
+  "objetivo": "run the ready-made G1 gait policy in MuJoCo, measure what it does, and compare it with the robot without a policy.",
+  "competencias": [
+    "rodar-politica-de-marcha-no-mujoco",
+    "distinguir-mpc-de-rl",
+    "fixar-versoes-da-bancada"
+  ],
+  "aprende": [
+    {
+      "icone": "camadas",
+      "t": "Classical control (model + optimization) × policy learned in simulation"
+    },
+    {
+      "icone": "robo",
+      "t": "The G1's open gait policy (unitree_rl_lab) walking in MuJoCo"
+    },
+    {
+      "icone": "grafico",
+      "t": "With policy: 6.6 m in 10 s. Without policy: fall in 1.4 s"
+    },
+    {
+      "icone": "terminal",
+      "t": "The ~/fth workbench with pinned versions"
+    }
+  ],
+  "hero_alt": "Charcoal-gray industrial humanoid robot with a black visor, taking a long step down a dark laboratory corridor.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "Two ways to make a humanoid walk",
+      "sub": "Click each block. The first three are the classical path; the last three are what the course practices.",
+      "nos": [
+        {
+          "icone": "camadas",
+          "titulo": "Model",
+          "sub": "ZMP, centroidal",
+          "detalhe": "Classical control starts from a simplified model of the body: the zero moment point (ZMP) must stay inside the support polygon of the feet, or centroidal dynamics (total mass and momentum) predicts the motion. The support polygon is covered in course 0, lesson 6.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "physics written by hand"
+            }
+          ]
+        },
+        {
+          "icone": "cerebro",
+          "titulo": "MPC",
+          "sub": "optimizes",
+          "detalhe": "Model predictive control (MPC) solves, on every cycle, an optimization over the next few moments using the model. It is interpretable and gives guarantees about the model, but each new behavior calls for new engineering.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "strong where guarantees are required"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Limit",
+          "sub": "code",
+          "detalhe": "Figure reported that Helix 02 (01/27/2026) replaced 109,504 lines of control C++ with a learned whole-body controller, running at 1 kHz, with 10 M parameters. The course's research found no independent MPC × RL comparison published in 2026.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "source: figure.ai, Jan/2026"
+            }
+          ]
+        },
+        {
+          "icone": "fila",
+          "titulo": "Massive sim",
+          "sub": "thousands",
+          "detalhe": "Instead of writing the physics of the step, you run the robot in thousands of parallel copies in the simulator (Isaac Lab, mjlab, MuJoCo Playground), and an RL algorithm (PPO) tunes the network using the reward. legged_gym (Isaac Gym, 2021) is the predecessor, now legacy.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "4,096 environments in unitree_rl_lab"
+            }
+          ]
+        },
+        {
+          "icone": "robo",
+          "titulo": "Policy",
+          "sub": "50 Hz",
+          "forte": true,
+          "detalhe": "The result is a small network: it reads the angular velocity, gravity in the body frame, the command, the joints and the last action, and returns 29 joint targets every 20 ms. This is the one you run in this lesson.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "480 inputs → 29 outputs"
+            }
+          ]
+        },
+        {
+          "icone": "chip",
+          "titulo": "PD",
+          "sub": "joint",
+          "detalhe": "The targets don't become torque directly: a PD controller on each joint, much faster than the policy, turns each target into torque. This is the lower layer, the topic of lesson 2.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "500 Hz in the kit"
+            }
+          ]
+        }
+      ],
+      "legenda": "MPC lives on as a concept and wherever a guarantee is required. The practice in this course is the right-hand column: simulation, policy and PD."
+    },
+    {
+      "tipo": "passos",
+      "titulo": "What runs in this lesson",
+      "sub": "Click each stage.",
+      "passos": [
+        {
+          "titulo": "The robot",
+          "sub": "Menagerie",
+          "texto": [
+            "The 29-degree-of-freedom Unitree G1 from MuJoCo Menagerie, pinned to commit 62ab00f (the same one as course 0). Position actuator with the policy's kp and kd."
+          ]
+        },
+        {
+          "titulo": "The policy",
+          "sub": "ready-made and open",
+          "texto": [
+            "Unitree publishes in unitree_rl_lab a G1 velocity policy already trained in Isaac Lab and exported to ONNX, with the <code>deploy.yaml</code> (joint order, kp and kd, default pose). Apache-2.0 license. The kit pins commit 4960b84.",
+            "Running in MuJoCo a policy trained in Isaac Lab already means crossing from one physics engine to another. Course 2 (sim2real) turns that into a gate."
+          ]
+        },
+        {
+          "titulo": "The loop",
+          "sub": "50 Hz / 500 Hz",
+          "texto": [
+            "Every 20 ms the policy reads the state and sends 29 targets; MuJoCo integrates at 500 Hz (2 ms step) with the PD holding each joint at its target.",
+            "<code>andar_demo.py</code> counts how many meters the pelvis walked and whether it fell (pelvis tilted more than 70° or below 0.3 m, the same criterion as the lesson 3 environment)."
+          ]
+        },
+        {
+          "titulo": "No policy",
+          "sub": "the contrast",
+          "texto": [
+            "<code>--sem-politica</code> leaves only the PD holding the default pose. Nobody corrects the balance and the robot falls: what keeps the G1 upright while walking is the policy's closed loop."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Set up the ~/fth bench",
+      "sub": "If you did course 0, the venv and Menagerie are already there: the block only adds what's missing (onnxruntime, CPU torch, the policy). Pinned versions, tested on Oct 19, 2026.",
+      "blocos": [
+        {
+          "rot": "Terminal · set up ~/fth",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; mkdir -p $F && cd $F\n[ -d .venv ] || python3.12 -m venv .venv\n. .venv/bin/activate && pip install -q mujoco==3.16.0 numpy pyyaml onnxruntime==1.31.0\npip install -q torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu\n[ -d locomocao ] || git clone -q --depth 1 https://github.com/inematds/formacao-fth-locomocao-v72 locomocao\n[ -d mujoco_menagerie ] || git clone -q --filter=blob:none --sparse https://github.com/google-deepmind/mujoco_menagerie\n(cd mujoco_menagerie && git sparse-checkout add unitree_g1 && git checkout -q 62ab00f)\n[ -d unitree_rl_lab ] || git clone -q --filter=blob:none --sparse https://github.com/unitreerobotics/unitree_rl_lab\ncd unitree_rl_lab && git sparse-checkout set deploy/robots/g1_29dof/config/policy/velocity\ngit checkout -q 4960b84 && git log -1 --format='unitree_rl_lab %h (%ad)' --date=short\npython3 -c \"import mujoco, onnxruntime, torch; print('mujoco', mujoco.__version__, '· onnxruntime', onnxruntime.__version__, '· torch', torch.__version__)\""
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>unitree_rl_lab 4960b84 (2025-11-19)\nmujoco 3.16.0 · onnxruntime 1.31.0 · torch 2.14.1+cpu</pre><p>Two lines and no errors. Pin the commits: a <code>policy.onnx</code> from another commit may have a different input order. torch comes from PyTorch's CPU wheels page (the course doesn't need a GPU).</p>"
+          },
+          {
+            "rot": "Common error: bench in the wrong place",
+            "html": "<pre>ERRO: não achei /tmp/sem-bancada/unitree_rl_lab/deploy/robots/g1_29dof/config/policy/velocity/v0/exported/policy.onnx. Rode a preparação da aula 1.\nsaída: 1</pre><p>The scripts look for everything in ~/fth, or in the folder set by the <code>FTH</code> variable. If the setup didn't run (or ran in another folder), the error shows the path that was missing.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "The G1 walking, and the G1 without a policy",
+      "sub": "10 s asking for 0.7 m/s forward. It exits with 0 if it didn't fall, 1 if it fell.",
+      "blocos": [
+        {
+          "rot": "Terminal · walk with the policy",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/andar_demo.py --vx 0.7 --s 10; echo \"saída: $?\""
+        },
+        {
+          "rot": "Terminal · PD only, no policy",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/andar_demo.py --vx 0.7 --s 10 --sem-politica"
+        },
+        {
+          "rot": "Terminal · ask for 1.0 m/s",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/andar_demo.py --vx 1.0 --s 10 | tail -3"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 480 → 29 · 50 Hz\ncomando: vx = 0.7 m/s por 10 s · simulação a 500 Hz, política a 50 Hz\nandou: 6.6 m para a frente · desvio lateral: 0.5 m · velocidade média: 0.66 m/s\naltura final da pelve: 0.77 m\ncaiu: não\nsaída: 0</pre><p>6.6 m in 10 s (0.66 m/s for the 0.70 requested) and the pelvis ends at 0.77 m. The 0.5 m lateral drift is normal: nothing corrects the heading, only the speed.</p>"
+          },
+          {
+            "rot": "No policy",
+            "html": "<pre>política: nenhuma (só PD na pose padrão)\ncomando: vx = 0.7 m/s por 10 s · simulação a 500 Hz, política a 50 Hz\nandou: 0.8 m para a frente · desvio lateral: 0.0 m · velocidade média: 0.57 m/s\naltura final da pelve: 0.33 m\ncaiu: sim, em t = 1.4 s</pre><p>The robot falls at 1.4 s. The \"average speed\" of 0.57 m/s here is the body tipping forward, not walking: always read the speed together with <code>caiu</code>.</p>"
+          },
+          {
+            "rot": "1.0 m/s",
+            "html": "<pre>andou: 9.0 m para a frente · desvio lateral: 1.2 m · velocidade média: 0.90 m/s\naltura final da pelve: 0.76 m\ncaiu: não</pre><p>9.0 m in 10 s. 1.0 m/s is the forward-speed ceiling the policy was trained for (the unitree_rl_lab command range: −0.5 to 1.0 m/s).</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Practice",
+      "sub": "See the policy work before you open up the parts.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Bench ready",
+          "min": "10 min",
+          "texto": "Run the setup block. If course 0 already set up ~/fth, it only adds what's missing.",
+          "pronto": "the block ends with <code>unitree_rl_lab 4960b84 (2025-11-19)</code> and <code>mujoco 3.16.0 · onnxruntime 1.31.0 · torch 2.14.1+cpu</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · The G1 walks",
+          "min": "3 min",
+          "texto": "Run the policy at 0.7 m/s for 10 s and note how many meters the pelvis walked.",
+          "pronto": "<code>python3 kit/andar_demo.py --vx 0.7 --s 10; echo \"saída: $?\"</code> → <code>caiu: não</code> and <code>saída: 0</code>."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · The contrast",
+          "min": "5 min",
+          "texto": "Run with <code>--sem-politica</code> and write, in one sentence, what keeps the robot upright when it walks.",
+          "pronto": "the output shows <code>caiu: sim, em t = 1.4 s</code>; your sentence says it's the policy's closed loop (PD alone doesn't correct balance)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Lesson quiz",
+      "sub": "The explanation appears after your answer.",
+      "perguntas": [
+        {
+          "p": "What does the G1's gait policy deliver every 20 ms?",
+          "opcoes": [
+            "Torques in N·m applied directly to each of the robot's motors.",
+            "29 joint position targets, which the PD turns into torque.",
+            "The complete foot trajectory for the next two seconds.",
+            "A velocity command for the balance controller."
+          ],
+          "certa": 1,
+          "explica": "The policy decides joint targets at 50 Hz; each joint's PD, much faster, turns the error into torque. That is why both layers exist.",
+          "ref": "diagrama",
+          "cert": true
+        },
+        {
+          "p": "Without a policy, the robot \"walked\" at 0.57 m/s and fell at 1.4 s. How do you read that number?",
+          "opcoes": [
+            "PD alone can walk, just slower and with shorter steps than the policy.",
+            "The policy was left on by mistake in --sem-politica mode.",
+            "The 0.7 m/s command was applied as an initial push.",
+            "It's the body tipping forward; speed without \"caiu: não\" is not walking."
+          ],
+          "certa": 3,
+          "explica": "The pelvis moved because the robot fell forward. Read every locomotion metric together with the fall; it's the same trap as the training curves (lesson 6).",
+          "ref": "codigo"
+        },
+        {
+          "p": "What did Figure report about Helix 02, in January 2026?",
+          "opcoes": [
+            "A learned whole-body controller in place of 109,504 lines of C++.",
+            "That MPC beat RL in an independent comparison published in 2026 by universities.",
+            "That the robot started walking with no low-level control at all.",
+            "That training was done on the real robot, with no simulation at all."
+          ],
+          "certa": 0,
+          "explica": "This is Figure's own report (1 kHz, 10 M parameters). The course research found no independent MPC vs. RL comparison: that is why the course treats MPC as a concept and RL as practice.",
+          "ref": "diagrama"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "In three sentences",
+      "itens": [
+        {
+          "t": "Change",
+          "texto": "Humanoid gait went from model + optimization to a policy trained in massive simulation."
+        },
+        {
+          "t": "Layers",
+          "texto": "The policy sends 29 targets at 50 Hz; each joint's PD produces the torque."
+        },
+        {
+          "t": "Measure",
+          "texto": "With a policy, 6.6 m in 10 s; without it, a fall at 1.4 s."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Going further",
+      "links": [
+        {
+          "t": "unitree_rl_lab: the G1 velocity policy and deploy.yaml",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab",
+          "icone": "git"
+        },
+        {
+          "t": "Figure: Helix 02 (01/27/2026)",
+          "href": "https://www.figure.ai/news/helix-02",
+          "icone": "seta"
+        },
+        {
+          "t": "Rudin et al., Learning to Walk in Minutes (legged_gym, 2021, legacy)",
+          "href": "https://arxiv.org/abs/2109.11978",
+          "icone": "arquivo"
+        },
+        {
+          "t": "FTH Course 0: the humanoid body (balance and support polygon)",
+          "href": "https://inematds.github.io/formacao-fth-anatomia-v72/en/aulas/equilibrio/",
+          "icone": "robo"
+        }
+      ]
+    }
+  ]
+}

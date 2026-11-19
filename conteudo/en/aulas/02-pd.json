@@ -1,0 +1,305 @@
+{
+  "slug": "pd",
+  "num": 2,
+  "menu": "PD at the joints",
+  "titulo": "The bottom layer: PD control at the joints",
+  "titulo_curto": "PD at the joints",
+  "minutos": 16,
+  "lead": "Between the policy and the motor sits a PD controller on each joint, with kp and kd chosen during training. In this lesson you measure a knee's response to a step with three kd values, hold the G1 upright with PD alone, and find out why the policy's gains can't keep the robot standing on their own.",
+  "objetivo": "measure the effect of kp and kd on a joint and hold the G1 upright with PD alone, understanding why the policy's gains aren't enough without the policy.",
+  "competencias": [
+    "ler-kp-kd-por-junta",
+    "medir-sobressinal-e-erro",
+    "separar-pd-de-politica"
+  ],
+  "aprende": [
+    {
+      "icone": "chip",
+      "t": "Torque = kp × (target − position) − kd × velocity, limited by the motor"
+    },
+    {
+      "icone": "grafico",
+      "t": "49% overshoot with no kd; 1% with kd 2"
+    },
+    {
+      "icone": "lista",
+      "t": "The per-joint gains in deploy.yaml (knee 150/4, ankle 40/2)"
+    },
+    {
+      "icone": "robo",
+      "t": "Stiff PD holds the G1 up; the policy's gains alone don't"
+    }
+  ],
+  "hero_alt": "A mechanical knee from a humanoid robot clamped to an aluminum bracket on a workbench, with a blurred oscilloscope in the background showing a damped curve.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "From target to torque",
+      "sub": "Click each block. This is the loop that runs inside each of the 29 joints.",
+      "nos": [
+        {
+          "icone": "robo",
+          "titulo": "Target",
+          "sub": "50 Hz",
+          "detalhe": "The policy sends the desired joint position (in radians) every 20 ms: default pose + 0.25 × action, as in unitree_rl_lab.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "q* in rad"
+            }
+          ]
+        },
+        {
+          "icone": "alvo",
+          "titulo": "Error",
+          "sub": "q* − q",
+          "detalhe": "The encoder reads the current position q. The P term multiplies the error by kp: the farther from the target, the more torque.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "kp in N·m/rad"
+            }
+          ]
+        },
+        {
+          "icone": "relogio",
+          "titulo": "Brake",
+          "sub": "kd × q̇",
+          "detalhe": "The D term subtracts kd × joint velocity: it's a brake that keeps the joint from overshooting the target and oscillating. Without it, the joint is a spring.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "kd in N·m·s/rad"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Limit",
+          "sub": "max torque",
+          "forte": true,
+          "detalhe": "The motor doesn't deliver just any torque: the Menagerie MJCF limits each joint (actuatorfrcrange). A request above the limit gets clipped, and then the PD stops being linear. Actuators are covered in course 0, lesson 4.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "the request is clipped"
+            }
+          ]
+        },
+        {
+          "icone": "chip",
+          "titulo": "Joint",
+          "sub": "500 Hz",
+          "detalhe": "In the kit, MuJoCo integrates at 500 Hz with the PD inside the position actuator. On the robot, the PD runs in the motor driver, even faster; course 2 measures the delay between the two.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "no integral term"
+            }
+          ]
+        }
+      ],
+      "legenda": "There's no I term: the full PID with integral and classic tuning is a topic for the robot course. In RL robots, the policy corrects the error that's left over."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "One knee, three brakes",
+      "sub": "degrau_junta.py frees the joint from the pelvis (the G1 hangs in the air) and sends the left knee from 0.3 to 0.8 rad with kp 100 and kd 0, 2, and 10.",
+      "blocos": [
+        {
+          "rot": "Terminal · step on the knee",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nfor kd in 0 2 10; do python3 kit/degrau_junta.py --kp 100 --kd $kd | tail -2; done"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>sobressinal: 49 % · posição após 1 s: 0.78 rad (erro 0.02 rad)\nassentou (erro &lt; 0.02 rad): em 992 ms\nsobressinal: 1 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s\nsobressinal: 0 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s</pre><p>Two lines per kd (0, 2, and 10). With no kd, the knee overshoots the step by 49% and takes almost 1 s to settle. With kd 2, it overshoots only 1%. With kd 2 or 10, the joint stops 0.03 rad short of the target: with no integral term, the PD needs an error to produce the torque that holds up the leg's weight.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "The G1 standing with PD alone",
+      "sub": "ficar_em_pe.py puts the robot on the ground in the default pose and holds each joint for 5 s, with no policy. Standing = pelvis between 0.70 and 0.85 m and tilt below 20°.",
+      "blocos": [
+        {
+          "rot": "Terminal · kp 300, kd 5 on all of them",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\""
+        },
+        {
+          "rot": "Terminal · the policy's gains",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/ficar_em_pe.py --ganhos rl_lab; echo \"saída: $?\""
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>ganhos: kp = 300 · kd = 5 em todas as juntas\naltura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinação: 1°\nmaior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim\nsaída: 0</pre><p>With kp 300 on every joint, the G1 turns into a statue: it stands up, tilted 1°, asking for at most 12 N·m.</p>"
+          },
+          {
+            "rot": "unitree_rl_lab gains",
+            "html": "<pre>ganhos: kp/kd por junta do unitree_rl_lab\naltura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinação: 95°\nmaior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): não\nsaída: 1</pre><p>With the per-joint gains from <code>deploy.yaml</code> (hip 100/2, knee 150/4, ankle 40/2, waist 200/5, arms 40/10), the robot collapses and two joints hit the torque limit. Measured here with the same kp on every joint, the standing G1 only stays up with kp from about 200.</p><p>This is not a bug: the policy was trained with these gains, and it is the policy that closes the balance loop. Changing the gains invalidates the policy.</p>"
+          },
+          {
+            "rot": "Common mistake: forgetting kd",
+            "html": "<pre>ERRO: passe --kp e --kd (ex.: --kp 100 --kd 2) ou --ganhos rl_lab.\nsaída: 1</pre><p>The script requires both gains or the ready-made set. PD is a pair: kp without kd is a spring with no brake.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "passos",
+      "titulo": "How RL repos store the PD",
+      "sub": "What changes when you read a real deploy.yaml.",
+      "passos": [
+        {
+          "titulo": "Per joint",
+          "sub": "29 pairs",
+          "texto": [
+            "In the unitree_rl_lab <code>deploy.yaml</code>, <code>stiffness</code> (kp) and <code>damping</code> (kd) come as a list with one value per joint, in the Unitree SDK order.",
+            "On the robot, the deploy sends q, dq, kp, kd and tau for each motor every cycle; the driver runs the PD."
+          ]
+        },
+        {
+          "titulo": "Order",
+          "sub": "the trap",
+          "texto": [
+            "The default pose and the actions come in Isaac Lab order, and <code>joint_ids_map</code> converts between them. Mixing the orders brings the robot down in 1 s: course 2, lesson 6, shows the mistake."
+          ]
+        },
+        {
+          "titulo": "Fixed",
+          "sub": "part of the policy",
+          "texto": [
+            "The gains go into training: the policy learns to walk with that PD. On the robot, using other kp/kd means running a different policy from the one you trained."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Practice",
+      "sub": "Feel the PD before putting a network on top of it.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Three brakes",
+          "min": "5 min",
+          "texto": "Run the knee step with kd 0, 2 and 10 and write down the overshoot of each.",
+          "pronto": "the output shows <code>sobressinal: 49 %</code> (kd 0) and <code>sobressinal: 1 %</code> (kd 2)."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · Standing with PD",
+          "min": "3 min",
+          "texto": "Keep the G1 standing for 5 s with only the stiff PD.",
+          "pronto": "<code>python3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\"</code> → <code>de pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim</code> and <code>saída: 0</code>."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · Find the limit",
+          "min": "10 min",
+          "texto": "Lower kp (keeping kd 5) until the robot falls. Write down the smallest kp that still holds and compare it with the policy's ankle value of 40.",
+          "pronto": "you have a kp with <code>de pé (…): sim</code> and a lower one with <code>de pé (…): não</code> and <code>saída: 1</code> (on 10/19/2026: 200 holds, 175 falls)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Lesson quiz",
+      "sub": "The explanation appears after your answer.",
+      "perguntas": [
+        {
+          "p": "With kd 2, the knee stops 0.03 rad from the target and never gets there. Why?",
+          "opcoes": [
+            "A kd that is too high locks the joint before the final target.",
+            "MuJoCo rounds joint positions to two decimal places at every step.",
+            "Without an integral term, the PD needs error to produce torque against the weight.",
+            "The Menagerie encoder has a resolution of 0.03 rad."
+          ],
+          "certa": 2,
+          "explica": "At rest, the PD torque is kp × error. To hold the weight of the leg, some error has to be left over. In RL robots, the policy fixes this: it learns to ask for a target slightly beyond.",
+          "ref": "codigo",
+          "cert": true
+        },
+        {
+          "p": "With the deploy.yaml gains and no policy, the G1 falls. What does that tell you?",
+          "opcoes": [
+            "The gains were chosen for the loop with the policy, which closes the balance.",
+            "The published deploy.yaml is wrong and needs higher kp on all leg joints.",
+            "Menagerie models the G1 heavier than the real robot.",
+            "It is the arms' kd (10) that brings the robot down when it is standing still."
+          ],
+          "certa": 0,
+          "explica": "Soft PD + policy is a system; soft PD alone is not. That is why you don't swap the gains of a trained policy.",
+          "ref": "codigo"
+        },
+        {
+          "p": "Where do the kit and the robot run the PD?",
+          "opcoes": [
+            "In the policy, together with the network, every 20 ms.",
+            "On the onboard computer, inside a ROS 2 node that runs at 50 Hz alongside the policy.",
+            "Only in the simulator; on the robot, the policy sends torque directly.",
+            "In the kit, inside the MuJoCo actuator at 500 Hz; on the robot, in the motor driver."
+          ],
+          "certa": 3,
+          "explica": "The policy only decides targets. The PD sits underneath, running faster; on the robot, the deploy sends q, dq, kp, kd and tau for each motor and the driver closes the loop.",
+          "ref": "diagrama"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "In three sentences",
+      "itens": [
+        {
+          "t": "PD",
+          "texto": "Torque = kp × error − kd × velocity, clipped at the motor limit."
+        },
+        {
+          "t": "Measure",
+          "texto": "Without kd, 49% overshoot; with kd 2, 1%, and a 0.03 rad error that only the policy corrects."
+        },
+        {
+          "t": "Rule",
+          "texto": "The gains are part of the policy: change the gains and you change the policy."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Going further",
+      "links": [
+        {
+          "t": "unitree_rl_lab: deploy.yaml and the deploy's RLBase state",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/tree/main/deploy",
+          "icone": "git"
+        },
+        {
+          "t": "MuJoCo: position actuator (kp, kv) in the XML reference",
+          "href": "https://mujoco.readthedocs.io/en/stable/XMLreference.html#actuator-position",
+          "icone": "arquivo"
+        },
+        {
+          "t": "Robot course: PID and basic control",
+          "href": "https://inematds.github.io/robot/",
+          "icone": "seta"
+        },
+        {
+          "t": "FTH Course 0: actuators and torque limits",
+          "href": "https://inematds.github.io/formacao-fth-anatomia-v72/en/aulas/atuadores/",
+          "icone": "robo"
+        }
+      ]
+    }
+  ]
+}

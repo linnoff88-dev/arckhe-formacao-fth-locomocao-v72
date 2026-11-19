@@ -1,0 +1,2 @@
+quedas: ep 0 em 1.3 s, ep 1 em 1.4 s, ep 2 em 1.4 s, ep 3 em 1.4 s, ep 4 em 1.3 s
+sobreviveu: 0/5

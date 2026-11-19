@@ -1,0 +1,294 @@
+{
+  "slug": "curvas",
+  "num": 6,
+  "menu": "Curvas",
+  "titulo": "Ler o treino: curvas, colapso e recompensa hackeada",
+  "titulo_curto": "Ler as curvas",
+  "minutos": 16,
+  "lead": "Uma curva de recompensa subindo não quer dizer que o robô aprendeu a andar. Nesta aula você lê o log do seu treino e de dois treinos reais de 150 iterações, gravados para o curso: num deles a recompensa sobe porque o robô aprendeu a cair mais cedo. O outro mostra o conserto e o limite do conserto.",
+  "objetivo": "ler o log de um treino e reconhecer colapso e recompensa hackeada.",
+  "competencias": [
+    "ler-curvas-de-treino",
+    "detectar-recompensa-hackeada",
+    "ajustar-recompensa-pelo-sintoma"
+  ],
+  "aprende": [
+    {
+      "icone": "grafico",
+      "t": "Recompensa, duração do episódio e velocidade: os três números lidos juntos"
+    },
+    {
+      "icone": "x",
+      "t": "Recompensa hackeada: subiu de −4,31 para −1,12 com o episódio caindo de 55 para 15 passos"
+    },
+    {
+      "icone": "check",
+      "t": "O conserto com is_alive e o limite dele: 0,16 m/s"
+    },
+    {
+      "icone": "fila",
+      "t": "O ciclo treinar → ler → ajustar → treinar de novo"
+    }
+  ],
+  "hero_alt": "Monitor numa bancada escura com um gráfico de linha subindo, desfocado, e um robô humanoide de pé preso a um pórtico ao fundo.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "Os sinais que o curvas.py procura",
+      "sub": "Clique em cada bloco. Cada alerta compara o primeiro e o último quarto do treino.",
+      "nos": [
+        {
+          "icone": "grafico",
+          "titulo": "Recompensa",
+          "sub": "média",
+          "detalhe": "Recompensa somada por episódio, na média dos episódios de cada iteração. Sozinha engana: sobe quando o robô aprende, mas também quando ele acha um atalho.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "recompensa_media"
+            }
+          ]
+        },
+        {
+          "icone": "relogio",
+          "titulo": "Episódio",
+          "sub": "duração",
+          "detalhe": "Quantos passos o robô fica de pé, em média. Episódio encurtando = caindo mais cedo. Se a recompensa sobe e o episódio encurta, alerta.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "episodio_medio"
+            }
+          ]
+        },
+        {
+          "icone": "robo",
+          "titulo": "Velocidade",
+          "sub": "para a frente",
+          "detalhe": "A média de vx no fim. Recompensa subindo com o robô quase parado (abaixo de 0,1 m/s) também vira alerta.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "vx_media"
+            }
+          ]
+        },
+        {
+          "icone": "lupa",
+          "titulo": "Termos",
+          "sub": "quem paga",
+          "forte": true,
+          "detalhe": "O progresso.csv guarda cada termo por iteração. O termo que mais paga no fim diz o que a política otimizou de fato.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "uma coluna por termo"
+            }
+          ]
+        }
+      ],
+      "legenda": "Andar de joelhos, tremer e ficar parado são os atalhos clássicos. Todos aparecem lendo esses quatro números juntos, nunca a recompensa sozinha."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "As curvas do seu treino",
+      "sub": "O progresso.csv da aula 5.",
+      "blocos": [
+        {
+          "rot": "Terminal · ler o seu treino",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/curvas.py $F/treino/ppo; echo \"saída: $?\""
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Saída capturada (19/10/2026)",
+            "html": "<pre>treino: ppo · 20 iterações (médias do primeiro e do último quarto)\nrecompensa inicial: -3.64 · final: -4.75\nepisódio médio: 46 → 58 passos (de 1000)\nvelocidade para a frente no fim: 0.14 m/s · termo que mais pagou no fim: pose (1.00)\nalertas: 0\nsaída: 0</pre><p>Em 20 iterações a recompensa ainda oscila e o termo que mais paga é pose: a política mal saiu da pose padrão. Nenhum alerta, mas também nenhum aprendizado para ler. Por isso o kit traz dois treinos maiores. Atenção: o curvas.py sai 0 mesmo com alerta; leia a linha <code>alertas:</code>, não o código de saída.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Dois treinos reais de 150 iterações",
+      "sub": "Gerados com o mesmo kit/treinar.py, 32 ambientes, semente 0. cai-cedo usa kit/recompensa.yaml (8 min); com-vivo acrescenta o termo is_alive com peso 5 (10 min). Só o progresso.csv está no repositório.",
+      "blocos": [
+        {
+          "rot": "Trecho · kit/recompensa-viva.yaml",
+          "icone": "arquivo",
+          "conteudo": "is_alive: {weight: 5.0}                            # 5 × 0,02 s = +0,1 por passo de pé: ficar vivo passa a valer mais que a punição"
+        },
+        {
+          "rot": "Terminal · os dois exemplos",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nfor x in cai-cedo com-vivo; do python3 kit/curvas.py kit/exemplos/$x; echo; done"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Saída capturada (19/10/2026)",
+            "html": "<pre>treino: cai-cedo · 150 iterações (médias do primeiro e do último quarto)\nrecompensa inicial: -4.31 · final: -1.12\nepisódio médio: 55 → 15 passos (de 1000)\nvelocidade para a frente no fim: 0.15 m/s · termo que mais pagou no fim: upright (0.23)\nALERTA: recompensa hackeada: a recompensa subiu porque o episódio encurtou; cada passo de pé custa mais do que paga, e cair cedo virou a melhor estratégia\nalertas: 1\n\ntreino: com-vivo · 150 iterações (médias do primeiro e do último quarto)\nrecompensa inicial: 1.36 · final: 2.32\nepisódio médio: 57 → 63 passos (de 1000)\nvelocidade para a frente no fim: 0.16 m/s · termo que mais pagou no fim: is_alive (6.27)\nalertas: 0</pre><p>cai-cedo: a recompensa subiu de −4,31 para −1,12 enquanto o episódio caiu de 55 para 15 passos. Como cada passo de pé dava saldo negativo (a punição por ação brusca pesava mais que os prêmios), cair cedo virou a melhor estratégia.</p><p>com-vivo: com is_alive peso 5 (+0,1 por passo de pé, 5 por segundo), o episódio passa a crescer (57 → 63) e nenhum alerta dispara. Mas o termo que mais paga é is_alive e a velocidade é 0,16 m/s: o treino aprendeu a não cair, ainda não a andar.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "simfila",
+      "titulo": "O ciclo de ajuste",
+      "sub": "Rode, veja a leitura das curvas barrar o treino e rode de novo. É o laço desta aula.",
+      "tarefas": [
+        "Treinar com recompensa.yaml",
+        "Ler as curvas",
+        "Ajustar a recompensa",
+        "Treinar de novo",
+        "Avaliar (aula 7)"
+      ],
+      "falha": 1,
+      "rot": {
+        "entrada": "a fazer",
+        "rodando": "rodando",
+        "feito": "feito",
+        "falhou": "alerta",
+        "rodar": "Rodar o ciclo",
+        "parar": "Parar",
+        "zerar": "Recomeçar"
+      },
+      "msg": {
+        "inicio": "5 etapas. Clique em \"Rodar o ciclo\".",
+        "rodando": "Uma etapa por vez: só treina de novo depois de ler e ajustar.",
+        "parou": "Parado. Rode de novo: a etapa interrompida recomeça, as anteriores continuam valendo.",
+        "retoma": "Retomada: o que já foi feito não se repete.",
+        "fim": "Ciclo completo: o treino ajustado segue para a avaliação.",
+        "fimfalha": "As curvas acusaram recompensa hackeada (episódio encurtando com a recompensa subindo). Ajuste um termo e treine de novo."
+      },
+      "legenda": "Simulação ilustrativa no navegador. O alerta na leitura das curvas é proposital: é o caso cai-cedo."
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Prática",
+      "sub": "Ler antes de acreditar.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Seu treino",
+          "min": "3 min",
+          "texto": "Rode o curvas.py no treino da aula 5 e anote o termo que mais pagou no fim.",
+          "pronto": "<code>python3 kit/curvas.py $F/treino/ppo; echo \"saída: $?\"</code> → <code>treino: ppo · 20 iterações</code> e <code>saída: 0</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · O atalho",
+          "min": "5 min",
+          "texto": "Rode os dois exemplos e escreva, numa frase, por que a recompensa do cai-cedo subiu.",
+          "pronto": "a saída do cai-cedo mostra <code>ALERTA: recompensa hackeada</code> e <code>alertas: 1</code>; sua frase cita o episódio encurtando (55 → 15 passos)."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · O próximo ajuste",
+          "min": "10 min",
+          "texto": "O com-vivo não cai, mas anda a 0,16 m/s. Proponha um ajuste de um termo (qual, peso antigo, peso novo) e diga o sinal que você esperaria ver nas curvas se ele funcionar.",
+          "pronto": "você escreveu um termo do kit/recompensa.yaml com os dois pesos e um sinal mensurável (ex.: velocidade no fim acima de 0,3 m/s sem o episódio encurtar)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Teste da aula",
+      "sub": "A explicação aparece depois da sua resposta.",
+      "perguntas": [
+        {
+          "p": "No cai-cedo, a recompensa subiu e o episódio caiu de 55 para 15 passos. O que a política aprendeu?",
+          "opcoes": [
+            "A andar mais rápido, encerrando o percurso antes do tempo.",
+            "A ficar de pé parada, sem gastar energia com a marcha.",
+            "A cair cedo, porque cada passo de pé dava saldo negativo.",
+            "Nada: é ruído de uma única iteração ruim."
+          ],
+          "certa": 2,
+          "explica": "Com saldo negativo a cada passo de pé, menos passos = menos punição. O curvas.py compara quartos inteiros do treino justamente para não confundir isso com ruído.",
+          "ref": "codigo",
+          "cert": true
+        },
+        {
+          "p": "O com-vivo não dispara nenhum alerta. Por que ele ainda não é um bom treino?",
+          "opcoes": [
+            "Porque o is_alive é proibido nos repositórios de RL de humanoide.",
+            "Porque 150 iterações sempre bastam para andar e ele já deveria estar andando a 0,7 m/s.",
+            "Porque a recompensa ficou positiva, o que indica erro no log.",
+            "Quem mais paga é ficar vivo e a velocidade é 0,16 m/s: não cai, mas não anda."
+          ],
+          "certa": 3,
+          "explica": "Sem alerta não é o mesmo que certo. O is_alive grande tira o atalho de cair, mas pode criar o de ficar parado; o unitree_rl_lab usa só 0,15.",
+          "ref": "codigo"
+        },
+        {
+          "p": "Qual leitura detecta \"recompensa hackeada\" com mais segurança?",
+          "opcoes": [
+            "Recompensa, duração do episódio e velocidade lidas juntas.",
+            "A recompensa média da última iteração do treino.",
+            "O valor máximo que a recompensa atingiu em qualquer iteração do treino.",
+            "O tempo total de treino comparado com o planejado."
+          ],
+          "certa": 0,
+          "explica": "Um número sozinho sempre tem um atalho que o engana. Três sinais e o termo dominante juntos fecham as portas mais comuns.",
+          "ref": "diagrama"
+        },
+        {
+          "p": "Por que o kit guarda dois treinos de exemplo em vez de pedir que você rode 150 iterações?",
+          "opcoes": [
+            "Porque o kit/treinar.py não aceita mais de 20 iterações.",
+            "Porque levam 8 a 10 min em CPU e a leitura é o que a aula ensina.",
+            "Porque o resultado muda a cada execução e não daria para comparar.",
+            "Porque os exemplos foram treinados na GPU e não dá para repetir em CPU."
+          ],
+          "certa": 1,
+          "explica": "Dá para repetir (os comandos estão no kit/exemplos/LEIA.md). Mas a competência da aula é ler; o tempo de treino fica opcional.",
+          "ref": "codigo"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "Em três frases",
+      "itens": [
+        {
+          "t": "Leitura",
+          "texto": "Recompensa, duração do episódio, velocidade e termo dominante, sempre juntos."
+        },
+        {
+          "t": "Atalho",
+          "texto": "No cai-cedo, a recompensa subiu porque o robô aprendeu a cair mais cedo."
+        },
+        {
+          "t": "Ciclo",
+          "texto": "Treinar, ler, ajustar um termo e treinar de novo; sem alerta ainda não é andar."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Para ir além",
+      "links": [
+        {
+          "t": "Os dois treinos de exemplo (progresso.csv e LEIA.md)",
+          "href": "https://github.com/inematds/formacao-fth-locomocao-v72/tree/main/kit/exemplos",
+          "icone": "git"
+        },
+        {
+          "t": "mjlab: termos de recompensa da tarefa de velocidade",
+          "href": "https://github.com/mujocolab/mjlab/blob/main/src/mjlab/tasks/velocity/velocity_env_cfg.py",
+          "icone": "git"
+        },
+        {
+          "t": "unitree_rl_lab: o termo alive (peso 0,15)",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/blob/main/source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py",
+          "icone": "git"
+        }
+      ]
+    }
+  ]
+}

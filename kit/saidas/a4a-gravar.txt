@@ -1,0 +1,2 @@
+gravado: ~/fth/treino/andando.npz (500 passos)
+gravado: ~/fth/treino/parado.npz (500 passos)

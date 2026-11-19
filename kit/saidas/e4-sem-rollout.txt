@@ -1,0 +1,2 @@
+ERRO: não achei ~/fth/treino/nao-existe.npz. Grave antes com: python3 kit/andar_demo.py --gravar ~/fth/treino/nao-existe.npz
+saída: 1

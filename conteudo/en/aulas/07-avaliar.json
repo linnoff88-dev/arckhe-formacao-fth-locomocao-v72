@@ -1,0 +1,283 @@
+{
+  "slug": "avaliar",
+  "num": 7,
+  "menu": "Evaluate",
+  "titulo": "Evaluating for real: speed, turning and push",
+  "titulo_curto": "Evaluate",
+  "minutos": 16,
+  "lead": "A policy is only ready when it passes a test you wrote before looking at the result. In this lesson you evaluate the ready-made policy over 20 episodes with fixed seeds: speed error, turning and pushes of 1.0, 1.5 and 2.0 m/s. Then you run your checkpoint from lesson 5 through the same test.",
+  "objetivo": "evaluate a policy over 20 episodes with fixed seeds, measuring speed error and survival to pushes of increasing strength.",
+  "competencias": [
+    "escrever-teste-antes-do-resultado",
+    "medir-sobrevivencia-a-empurrao",
+    "comparar-politicas-no-mesmo-teste"
+  ],
+  "aprende": [
+    {
+      "icone": "alvo",
+      "t": "Speed error: 0.05 m/s between requested and measured"
+    },
+    {
+      "icone": "x",
+      "t": "Push of 1.0 m/s: 20/20 standing; 1.5: 16/20; 2.0: 9/20"
+    },
+    {
+      "icone": "lupa",
+      "t": "Fixed seeds: the same 20 episodes for any policy"
+    },
+    {
+      "icone": "portao",
+      "t": "Where evaluation in sim ends and sim2sim begins (course 2)"
+    }
+  ],
+  "hero_alt": "Humanoid robot standing in a dark lab, getting pushed from the side by a padded pole, taking a step to recover its balance.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "What a walking test measures",
+      "sub": "Click each block. avaliar.py runs all four in every episode.",
+      "nos": [
+        {
+          "icone": "lista",
+          "titulo": "Seeds",
+          "sub": "fixed",
+          "detalhe": "Episode i uses seed i: same random command (vx between 0.3 and 1.0 m/s), same push direction. Two policies on the same test face exactly the same 20 episodes.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "--episodios 20"
+            }
+          ]
+        },
+        {
+          "icone": "alvo",
+          "titulo": "Tracking",
+          "sub": "error",
+          "detalhe": "Average difference between the requested and the measured speed, only for runs that didn't fall. It measures whether the policy does what the command says.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "m/s"
+            }
+          ]
+        },
+        {
+          "icone": "seta",
+          "titulo": "Turning",
+          "sub": "turn",
+          "detalhe": "With --giro, the command includes rotation. The ready-made policy's deploy.yaml declares a turn rate from −0.2 to 0.2 rad/s; in unitree_rl_lab's training code the curriculum only opens up linear velocity, and the turn rate stays at ±0.1 rad/s. 0.2 is already outside the trained range.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "--giro 0.2"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Push",
+          "sub": "at 4 s",
+          "forte": true,
+          "detalhe": "At 4 s, the base suddenly gets a horizontal velocity of N m/s, in a randomly drawn direction. unitree_rl_lab trains with pushes of up to ±0.5 m/s in x and y every 5 s; testing above that measures the margin.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "--empurrao 1.0"
+            }
+          ]
+        }
+      ],
+      "legenda": "The test is written before the result: number of episodes, command range, strength, and pass criterion (e.g., 18/20)."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "The ready-made policy in the test",
+      "sub": "20 episodes of 10 s, push of 1.0 m/s. Exits 0 when all survive.",
+      "blocos": [
+        {
+          "rot": "Terminal · evaluate with a push",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/avaliar.py --episodios 20 --empurrao 1.0; echo \"saída: $?\""
+        },
+        {
+          "rot": "Terminal · stronger pushes",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nfor e in 1.5 2.0; do python3 kit/avaliar.py --episodios 20 --empurrao $e | tail -1; done"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrão de 1.0 m/s aos 4 s\nerro médio de velocidade (quem não caiu): 0.05 m/s\nsobreviveu: 20/20\nsaída: 0</pre><p>20 out of 20 stayed up with a 1.0 m/s push, above the training (up to 0.5 m/s per axis, about 0.71 m/s on the diagonal), with an average velocity error of 0.05 m/s.</p>"
+          },
+          {
+            "rot": "1.5 and 2.0 m/s",
+            "html": "<pre>sobreviveu: 16/20\nsobreviveu: 9/20</pre><p>At 1.5 m/s, 16 out of 20; at 2.0 m/s, 9 out of 20. The margin runs out between 1.0 and 1.5 m/s. This kind of curve, not a single number, tells you how much the policy can take.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Your checkpoint in the same test",
+      "sub": "avaliar.py accepts a .pt trained by the kit in place of the ready-made policy. Same seeds.",
+      "blocos": [
+        {
+          "rot": "Terminal · your policy",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/avaliar.py --politica $F/treino/ppo/modelo_20.pt --episodios 5 | tail -2"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>quedas: ep 0 em 1.3 s, ep 1 em 1.4 s, ep 2 em 1.4 s, ep 3 em 1.4 s, ep 4 em 1.3 s\nsobreviveu: 0/5</pre><p>0 out of 5, all falls before 1.5 s, even without a push. That is expected for 20 iterations: the test confirms what the curves already said. The value matters less than the habit: every policy, ready-made or yours, goes through the same test.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "passos",
+      "titulo": "How far simulation evaluation goes",
+      "sub": "What this test proves and what is left for course 2.",
+      "passos": [
+        {
+          "titulo": "Proves",
+          "sub": "in this engine",
+          "texto": [
+            "That the policy tracks the command and withstands pushes in MuJoCo, with the Menagerie G1. The ready-made policy was trained in Isaac Lab: passing here is already a first sign of robustness."
+          ]
+        },
+        {
+          "titulo": "Does not prove",
+          "sub": "the robot",
+          "texto": [
+            "That it walks on the robot. Different delay, actuator, friction, and mass are the subject of course 2, which measures this gap and runs the policy through a sim2sim gate with DDS before it touches the floor."
+          ]
+        },
+        {
+          "titulo": "Concept",
+          "sub": "reality gap",
+          "texto": [
+            "The concept of evaluating in simulation and of the reality gap, for manipulation policies, is in vla-v72, lesson 6."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Practice",
+      "sub": "Write the criterion before seeing the number.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Test with a push",
+          "min": "5 min",
+          "texto": "Write your pass criterion (e.g., 18/20) and only then run the evaluation with a push of 1.0 m/s.",
+          "pronto": "<code>python3 kit/avaliar.py --episodios 20 --empurrao 1.0; echo \"saída: $?\"</code> → <code>sobreviveu: 20/20</code> and <code>saída: 0</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · The margin",
+          "min": "5 min",
+          "texto": "Run 1.5 and 2.0 m/s and write down between which strengths the policy's margin runs out.",
+          "pronto": "the two lines show <code>sobreviveu: 16/20</code> and <code>sobreviveu: 9/20</code>; you wrote \"between 1.0 and 1.5 m/s\"."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · Walking in a curve",
+          "min": "5 min",
+          "texto": "Run the same test with <code>--giro 0.2</code> and compare the velocity error with the straight-line one.",
+          "pronto": "<code>python3 kit/avaliar.py --episodios 20 --giro 0.2 --empurrao 1.0</code> → the first line shows <code>giro +0.2 rad/s</code> and the last one <code>sobreviveu: 20/20</code> (on 10/19/2026, error of 0.04 m/s)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Lesson quiz",
+      "sub": "The explanation appears after your answer.",
+      "perguntas": [
+        {
+          "p": "Why are the test seeds fixed?",
+          "opcoes": [
+            "So the compared policies face exactly the same episodes.",
+            "Because MuJoCo does not accept random seeds when it runs several episodes in a row.",
+            "So the test runs faster on CPU.",
+            "So the policy memorizes the test episodes."
+          ],
+          "certa": 0,
+          "explica": "With different seeds, a difference from 16/20 to 18/20 could be just luck. Fixing them makes the comparison fair and repeatable.",
+          "ref": "diagrama",
+          "cert": true
+        },
+        {
+          "p": "20/20 at 1.0 m/s, 16/20 at 1.5, and 9/20 at 2.0. What does this show?",
+          "opcoes": [
+            "That the policy has a factory defect with any push above 1.0 m/s.",
+            "That the margin runs out between 1.0 and 1.5 m/s, above the push used in training.",
+            "That the 1.0 m/s test was too easy and doesn't count.",
+            "That MuJoCo exaggerates pushes compared to Isaac Lab."
+          ],
+          "certa": 1,
+          "explica": "Training used pushes of up to 0.5 m/s per axis (about 0.71 m/s on the diagonal); withstanding 1.0 m/s is margin. The curve of increasing force tells you how far it goes.",
+          "ref": "codigo"
+        },
+        {
+          "p": "The policy passed 20/20 in MuJoCo. What is still missing before the robot?",
+          "opcoes": [
+            "Nothing: two different physics engines already prove the robot.",
+            "Train again in MuJoCo to remove the dependence on Isaac Lab.",
+            "Measure and cover the gap, then pass the sim2sim gate from course 2.",
+            "Raise the push until it reaches 20/20 at 2.0 m/s."
+          ],
+          "certa": 2,
+          "explica": "Evaluating in sim proves the behavior in the simulator. The path to the ground, with the gap measured and a ladder of tests, is course 2.",
+          "ref": "passos"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "In three sentences",
+      "itens": [
+        {
+          "t": "Test",
+          "texto": "Criterion written first, 20 episodes with fixed seeds, tracking and push."
+        },
+        {
+          "t": "Measure",
+          "texto": "The ready-made policy: 20/20 at 1.0 m/s, 16/20 at 1.5, 9/20 at 2.0."
+        },
+        {
+          "t": "Limit",
+          "texto": "Passing in sim is the first step; sim2sim and the gap are in course 2."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Going further",
+      "links": [
+        {
+          "t": "FTH course 2, lesson 6: the sim2sim gate with DDS",
+          "href": "https://inematds.github.io/formacao-fth-sim2real-v72/en/aulas/sim2sim/",
+          "icone": "portao"
+        },
+        {
+          "t": "vla-v72, lesson 6: evaluating in simulation and the reality gap",
+          "href": "https://inematds.github.io/vla-v72/en/aulas/simulacao/",
+          "icone": "seta"
+        },
+        {
+          "t": "unitree_rl_lab: the push_robot training event",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/blob/main/source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py",
+          "icone": "git"
+        }
+      ]
+    }
+  ]
+}

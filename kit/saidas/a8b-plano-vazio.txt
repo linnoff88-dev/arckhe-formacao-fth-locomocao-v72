@@ -1,0 +1,8 @@
+FALTA Robô: não preenchido
+FALTA Comando: não preenchido
+FALTA Recompensa: não preenchido
+FALTA Currículo: não preenchido
+FALTA Avaliação: não preenchido
+campos ok: 0/5
+incompleto
+saída: 1

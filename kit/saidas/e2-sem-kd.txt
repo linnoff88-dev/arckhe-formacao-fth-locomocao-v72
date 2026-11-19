@@ -1,0 +1,2 @@
+ERRO: passe --kp e --kd (ex.: --kp 100 --kd 2) ou --ganhos rl_lab.
+saída: 1

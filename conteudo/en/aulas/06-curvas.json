@@ -1,0 +1,294 @@
+{
+  "slug": "curvas",
+  "num": 6,
+  "menu": "Curves",
+  "titulo": "Reading the training: curves, collapse, and reward hacking",
+  "titulo_curto": "Read the curves",
+  "minutos": 16,
+  "lead": "A reward curve going up does not mean the robot learned to walk. In this lesson you read the log of your own training and of two real 150-iteration trainings, recorded for the course: in one of them the reward goes up because the robot learned to fall sooner. The other shows the fix and the limit of the fix.",
+  "objetivo": "read the log of a training run and recognize collapse and reward hacking.",
+  "competencias": [
+    "read-training-curves",
+    "detect-reward-hacking",
+    "adjust-reward-from-the-symptom"
+  ],
+  "aprende": [
+    {
+      "icone": "grafico",
+      "t": "Reward, episode length, and speed: the three numbers read together"
+    },
+    {
+      "icone": "x",
+      "t": "Reward hacking: it went from −4.31 to −1.12 while the episode dropped from 55 to 15 steps"
+    },
+    {
+      "icone": "check",
+      "t": "The fix with is_alive and its limit: 0.16 m/s"
+    },
+    {
+      "icone": "fila",
+      "t": "The train → read → adjust → train again cycle"
+    }
+  ],
+  "hero_alt": "A monitor on a dark bench with a blurred line chart going up, and a humanoid robot standing upright, held by a gantry, in the background.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "The signals curvas.py looks for",
+      "sub": "Click each block. Each alert compares the first and the last quarter of the training.",
+      "nos": [
+        {
+          "icone": "grafico",
+          "titulo": "Reward",
+          "sub": "average",
+          "detalhe": "Reward summed per episode, averaged over the episodes of each iteration. On its own it misleads: it goes up when the robot learns, but also when it finds a shortcut.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "recompensa_media"
+            }
+          ]
+        },
+        {
+          "icone": "relogio",
+          "titulo": "Episode",
+          "sub": "length",
+          "detalhe": "How many steps the robot stays upright, on average. Shorter episode = falling sooner. If the reward goes up and the episode gets shorter, alert.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "episodio_medio"
+            }
+          ]
+        },
+        {
+          "icone": "robo",
+          "titulo": "Speed",
+          "sub": "forward",
+          "detalhe": "The average vx at the end. A reward going up with the robot almost stopped (below 0.1 m/s) also becomes an alert.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "vx_media"
+            }
+          ]
+        },
+        {
+          "icone": "lupa",
+          "titulo": "Terms",
+          "sub": "who pays",
+          "forte": true,
+          "detalhe": "The progresso.csv stores each term per iteration. The term that pays the most at the end tells you what the policy actually optimized.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "one column per term"
+            }
+          ]
+        }
+      ],
+      "legenda": "Walking on its knees, shaking, and standing still are the classic shortcuts. All of them show up when you read these four numbers together, never the reward alone."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "The curves of your training",
+      "sub": "The progresso.csv from lesson 5.",
+      "blocos": [
+        {
+          "rot": "Terminal · read your training",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/curvas.py $F/treino/ppo; echo \"saída: $?\""
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>treino: ppo · 20 iterações (médias do primeiro e do último quarto)\nrecompensa inicial: -3.64 · final: -4.75\nepisódio médio: 46 → 58 passos (de 1000)\nvelocidade para a frente no fim: 0.14 m/s · termo que mais pagou no fim: pose (1.00)\nalertas: 0\nsaída: 0</pre><p>In 20 iterations the reward still oscillates and the term that pays the most is pose: the policy has barely left the default pose. No alerts, but nothing to learn from either. That is why the kit includes two larger training runs. Careful: curvas.py exits 0 even with an alert; read the <code>alertas:</code> line, not the exit code.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Two real 150-iteration trainings",
+      "sub": "Generated with the same kit/treinar.py, 32 environments, seed 0. cai-cedo uses kit/recompensa.yaml (8 min); com-vivo adds the is_alive term with weight 5 (10 min). Only the progresso.csv is in the repository.",
+      "blocos": [
+        {
+          "rot": "Excerpt · kit/recompensa-viva.yaml",
+          "icone": "arquivo",
+          "conteudo": "is_alive: {weight: 5.0}                            # 5 × 0,02 s = +0,1 por passo de pé: ficar vivo passa a valer mais que a punição"
+        },
+        {
+          "rot": "Terminal · the two examples",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nfor x in cai-cedo com-vivo; do python3 kit/curvas.py kit/exemplos/$x; echo; done"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Captured output (Oct 19, 2026)",
+            "html": "<pre>treino: cai-cedo · 150 iterações (médias do primeiro e do último quarto)\nrecompensa inicial: -4.31 · final: -1.12\nepisódio médio: 55 → 15 passos (de 1000)\nvelocidade para a frente no fim: 0.15 m/s · termo que mais pagou no fim: upright (0.23)\nALERTA: recompensa hackeada: a recompensa subiu porque o episódio encurtou; cada passo de pé custa mais do que paga, e cair cedo virou a melhor estratégia\nalertas: 1\n\ntreino: com-vivo · 150 iterações (médias do primeiro e do último quarto)\nrecompensa inicial: 1.36 · final: 2.32\nepisódio médio: 57 → 63 passos (de 1000)\nvelocidade para a frente no fim: 0.16 m/s · termo que mais pagou no fim: is_alive (6.27)\nalertas: 0</pre><p>cai-cedo: the reward rose from −4.31 to −1.12 while the episode dropped from 55 to 15 steps. Since every step spent standing had a negative balance (the penalty for abrupt actions outweighed the rewards), falling early became the best strategy.</p><p>com-vivo: with is_alive weight 5 (+0.1 per step standing, 5 per second), the episode starts to grow (57 → 63) and no alert fires. But the term that pays the most is is_alive and the speed is 0.16 m/s: the training learned not to fall, not yet to walk.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "simfila",
+      "titulo": "The tuning cycle",
+      "sub": "Run it, watch the curve reading stop the training, and run it again. This is the loop of this lesson.",
+      "tarefas": [
+        "Train with recompensa.yaml",
+        "Read the curves",
+        "Tune the reward",
+        "Train again",
+        "Evaluate (lesson 7)"
+      ],
+      "falha": 1,
+      "rot": {
+        "entrada": "to do",
+        "rodando": "running",
+        "feito": "done",
+        "falhou": "alert",
+        "rodar": "Run the cycle",
+        "parar": "Stop",
+        "zerar": "Start over"
+      },
+      "msg": {
+        "inicio": "5 steps. Click \"Run the cycle\".",
+        "rodando": "One step at a time: it only trains again after you read and tune.",
+        "parou": "Stopped. Run it again: the interrupted step starts over, the earlier ones still count.",
+        "retoma": "Resumed: what was already done is not repeated.",
+        "fim": "Cycle complete: the tuned training moves on to evaluation.",
+        "fimfalha": "The curves flagged reward hacking (episode getting shorter while the reward goes up). Tune one term and train again."
+      },
+      "legenda": "Illustrative simulation in the browser. The alert in the curve reading is on purpose: it is the cai-cedo case."
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Practice",
+      "sub": "Read before you believe.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Your training",
+          "min": "3 min",
+          "texto": "Run curvas.py on the lesson 5 training and write down the term that paid the most at the end.",
+          "pronto": "<code>python3 kit/curvas.py $F/treino/ppo; echo \"saída: $?\"</code> → <code>treino: ppo · 20 iterações</code> and <code>saída: 0</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · The shortcut",
+          "min": "5 min",
+          "texto": "Run both examples and write, in one sentence, why the reward in cai-cedo went up.",
+          "pronto": "the cai-cedo output shows <code>ALERTA: recompensa hackeada</code> and <code>alertas: 1</code>; your sentence mentions the episode getting shorter (55 → 15 steps)."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · The next tweak",
+          "min": "10 min",
+          "texto": "The com-vivo doesn't fall, but it walks at 0.16 m/s. Propose a tweak to one term (which one, old weight, new weight) and say what signal you would expect to see in the curves if it works.",
+          "pronto": "you wrote one term from kit/recompensa.yaml with both weights and a measurable signal (e.g., final speed above 0.3 m/s without the episode getting shorter)."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Lesson quiz",
+      "sub": "The explanation appears after your answer.",
+      "perguntas": [
+        {
+          "p": "In cai-cedo, the reward went up and the episode dropped from 55 to 15 steps. What did the policy learn?",
+          "opcoes": [
+            "To walk faster, finishing the course ahead of time.",
+            "To stand still, without spending energy on the gait.",
+            "To fall early, because every step spent standing gave a negative balance.",
+            "Nothing: it's noise from a single bad iteration."
+          ],
+          "certa": 2,
+          "explica": "With a negative balance on every step spent standing, fewer steps = less penalty. curvas.py compares whole quarters of the training run precisely so it does not mistake this for noise.",
+          "ref": "codigo",
+          "cert": true
+        },
+        {
+          "p": "The com-vivo triggers no alert. Why is it still not a good training run?",
+          "opcoes": [
+            "Because is_alive is forbidden in humanoid RL repositories.",
+            "Because 150 iterations are always enough to walk, and it should already be walking at 0.7 m/s.",
+            "Because the reward became positive, which indicates an error in the log.",
+            "What pays the most is staying alive and the speed is 0.16 m/s: it doesn't fall, but it doesn't walk."
+          ],
+          "certa": 3,
+          "explica": "No alert is not the same as correct. A large is_alive removes the shortcut of falling, but it can create the shortcut of standing still; unitree_rl_lab uses only 0.15.",
+          "ref": "codigo"
+        },
+        {
+          "p": "Which reading detects \"reward hacking\" most reliably?",
+          "opcoes": [
+            "Reward, episode length, and speed read together.",
+            "The average reward of the last training iteration.",
+            "The highest value the reward reached in any training iteration.",
+            "The total training time compared with what was planned."
+          ],
+          "certa": 0,
+          "explica": "A single number always has a shortcut that fools it. Three signals and the dominant term together close the most common doors.",
+          "ref": "diagrama"
+        },
+        {
+          "p": "Why does the kit keep two example training runs instead of asking you to run 150 iterations?",
+          "opcoes": [
+            "Because kit/treinar.py does not accept more than 20 iterations.",
+            "Because they take 8 to 10 min on CPU, and reading them is what the lesson teaches.",
+            "Because the result changes on every run, so you couldn't compare.",
+            "Because the examples were trained on the GPU and can't be repeated on CPU."
+          ],
+          "certa": 1,
+          "explica": "You can repeat them (the commands are in kit/exemplos/LEIA.md). But the skill in this lesson is reading; the training time is optional.",
+          "ref": "codigo"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "In three sentences",
+      "itens": [
+        {
+          "t": "Reading",
+          "texto": "Reward, episode length, speed and dominant term, always together."
+        },
+        {
+          "t": "Shortcut",
+          "texto": "In cai-cedo, the reward went up because the robot learned to fall sooner."
+        },
+        {
+          "t": "Cycle",
+          "texto": "Train, read, adjust one term and train again; with no alert it still isn't walking."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Going further",
+      "links": [
+        {
+          "t": "The two example training runs (progresso.csv and LEIA.md)",
+          "href": "https://github.com/inematds/formacao-fth-locomocao-v72/tree/main/kit/exemplos",
+          "icone": "git"
+        },
+        {
+          "t": "mjlab: reward terms for the velocity task",
+          "href": "https://github.com/mujocolab/mjlab/blob/main/src/mjlab/tasks/velocity/velocity_env_cfg.py",
+          "icone": "git"
+        },
+        {
+          "t": "unitree_rl_lab: the alive term (weight 0.15)",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/blob/main/source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py",
+          "icone": "git"
+        }
+      ]
+    }
+  ]
+}

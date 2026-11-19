@@ -1,0 +1,13 @@
+treino: cai-cedo · 150 iterações (médias do primeiro e do último quarto)
+recompensa inicial: -4.31 · final: -1.12
+episódio médio: 55 → 15 passos (de 1000)
+velocidade para a frente no fim: 0.15 m/s · termo que mais pagou no fim: upright (0.23)
+ALERTA: recompensa hackeada: a recompensa subiu porque o episódio encurtou; cada passo de pé custa mais do que paga, e cair cedo virou a melhor estratégia
+alertas: 1
+
+treino: com-vivo · 150 iterações (médias do primeiro e do último quarto)
+recompensa inicial: 1.36 · final: 2.32
+episódio médio: 57 → 63 passos (de 1000)
+velocidade para a frente no fim: 0.16 m/s · termo que mais pagou no fim: is_alive (6.27)
+alertas: 0
+

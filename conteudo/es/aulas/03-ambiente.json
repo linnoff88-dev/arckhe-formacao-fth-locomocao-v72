@@ -1,0 +1,291 @@
+{
+  "slug": "ambiente",
+  "num": 3,
+  "menu": "El entorno",
+  "titulo": "Observación, acción, recompensa y fin de episodio",
+  "titulo_curto": "El entorno",
+  "minutos": 16,
+  "lead": "Antes de entrenar, el problema tiene que convertirse en un entorno: qué ve la policy, qué envía, cuánto gana y cuándo termina el episodio. En esta clase lees las cuatro partes en el formato \"manager-based\" de Isaac Lab y mjlab, en una versión mínima en MuJoCo puro, y ejecutas un episodio con tres policies distintas.",
+  "objetivo": "leer las partes de un entorno de locomoción y ejecutar un episodio con tres acciones diferentes.",
+  "competencias": [
+    "ler-ambiente-manager-based",
+    "dimensionar-observacao-e-acao",
+    "explicar-terminacoes"
+  ],
+  "aprende": [
+    {
+      "icone": "camadas",
+      "t": "Entorno \"manager-based\": términos con nombre, no un step() opaco"
+    },
+    {
+      "icone": "lista",
+      "t": "Observación de 96 números (480 con historial de 5) y acción de 29"
+    },
+    {
+      "icone": "x",
+      "t": "Fin de episodio: caída o tiempo"
+    },
+    {
+      "icone": "grafico",
+      "t": "La acción aleatoria cae en 1,3 s; la lista llega a los 20 s"
+    }
+  ],
+  "hero_alt": "Notebook abierto sobre un escritorio oscuro mostrando un robot humanoide en simulación 3D, desenfocado, con un cuaderno y una taza al lado.",
+  "secoes": [
+    {
+      "tipo": "diagrama",
+      "titulo": "Las piezas de un entorno de locomoción",
+      "sub": "Haz clic en cada bloque. En Isaac Lab y mjlab, cada uno es una lista de términos con nombre y peso.",
+      "nos": [
+        {
+          "icone": "alvo",
+          "titulo": "Comando",
+          "sub": "vx, vy, giro",
+          "detalhe": "Cada episodio sortea lo que el robot debe hacer: velocidad hacia adelante, hacia el lado y de giro. En el kit, vx de −0,5 a 1,0 m/s, vy de −0,3 a 0,3 m/s y giro de −0,2 a 0,2 rad/s, los rangos de unitree_rl_lab.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "velocity_commands"
+            }
+          ]
+        },
+        {
+          "icone": "lupa",
+          "titulo": "Observación",
+          "sub": "lo que ve",
+          "detalhe": "Seis términos: velocidad angular de la base, gravedad proyectada en el cuerpo, comando, posición y velocidad de las articulaciones (relativas a la pose por defecto) y la última acción. 3 + 3 + 3 + 29 + 29 + 29 = 96. La policy lista apila 5 instantes: 480.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "96 × historial"
+            }
+          ]
+        },
+        {
+          "icone": "robo",
+          "titulo": "Acción",
+          "sub": "29 números",
+          "forte": true,
+          "detalhe": "Un número por articulación. El objetivo de cada articulación es la pose por defecto + 0,25 × acción, cada 20 ms; el PD de la clase 2 hace el resto. Acción cero = quedarse en la pose por defecto.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "escala 0,25"
+            }
+          ]
+        },
+        {
+          "icone": "grafico",
+          "titulo": "Recompensa",
+          "sub": "términos",
+          "detalhe": "Una suma de términos con peso: seguir la velocidad, mantenerse erguido, cerca de la pose, sin golpear los límites, sin temblar, sin resbalar. Tema de la clase 4.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "7 términos en el kit"
+            }
+          ]
+        },
+        {
+          "icone": "x",
+          "titulo": "Término",
+          "sub": "caída, tiempo",
+          "detalhe": "El episodio termina por caída (en el kit: pelvis inclinada más de 70° o por debajo de 0,3 m; mjlab usa el mismo ángulo, fell_over) o por tiempo (20 s = 1.000 pasos). La caída es un fin \"de verdad\"; el tiempo es solo un corte.",
+          "itens": [
+            {
+              "icone": "lista",
+              "t": "fell_over, time_out"
+            }
+          ]
+        }
+      ],
+      "legenda": "mjlab e Isaac Lab tienen además eventos (empujón, randomización) y currículo, que entran en las clases 7 y 8."
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Un episodio con acción aleatoria",
+      "sub": "checar_ambiente.py imprime las cuatro partes y corre un episodio. La acción aleatoria es lo que hace una policy recién creada, antes de cualquier entrenamiento.",
+      "blocos": [
+        {
+          "rot": "Terminal · las cuatro partes",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/checar_ambiente.py --acao aleatoria; echo \"saída: $?\""
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Salida capturada (19/10/2026)",
+            "html": "<pre>observação: 96 números = (base_ang_vel 3 + projected_gravity 3 + velocity_commands 3 + joint_pos_rel 29 + joint_vel_rel 29 + last_action 29) × histórico 1\nação: 29 números → alvo de cada junta = pose padrão + 0.25 × ação, a cada 20 ms\nrecompensa: track_linear_velocity (+2), track_angular_velocity (+2), upright (+1), pose (+1), dof_pos_limits (-1), action_rate_l2 (-0.1), foot_slip (-0.1)\nterminações: queda (pelve inclinada &gt; 70° ou abaixo de 0.3 m) · tempo (1000 passos = 20 s)\ncomando sorteado: vx = -0.48 m/s · vy = +0.19 m/s · giro = +0.17 rad/s\nação aleatoria: 67 passos · recompensa somada: -5.44\nepisódio terminou por: queda em t = 1.34 s\nsaída: 0</pre><p>96 números de observación, 29 de acción, 7 términos de reward y dos terminaciones. Con acción aleatoria, caída en 1,34 s y reward negativo: los castigos (límites, temblor) pesaron más que los premios.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "codigo",
+      "titulo": "Acción cero y acción lista",
+      "sub": "Misma semilla, mismo comando sorteado. Solo cambia quién decide la acción.",
+      "blocos": [
+        {
+          "rot": "Terminal · cero × lista",
+          "icone": "terminal",
+          "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\nfor x in zero pronta; do python3 kit/checar_ambiente.py --acao $x | tail -2; done"
+        }
+      ],
+      "saida": {
+        "selo": "real",
+        "abas": [
+          {
+            "rot": "Salida capturada (19/10/2026)",
+            "html": "<pre>ação zero: 70 passos · recompensa somada: 3.78\nepisódio terminou por: queda em t = 1.40 s\nação pronta: 1000 passos · recompensa somada: 108.61\nepisódio terminou por: tempo em t = 20.00 s</pre><p>La acción cero también cae (1,40 s), pero con reward positivo: se mantuvo un poco erguido y cerca de la pose por defecto antes de caer. La policy lista llega al corte de tiempo (1.000 pasos) con 108,61 de reward. El episodio que termina por <code>tempo</code> es el que el entrenamiento quiere.</p>"
+          }
+        ]
+      }
+    },
+    {
+      "tipo": "passos",
+      "titulo": "El mismo entorno en mjlab (mostrado)",
+      "sub": "Cómo aparecen las piezas en el archivo de configuración de la tarea de velocidad de mjlab (commit 8bb2bc9, 18/10/2026). No se ejecuta aquí: requiere GPU NVIDIA.",
+      "passos": [
+        {
+          "titulo": "Clases",
+          "sub": "una por pieza",
+          "texto": [
+            "En <code>velocity_env_cfg.py</code>, las observaciones, acciones, comandos, rewards, terminaciones, eventos y currículo son diccionarios de términos (<code>ObservationTermCfg</code>, <code>RewardTermCfg</code>, <code>TerminationTermCfg</code>…), cada uno con nombre, función y parámetros."
+          ]
+        },
+        {
+          "titulo": "Término",
+          "sub": "fell_over",
+          "texto": [
+            "<code>time_out</code> y <code>fell_over</code> con <code>limit_angle</code> de 70°; episodio de 20 s. El kit copia esos valores."
+          ]
+        },
+        {
+          "titulo": "Por robot",
+          "sub": "sobrescribe",
+          "texto": [
+            "La tarea base es genérica; la carpeta <code>config/g1</code> sobrescribe lo que es del G1 (escala de la acción, pesos). En unitree_rl_lab, el equivalente está en <code>tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py</code>, con 4.096 entornos."
+          ]
+        }
+      ]
+    },
+    {
+      "tipo": "pratica",
+      "titulo": "Práctica",
+      "sub": "Saber exactamente qué entra y qué sale de la policy.",
+      "exercicios": [
+        {
+          "id": "e1",
+          "titulo": "E1 · Las cuatro partes",
+          "min": "5 min",
+          "texto": "Corre checar_ambiente.py con acción aleatoria y comprueba la cuenta 3 + 3 + 3 + 29 + 29 + 29.",
+          "pronto": "<code>python3 kit/checar_ambiente.py --acao aleatoria; echo \"saída: $?\"</code> → <code>observação: 96 números</code> y <code>episódio terminou por: queda em t = 1.34 s</code>."
+        },
+        {
+          "id": "e2",
+          "titulo": "E2 · Quién llega al final",
+          "min": "3 min",
+          "texto": "Corre cero × lista y anota por qué terminó cada episodio.",
+          "pronto": "la salida muestra <code>episódio terminou por: queda em t = 1.40 s</code> (cero) y <code>episódio terminou por: tempo em t = 20.00 s</code> (lista)."
+        },
+        {
+          "id": "e3",
+          "titulo": "E3 · Otra semilla",
+          "min": "5 min",
+          "texto": "Corre con <code>--seed 1</code>, <code>2</code> y <code>3</code> (acción aleatoria) y mira cómo cambia el comando. Escribe por qué la semilla fija importa para comparar dos entrenamientos.",
+          "pronto": "tres líneas <code>comando sorteado:</code> distintas, y la misma semilla repetida da la misma salida."
+        }
+      ]
+    },
+    {
+      "tipo": "quiz",
+      "titulo": "Prueba de la clase",
+      "sub": "La explicación aparece después de tu respuesta.",
+      "perguntas": [
+        {
+          "p": "¿Por qué la policy lista recibe 480 números y no 96?",
+          "opcoes": [
+            "Apila 5 instantes de la observación de 96.",
+            "También recibe la imagen de una cámara de baja resolución.",
+            "El G1 de unitree_rl_lab tiene más articulaciones que el de Menagerie.",
+            "Las 96 observaciones se repiten para cada pierna y cada brazo."
+          ],
+          "certa": 0,
+          "explica": "Historial de 5 pasos × 96 = 480. El historial le da a la policy una noción de tendencia (velocidad, aceleración) sin memoria interna.",
+          "ref": "diagrama",
+          "cert": true
+        },
+        {
+          "p": "La acción cero cae en 1,40 s, pero el reward sumado es positivo. ¿Por qué?",
+          "opcoes": [
+            "La caída da un premio fijo de fin de episodio en el kit.",
+            "El reward solo se calcula después de que el episodio termina.",
+            "Antes de caer, el robot estuvo erguido y cerca de la pose por defecto, y esos términos pagan.",
+            "El comando sorteado era cero, así que cualquier acción enviada por la policy estaba bien."
+          ],
+          "certa": 2,
+          "explica": "El reward se suma paso a paso. En 70 pasos de pie, upright y pose pagan más que los castigos. Por eso la duración del episodio entra en la lectura de las curvas (clase 6).",
+          "ref": "codigo"
+        },
+        {
+          "p": "¿Cuál es la diferencia entre terminar por \"queda\" y por \"tempo\"?",
+          "opcoes": [
+            "Ninguna: las dos ponen en cero la recompensa del episodio completo.",
+            "La caída es un final real de lo que hizo el robot; el tiempo es solo el corte del episodio a los 20 s.",
+            "El tiempo solo ocurre cuando la política se queda sin comando de velocidad durante el episodio.",
+            "La caída se mide en la pelvis y el tiempo se mide en los pies del robot."
+          ],
+          "certa": 1,
+          "explica": "En mjlab y en Isaac Lab, el corte por tiempo se marca como time_out, para que el algoritmo no lo trate como si el robot hubiera fallado.",
+          "ref": "diagrama"
+        }
+      ]
+    },
+    {
+      "tipo": "resumo",
+      "titulo": "En tres frases",
+      "itens": [
+        {
+          "t": "Piezas",
+          "texto": "Comando, observación, acción, recompensa y término, cada uno como una lista de términos con nombre."
+        },
+        {
+          "t": "Tamaños",
+          "texto": "96 números de observación (480 con historial) y 29 de acción, objetivo = pose por defecto + 0,25 × acción."
+        },
+        {
+          "t": "Medida",
+          "texto": "La aleatoria cae a los 1,34 s; la ya entrenada llega a los 20 s con 108,61."
+        }
+      ]
+    },
+    {
+      "tipo": "links",
+      "titulo": "Para ir más allá",
+      "links": [
+        {
+          "t": "mjlab: la tarea de velocidad (velocity_env_cfg.py)",
+          "href": "https://github.com/mujocolab/mjlab/blob/main/src/mjlab/tasks/velocity/velocity_env_cfg.py",
+          "icone": "git"
+        },
+        {
+          "t": "mjlab (arXiv 2601.22074)",
+          "href": "https://arxiv.org/abs/2601.22074",
+          "icone": "arquivo"
+        },
+        {
+          "t": "unitree_rl_lab: entorno de velocidad del G1 29 GDL",
+          "href": "https://github.com/unitreerobotics/unitree_rl_lab/blob/main/source/unitree_rl_lab/unitree_rl_lab/tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py",
+          "icone": "git"
+        },
+        {
+          "t": "Curso 0 de la FTH: sensores (IMU, gravedad en el cuerpo)",
+          "href": "https://inematds.github.io/formacao-fth-anatomia-v72/es/aulas/sensores/",
+          "icone": "robo"
+        }
+      ]
+    }
+  ]
+}
