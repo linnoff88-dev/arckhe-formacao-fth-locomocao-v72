@@ -1,21 +1,21 @@
 {
   "id": "formacao-fth-locomocao-v72",
   "lang": "en",
-  "url": "https://inematds.github.io/formacao-fth-locomocao-v72/en/",
+  "url": "https://linnoff88-dev.github.io/
   "nome": "FTH 1 · Teaching it to walk",
   "sub": "Locomotion by RL in simulation",
   "volta": {
-    "t": "INEMA.CLUB",
-    "href": "https://inema.club/"
+    "t": "ARCKHÉ AI",
+    "href": "https://ARCKHÉ AI/"
   },
   "lado_card": {
     "rot": "The practice stack",
     "t": "MuJoCo 3.16 + G1 29 DoF, on CPU",
     "texto": "The G1 from MuJoCo Menagerie (62ab00f), the open gait policy from unitree_rl_lab (4960b84), and a ~120-line PPO with the values from mjlab. Tested on 10/19/2026, no GPU.",
     "link": "Open the kit on GitHub",
-    "href": "https://github.com/inematds/formacao-fth-locomocao-v72"
+    "href": "https://github.com/linnoff88-dev/formacao-fth-locomocao-v72"
   },
-  "rodape": "INEMA.CLUB · open and free content · INEMA Learning v7.2 format · FTH — Humanoid Technology Training, course 1 of 5 · <a href=\"https://inema.club/\">inema.club</a> · <a href=\"https://github.com/inematds/formacao-fth-locomocao-v72\">course kit on GitHub</a>",
+  "rodape": "ARCKHÉ AI · open and free content · ARCKHÉ Learning v7.2 format · FTH — Humanoid Technology Training, course 1 of 5 · <a href=\"https://ARCKHÉ AI/\">ARCKHÉ AI</a> · <a href=\"https://github.com/linnoff88-dev/formacao-fth-locomocao-v72\">course kit on GitHub</a>",
   "videos": {},
   "inicio": {
     "kicker": "FTH — Humanoid Technology Training · course 1 of 5 · 8 lessons",
@@ -24,7 +24,7 @@
     "cta": "Start with lesson 1",
     "cta2": {
       "t": "See the kit on GitHub",
-      "href": "https://github.com/inematds/formacao-fth-locomocao-v72"
+      "href": "https://github.com/linnoff88-dev/formacao-fth-locomocao-v72"
     },
     "capa_alt": "Graphite-gray industrial humanoid robot with a black visor, mid-step in a dark lab, attached to a steel gantry, with the title Teaching it to walk.",
     "numeros": [

@@ -1,21 +1,21 @@
 {
   "id": "formacao-fth-locomocao-v72",
   "lang": "es",
-  "url": "https://inematds.github.io/formacao-fth-locomocao-v72/es/",
+  "url": "https://linnoff88-dev.github.io/
   "nome": "FTH 1 · Enseñar a caminar",
   "sub": "Locomoción por RL en simulación",
   "volta": {
-    "t": "INEMA.CLUB",
-    "href": "https://inema.club/"
+    "t": "ARCKHÉ AI",
+    "href": "https://ARCKHÉ AI/"
   },
   "lado_card": {
     "rot": "La pila de las prácticas",
     "t": "MuJoCo 3.16 + G1 29 GDL, en CPU",
     "texto": "El G1 de MuJoCo Menagerie (62ab00f), la política de marcha abierta de unitree_rl_lab (4960b84) y un PPO de ~120 líneas con los valores de mjlab. Probado el 19/10/2026, sin GPU.",
     "link": "Abrir el kit en GitHub",
-    "href": "https://github.com/inematds/formacao-fth-locomocao-v72"
+    "href": "https://github.com/linnoff88-dev/formacao-fth-locomocao-v72"
   },
-  "rodape": "INEMA.CLUB · contenido abierto y gratuito · formato INEMA Learning v7.2 · FTH — Formación Tecnológica en Humanoides, curso 1 de 5 · <a href=\"https://inema.club/\">inema.club</a> · <a href=\"https://github.com/inematds/formacao-fth-locomocao-v72\">kit del curso en GitHub</a>",
+  "rodape": "ARCKHÉ AI · contenido abierto y gratuito · formato ARCKHÉ Learning v7.2 · FTH — Formación Tecnológica en Humanoides, curso 1 de 5 · <a href=\"https://ARCKHÉ AI/\">ARCKHÉ AI</a> · <a href=\"https://github.com/linnoff88-dev/formacao-fth-locomocao-v72\">kit del curso en GitHub</a>",
   "videos": {},
   "inicio": {
     "kicker": "FTH — Formación Tecnológica en Humanoides · curso 1 de 5 · 8 clases",
@@ -24,7 +24,7 @@
     "cta": "Empezar por la clase 1",
     "cta2": {
       "t": "Ver el kit en GitHub",
-      "href": "https://github.com/inematds/formacao-fth-locomocao-v72"
+      "href": "https://github.com/linnoff88-dev/formacao-fth-locomocao-v72"
     },
     "capa_alt": "Robot humanoide industrial gris grafito, con visor negro, en pleno paso en un laboratorio oscuro, sujeto a un pórtico de acero, con el título Enseñar a caminar.",
     "numeros": [

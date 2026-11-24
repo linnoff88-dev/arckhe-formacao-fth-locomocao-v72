@@ -1,21 +1,21 @@
 {
   "id": "formacao-fth-locomocao-v72",
   "lang": "pt-BR",
-  "url": "https://inematds.github.io/formacao-fth-locomocao-v72/",
+  "url": "https://linnoff88-dev.github.io/
   "nome": "FTH 1 · Ensinar a andar",
   "sub": "Locomoção por RL em simulação",
   "volta": {
-    "t": "INEMA.CLUB",
-    "href": "https://inema.club/"
+    "t": "ARCKHÉ AI",
+    "href": "https://ARCKHÉ AI/"
   },
   "lado_card": {
     "rot": "A pilha das práticas",
     "t": "MuJoCo 3.16 + G1 29 GDL, em CPU",
     "texto": "O G1 do MuJoCo Menagerie (62ab00f), a política de marcha aberta do unitree_rl_lab (4960b84) e um PPO de ~120 linhas com os valores do mjlab. Testado em 19/10/2026, sem GPU.",
     "link": "Abrir o kit no GitHub",
-    "href": "https://github.com/inematds/formacao-fth-locomocao-v72"
+    "href": "https://github.com/linnoff88-dev/formacao-fth-locomocao-v72"
   },
-  "rodape": "INEMA.CLUB · conteúdo aberto e gratuito · formato INEMA Learning v7.2 · FTH — Formação Tecnológica em Humanoides, curso 1 de 5 · <a href=\"https://inema.club/\">inema.club</a> · <a href=\"https://github.com/inematds/formacao-fth-locomocao-v72\">kit do curso no GitHub</a>",
+  "rodape": "ARCKHÉ AI · conteúdo aberto e gratuito · formato ARCKHÉ Learning v7.2 · FTH — Formação Tecnológica em Humanoides, curso 1 de 5 · <a href=\"https://ARCKHÉ AI/\">ARCKHÉ AI</a> · <a href=\"https://github.com/linnoff88-dev/formacao-fth-locomocao-v72\">kit do curso no GitHub</a>",
   "videos": {},
   "inicio": {
     "kicker": "FTH — Formação Tecnológica em Humanoides · curso 1 de 5 · 8 aulas",
@@ -24,7 +24,7 @@
     "cta": "Começar pela aula 1",
     "cta2": {
       "t": "Ver o kit no GitHub",
-      "href": "https://github.com/inematds/formacao-fth-locomocao-v72"
+      "href": "https://github.com/linnoff88-dev/formacao-fth-locomocao-v72"
     },
     "capa_alt": "Robô humanoide industrial cinza-grafite, com visor preto, no meio de um passo num laboratório escuro, preso a um pórtico de aço, com o título Ensinar a andar.",
     "numeros": [

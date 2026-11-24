@@ -48,8 +48,8 @@ Exercícios conferidos à mão fora da captura (19/10/2026): aula 2 E3 (kp 175 c
 `simfila` na aula 6: treinar → ler as curvas (falha proposital: alerta de recompensa hackeada) → ajustar a recompensa → treinar de novo → avaliar.
 
 ## Links fixos
-- Curso anterior: https://inematds.github.io/formacao-fth-anatomia-v72/ (publicado).
-- Curso seguinte (aula 8, `links`): https://inematds.github.io/formacao-fth-sim2real-v72/ (publicado).
+- Curso anterior: https://linnoff88-dev.github.io/ (publicado).
+- Curso seguinte (aula 8, `links`): https://linnoff88-dev.github.io/ (publicado).
 - Donos externos: robot (PID), vla-v72 aula 6 (avaliação em sim) e aula 7 (RL depois da imitação).
 
 ## Determinismo
