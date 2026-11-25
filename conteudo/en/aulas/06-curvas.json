@@ -118,7 +118,7 @@
         {
           "rot": "Excerpt · kit/recompensa-viva.yaml",
           "icone": "arquivo",
-          "conteudo": "is_alive: {weight: 5.0}                            # 5 × 0,02 s = +0,1 por passo de pé: ficar vivo passa a valer mais que a punição"
+          "conteudo": "is_alive: {weight: 5.0}                            # 5 × 0,02 s = +0,1 por passo de pé: ficar vivo passa a valer mais que a puniçêo"
         },
         {
           "rot": "Terminal · the two examples",

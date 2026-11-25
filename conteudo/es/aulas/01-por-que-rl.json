@@ -170,7 +170,7 @@
           },
           {
             "rot": "Error común: banco fuera de lugar",
-            "html": "<pre>ERRO: não achei /tmp/sem-bancada/unitree_rl_lab/deploy/robots/g1_29dof/config/policy/velocity/v0/exported/policy.onnx. Rode a preparação da aula 1.\nsaída: 1</pre><p>Los scripts buscan todo en ~/fth, o en la carpeta de la variable <code>FTH</code>. Si la preparación no se ejecutó (o se ejecutó en otra carpeta), el error indica la ruta que faltó.</p>"
+            "html": "<pre>ERRO: nêo achei /tmp/sem-bancada/unitree_rl_lab/deploy/robots/g1_29dof/config/policy/velocity/v0/exported/policy.onnx. Rode a preparaçêo da aula 1.\nsaída: 1</pre><p>Los scripts buscan todo en ~/fth, o en la carpeta de la variable <code>FTH</code>. Si la preparación no se ejecutó (o se ejecutó en otra carpeta), el error indica la ruta que faltó.</p>"
           }
         ]
       }
@@ -201,15 +201,15 @@
         "abas": [
           {
             "rot": "Salida capturada (19/10/2026)",
-            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 480 → 29 · 50 Hz\ncomando: vx = 0.7 m/s por 10 s · simulação a 500 Hz, política a 50 Hz\nandou: 6.6 m para a frente · desvio lateral: 0.5 m · velocidade média: 0.66 m/s\naltura final da pelve: 0.77 m\ncaiu: não\nsaída: 0</pre><p>6,6 m en 10 s (0,66 m/s para 0,70 pedidos) y la pelvis termina a 0,77 m. La desviación lateral de 0,5 m es normal: nadie corrige la dirección, solo la velocidad.</p>"
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 480 → 29 · 50 Hz\ncomando: vx = 0.7 m/s por 10 s · simulaçêo a 500 Hz, política a 50 Hz\nandou: 6.6 m para a frente · desvio lateral: 0.5 m · velocidade média: 0.66 m/s\naltura final da pelve: 0.77 m\ncaiu: nêo\nsaída: 0</pre><p>6,6 m en 10 s (0,66 m/s para 0,70 pedidos) y la pelvis termina a 0,77 m. La desviación lateral de 0,5 m es normal: nadie corrige la dirección, solo la velocidad.</p>"
           },
           {
             "rot": "Sin policy",
-            "html": "<pre>política: nenhuma (só PD na pose padrão)\ncomando: vx = 0.7 m/s por 10 s · simulação a 500 Hz, política a 50 Hz\nandou: 0.8 m para a frente · desvio lateral: 0.0 m · velocidade média: 0.57 m/s\naltura final da pelve: 0.33 m\ncaiu: sim, em t = 1.4 s</pre><p>Caída a los 1,4 s. La \"velocidad media\" de 0,57 m/s aquí es el cuerpo cayendo hacia adelante, no caminar: lee siempre la velocidad junto con <code>caiu</code>.</p>"
+            "html": "<pre>política: nenhuma (só PD na pose padrêo)\ncomando: vx = 0.7 m/s por 10 s · simulaçêo a 500 Hz, política a 50 Hz\nandou: 0.8 m para a frente · desvio lateral: 0.0 m · velocidade média: 0.57 m/s\naltura final da pelve: 0.33 m\ncaiu: sim, em t = 1.4 s</pre><p>Caída a los 1,4 s. La \"velocidad media\" de 0,57 m/s aquí es el cuerpo cayendo hacia adelante, no caminar: lee siempre la velocidad junto con <code>caiu</code>.</p>"
           },
           {
             "rot": "1,0 m/s",
-            "html": "<pre>andou: 9.0 m para a frente · desvio lateral: 1.2 m · velocidade média: 0.90 m/s\naltura final da pelve: 0.76 m\ncaiu: não</pre><p>9,0 m en 10 s. 1,0 m/s es el techo de velocidad hacia adelante con el que se entrenó la policy (rango de comando de unitree_rl_lab: −0,5 a 1,0 m/s).</p>"
+            "html": "<pre>andou: 9.0 m para a frente · desvio lateral: 1.2 m · velocidade média: 0.90 m/s\naltura final da pelve: 0.76 m\ncaiu: nêo</pre><p>9,0 m en 10 s. 1,0 m/s es el techo de velocidad hacia adelante con el que se entrenó la policy (rango de comando de unitree_rl_lab: −0,5 a 1,0 m/s).</p>"
           }
         ]
       }
@@ -231,7 +231,7 @@
           "titulo": "E2 · El G1 camina",
           "min": "3 min",
           "texto": "Ejecuta la policy con 0,7 m/s por 10 s y anota cuántos metros avanzó la pelvis.",
-          "pronto": "<code>python3 kit/andar_demo.py --vx 0.7 --s 10; echo \"saída: $?\"</code> → <code>caiu: não</code> y <code>saída: 0</code>."
+          "pronto": "<code>python3 kit/andar_demo.py --vx 0.7 --s 10; echo \"saída: $?\"</code> → <code>caiu: nêo</code> y <code>saída: 0</code>."
         },
         {
           "id": "e3",
@@ -266,7 +266,7 @@
             "El PD solo logra caminar, pero más lento y con pasos más cortos que la policy.",
             "La policy estaba activada por error en el modo --sem-politica.",
             "El comando de 0,7 m/s se aplicó como empujón inicial.",
-            "Es el cuerpo cayendo hacia adelante; velocidad sin \"caiu: não\" no es marcha."
+            "Es el cuerpo cayendo hacia adelante; velocidad sin \"caiu: nêo\" no es marcha."
           ],
           "certa": 3,
           "explica": "La pelvis se desplazó porque el robot cayó hacia adelante. Toda métrica de locomoción se lee junto con la caída; es la misma trampa de las curvas de entrenamiento (clase 6).",

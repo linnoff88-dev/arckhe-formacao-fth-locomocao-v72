@@ -110,7 +110,7 @@
         "abas": [
           {
             "rot": "Salida capturada (19/10/2026)",
-            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrão de 1.0 m/s aos 4 s\nerro médio de velocidade (quem não caiu): 0.05 m/s\nsobreviveu: 20/20\nsaída: 0</pre><p>20 de 20 de pie con un empujón de 1,0 m/s, por encima del entrenamiento (hasta 0,5 m/s por eje, cerca de 0,71 m/s en la diagonal), errando la velocidad por 0,05 m/s en promedio.</p>"
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrêo de 1.0 m/s aos 4 s\nerro médio de velocidade (quem nêo caiu): 0.05 m/s\nsobreviveu: 20/20\nsaída: 0</pre><p>20 de 20 de pie con un empujón de 1,0 m/s, por encima del entrenamiento (hasta 0,5 m/s por eje, cerca de 0,71 m/s en la diagonal), errando la velocidad por 0,05 m/s en promedio.</p>"
           },
           {
             "rot": "1,5 y 2,0 m/s",

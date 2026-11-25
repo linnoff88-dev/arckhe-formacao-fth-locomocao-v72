@@ -1,9 +1,9 @@
 """fth.py — funções comuns do kit do curso FTH 1 (Ensinar a andar).
 
-Acha a bancada em $FTH (padrão: a pasta acima do repositório do curso, ou seja ~/fth):
+Acha a bancada em $FTH (padrêo: a pasta acima do repositório do curso, ou seja ~/fth):
   ~/fth/mujoco_menagerie   (do curso 0; usamos unitree_g1/scene.xml)
   ~/fth/unitree_rl_lab     (clone parcial: só a política de velocidade do G1, Apache-2.0)
-Monta um ambiente de locomoção mínimo no estilo "manager-based" (observações, ações,
+Monta um ambiente de locomoçêo mínimo no estilo "manager-based" (observações, ações,
 recompensas e terminações com nome) em MuJoCo puro, rodando em CPU.
 Testado com mujoco 3.16.0, numpy 2.5.4, onnxruntime 1.31.0, torch 2.14.1+cpu,
 Menagerie 62ab00f e unitree_rl_lab 4960b84, em 19/10/2026.
@@ -31,15 +31,15 @@ def sair(msg):
 
 
 def deploy():
-    """Lê o deploy.yaml da política do unitree_rl_lab (ganhos, pose padrão e ordem das juntas)."""
+    """Lê o deploy.yaml da política do unitree_rl_lab (ganhos, pose padrêo e ordem das juntas)."""
     p = POLITICA / "params/deploy.yaml"
     if not p.exists():
-        sair(f"não achei {p}. Rode a preparação da aula 1.")
+        sair(f"nêo achei {p}. Rode a preparaçêo da aula 1.")
     return yaml.safe_load(p.read_text())
 
 
 def carregar(ganhos="rl_lab", kp=None, kd=None, xml=G1, spec=None):
-    """Carrega o G1 do Menagerie e troca o PD dos 29 atuadores de posição.
+    """Carrega o G1 do Menagerie e troca o PD dos 29 atuadores de posiçêo.
 
     O atuador <position> do MuJoCo já é um PD: força = kp·(alvo − q) − kd·q̇.
     ganhos="rl_lab": kp/kd por junta do deploy.yaml (ordem do SDK = ordem do Menagerie).
@@ -49,7 +49,7 @@ def carregar(ganhos="rl_lab", kp=None, kd=None, xml=G1, spec=None):
     if spec is not None:
         m = spec.compile()
     elif not caminho.exists():
-        sair(f"não achei {caminho}. Rode a preparação da aula 1 (ou a do curso 0).")
+        sair(f"nêo achei {caminho}. Rode a preparaçêo da aula 1 (ou a do curso 0).")
     else:
         m = mujoco.MjModel.from_xml_path(str(caminho))
     if ganhos == "rl_lab":
@@ -65,7 +65,7 @@ def carregar(ganhos="rl_lab", kp=None, kd=None, xml=G1, spec=None):
 
 
 def pose_padrao():
-    """Pose padrão (q0) e mapa de juntas: o deploy.yaml lista na ordem do Isaac Lab; o MuJoCo usa a do SDK."""
+    """Pose padrêo (q0) e mapa de juntas: o deploy.yaml lista na ordem do Isaac Lab; o MuJoCo usa a do SDK."""
     c = deploy()
     mapa = np.array(c["joint_ids_map"])
     q0 = np.zeros(len(mapa))
@@ -91,7 +91,7 @@ def vel_base(d):
 
 
 def contato_pes(m, d, ids_pes):
-    """Força normal (N) de cada pé com o chão."""
+    """Força normal (N) de cada pé com o chêo."""
     f6 = np.zeros(6)
     forca = np.zeros(len(ids_pes))
     for i in range(d.ncon):
@@ -118,13 +118,13 @@ def vel_pes_xy(m, d, ids_pes):
 def ler_recompensa(caminho=None):
     p = Path(caminho) if caminho else KIT / "recompensa.yaml"
     if not p.exists():
-        sair(f"não achei {caminho or 'kit/recompensa.yaml'}.")
+        sair(f"nêo achei {caminho or 'kit/recompensa.yaml'}.")
     cfg = yaml.safe_load(p.read_text())
     for nome, t in cfg.items():
         if nome not in TERMOS:
             sair(f"termo desconhecido em {p.name}: {nome}. Termos do kit: {', '.join(TERMOS)}")
         if "weight" not in t:
-            sair(f"o termo {nome} não tem weight.")
+            sair(f"o termo {nome} nêo tem weight.")
     return cfg
 
 
@@ -193,8 +193,8 @@ OBS_TERMOS = (("base_ang_vel", 3, 0.2), ("projected_gravity", 3, 1.0), ("velocit
 
 class Ambiente:
     """Um G1 andando no MuJoCo, com a estrutura de um ambiente "manager-based":
-    observações, ação, recompensas e terminações, cada uma com nome.
-    Ação = 29 números; alvo da junta = pose padrão + 0,25 · ação (como no deploy.yaml)."""
+    observações, açêo, recompensas e terminações, cada uma com nome.
+    Açêo = 29 números; alvo da junta = pose padrêo + 0,25 · açêo (como no deploy.yaml)."""
 
     def __init__(self, recompensa=None, seed=0, episodio_s=20.0, historico=1, comando=None, xml=G1, spec=None):
         self.m = carregar(xml=xml, spec=spec)
@@ -252,7 +252,7 @@ class Ambiente:
                 "f_pes": contato_pes(self.m, d, self.pes), "v_pes": vel_pes_xy(self.m, d, self.pes)}
 
     def empurrar(self, dv):
-        """Empurrão: soma uma velocidade (m/s) à base, como o push_by_setting_velocity do mjlab."""
+        """Empurrêo: soma uma velocidade (m/s) à base, como o push_by_setting_velocity do mjlab."""
         self.d.qvel[0:len(dv)] += dv
 
     def step(self, acao):
@@ -283,7 +283,7 @@ class PoliticaPronta:
         import onnxruntime as ort
         arq = POLITICA / "exported/policy.onnx"
         if not arq.exists():
-            sair(f"não achei {arq}. Rode a preparação da aula 1.")
+            sair(f"nêo achei {arq}. Rode a preparaçêo da aula 1.")
         so = ort.SessionOptions()
         so.intra_op_num_threads = 1
         self.s = ort.InferenceSession(str(arq), so, providers=["CPUExecutionProvider"])
@@ -301,13 +301,13 @@ class PoliticaTreinada:
         import torch
         from ppo import AtorCritico
         if not Path(arq).exists():
-            sair(f"não achei {arq}.")
+            sair(f"nêo achei {arq}.")
         ck = torch.load(arq, map_location="cpu", weights_only=False)
         self.rede = AtorCritico(ck["n_obs"], ck["n_acao"])
         self.rede.load_state_dict(ck["rede"])
         self.rede.eval()
         self.torch = torch
-        self.nome = f"{Path(arq).name} (iteração {ck['iteracao']})"
+        self.nome = f"{Path(arq).name} (iteraçêo {ck['iteracao']})"
         self.historico = 1
 
     def __call__(self, obs):

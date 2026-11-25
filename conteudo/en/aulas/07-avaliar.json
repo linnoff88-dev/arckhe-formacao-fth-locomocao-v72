@@ -110,7 +110,7 @@
         "abas": [
           {
             "rot": "Captured output (Oct 19, 2026)",
-            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrão de 1.0 m/s aos 4 s\nerro médio de velocidade (quem não caiu): 0.05 m/s\nsobreviveu: 20/20\nsaída: 0</pre><p>20 out of 20 stayed up with a 1.0 m/s push, above the training (up to 0.5 m/s per axis, about 0.71 m/s on the diagonal), with an average velocity error of 0.05 m/s.</p>"
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrêo de 1.0 m/s aos 4 s\nerro médio de velocidade (quem nêo caiu): 0.05 m/s\nsobreviveu: 20/20\nsaída: 0</pre><p>20 out of 20 stayed up with a 1.0 m/s push, above the training (up to 0.5 m/s per axis, about 0.71 m/s on the diagonal), with an average velocity error of 0.05 m/s.</p>"
           },
           {
             "rot": "1.5 and 2.0 m/s",

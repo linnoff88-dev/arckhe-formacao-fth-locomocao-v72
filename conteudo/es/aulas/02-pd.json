@@ -117,7 +117,7 @@
         "abas": [
           {
             "rot": "Salida capturada (19/10/2026)",
-            "html": "<pre>sobressinal: 49 % · posição após 1 s: 0.78 rad (erro 0.02 rad)\nassentou (erro &lt; 0.02 rad): em 992 ms\nsobressinal: 1 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s\nsobressinal: 0 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s</pre><p>Dos líneas por kd (0, 2 y 10). Sin kd, la rodilla pasa 49 % del escalón y tarda casi 1 s en asentarse. Con kd 2, pasa solo 1 %. Con kd 2 o 10, la articulación se detiene a 0,03 rad del objetivo: sin término integral, el PD necesita un error para generar el torque que sostiene el peso de la pierna.</p>"
+            "html": "<pre>sobressinal: 49 % · posiçêo após 1 s: 0.78 rad (erro 0.02 rad)\nassentou (erro &lt; 0.02 rad): em 992 ms\nsobressinal: 1 % · posiçêo após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): nêo, em 1 s\nsobressinal: 0 % · posiçêo após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): nêo, em 1 s</pre><p>Dos líneas por kd (0, 2 y 10). Sin kd, la rodilla pasa 49 % del escalón y tarda casi 1 s en asentarse. Con kd 2, pasa solo 1 %. Con kd 2 o 10, la articulación se detiene a 0,03 rad del objetivo: sin término integral, el PD necesita un error para generar el torque que sostiene el peso de la pierna.</p>"
           }
         ]
       }
@@ -143,11 +143,11 @@
         "abas": [
           {
             "rot": "Salida capturada (19/10/2026)",
-            "html": "<pre>ganhos: kp = 300 · kd = 5 em todas as juntas\naltura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinação: 1°\nmaior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim\nsaída: 0</pre><p>Con kp 300 en todas las articulaciones, el G1 se vuelve una estatua: se queda de pie, inclinado 1°, pidiendo como máximo 12 N·m.</p>"
+            "html": "<pre>ganhos: kp = 300 · kd = 5 em todas as juntas\naltura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinaçêo: 1°\nmaior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0\nde pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): sim\nsaída: 0</pre><p>Con kp 300 en todas las articulaciones, el G1 se vuelve una estatua: se queda de pie, inclinado 1°, pidiendo como máximo 12 N·m.</p>"
           },
           {
             "rot": "Ganancias de unitree_rl_lab",
-            "html": "<pre>ganhos: kp/kd por junta do unitree_rl_lab\naltura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinação: 95°\nmaior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): não\nsaída: 1</pre><p>Con las ganancias por articulación del <code>deploy.yaml</code> (cadera 100/2, rodilla 150/4, tobillo 40/2, cintura 200/5, brazos 40/10), el robot se desploma y dos articulaciones llegan al límite de torque. Medido aquí con el mismo kp en todas las articulaciones, el G1 quieto solo se mantiene de pie con un kp desde unos 200.</p><p>No es un defecto: la política fue entrenada con esas ganancias y es ella la que cierra el equilibrio. Cambiar las ganancias invalida la política.</p>"
+            "html": "<pre>ganhos: kp/kd por junta do unitree_rl_lab\naltura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinaçêo: 95°\nmaior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2\nde pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): nêo\nsaída: 1</pre><p>Con las ganancias por articulación del <code>deploy.yaml</code> (cadera 100/2, rodilla 150/4, tobillo 40/2, cintura 200/5, brazos 40/10), el robot se desploma y dos articulaciones llegan al límite de torque. Medido aquí con el mismo kp en todas las articulaciones, el G1 quieto solo se mantiene de pie con un kp desde unos 200.</p><p>No es un defecto: la política fue entrenada con esas ganancias y es ella la que cierra el equilibrio. Cambiar las ganancias invalida la política.</p>"
           },
           {
             "rot": "Error común: faltó el kd",
@@ -202,14 +202,14 @@
           "titulo": "E2 · De pie con PD",
           "min": "3 min",
           "texto": "Deja el G1 de pie 5 s solo con el PD rígido.",
-          "pronto": "<code>python3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\"</code> → <code>de pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim</code> y <code>saída: 0</code>."
+          "pronto": "<code>python3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\"</code> → <code>de pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): sim</code> y <code>saída: 0</code>."
         },
         {
           "id": "e3",
           "titulo": "E3 · Encuentra el límite",
           "min": "10 min",
           "texto": "Baja el kp (manteniendo kd 5) hasta que el robot se caiga. Anota el menor kp que todavía lo sostiene y compáralo con los 40 del tobillo de la policy.",
-          "pronto": "tienes un kp con <code>de pé (…): sim</code> y uno menor con <code>de pé (…): não</code> y <code>saída: 1</code> (el 19/10/2026: 200 sostiene, 175 cae)."
+          "pronto": "tienes un kp con <code>de pé (…): sim</code> y uno menor con <code>de pé (…): nêo</code> y <code>saída: 1</code> (el 19/10/2026: 200 sostiene, 175 cae)."
         }
       ]
     },

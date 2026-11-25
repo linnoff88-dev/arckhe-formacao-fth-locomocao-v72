@@ -5,8 +5,8 @@
   "titulo": "A camada de baixo: controle PD nas juntas",
   "titulo_curto": "PD nas juntas",
   "minutos": 16,
-  "lead": "Entre a política e o motor existe um controlador PD por junta, com kp e kd escolhidos no treino. Nesta aula você mede a resposta de um joelho a um degrau com três valores de kd, deixa o G1 de pé só com o PD e descobre por que os ganhos da política, sozinhos, não seguram o robô.",
-  "objetivo": "medir o efeito de kp e kd numa junta e deixar o G1 de pé só com o PD, entendendo por que os ganhos da política não bastam sem ela.",
+  "lead": "Entre a política e o motor existe um controlador PD por junta, com kp e kd escolhidos no treino. Nesta aula você mede a resposta de um joelho a um degrau com três valores de kd, deixa o G1 de pé só com o PD e descobre por que os ganhos da política, sozinhos, nêo seguram o robô.",
+  "objetivo": "medir o efeito de kp e kd numa junta e deixar o G1 de pé só com o PD, entendendo por que os ganhos da política nêo bastam sem ela.",
   "competencias": [
     "ler-kp-kd-por-junta",
     "medir-sobressinal-e-erro",
@@ -15,7 +15,7 @@
   "aprende": [
     {
       "icone": "chip",
-      "t": "Torque = kp × (alvo − posição) − kd × velocidade, limitado pelo motor"
+      "t": "Torque = kp × (alvo − posiçêo) − kd × velocidade, limitado pelo motor"
     },
     {
       "icone": "grafico",
@@ -27,7 +27,7 @@
     },
     {
       "icone": "robo",
-      "t": "PD rígido segura o G1; os ganhos da política, sozinhos, não"
+      "t": "PD rígido segura o G1; os ganhos da política, sozinhos, nêo"
     }
   ],
   "hero_alt": "Joelho mecânico de robô humanoide preso a um suporte de alumínio numa bancada, com um osciloscópio desfocado ao fundo mostrando uma curva amortecida.",
@@ -41,7 +41,7 @@
           "icone": "robo",
           "titulo": "Alvo",
           "sub": "50 Hz",
-          "detalhe": "A política manda a posição desejada da junta (em radianos) a cada 20 ms: pose padrão + 0,25 × ação, como no unitree_rl_lab.",
+          "detalhe": "A política manda a posiçêo desejada da junta (em radianos) a cada 20 ms: pose padrêo + 0,25 × açêo, como no unitree_rl_lab.",
           "itens": [
             {
               "icone": "lista",
@@ -53,7 +53,7 @@
           "icone": "alvo",
           "titulo": "Erro",
           "sub": "q* − q",
-          "detalhe": "O encoder lê a posição atual q. O termo P multiplica o erro pelo kp: quanto mais longe do alvo, mais torque.",
+          "detalhe": "O encoder lê a posiçêo atual q. O termo P multiplica o erro pelo kp: quanto mais longe do alvo, mais torque.",
           "itens": [
             {
               "icone": "lista",
@@ -78,7 +78,7 @@
           "titulo": "Limite",
           "sub": "torque máx.",
           "forte": true,
-          "detalhe": "O motor não entrega qualquer torque: o MJCF do Menagerie limita cada junta (actuatorfrcrange). Pedido acima do limite é cortado, e aí o PD deixa de ser linear. Atuadores são do curso 0, aula 4.",
+          "detalhe": "O motor nêo entrega qualquer torque: o MJCF do Menagerie limita cada junta (actuatorfrcrange). Pedido acima do limite é cortado, e aí o PD deixa de ser linear. Atuadores sêo do curso 0, aula 4.",
           "itens": [
             {
               "icone": "lista",
@@ -90,7 +90,7 @@
           "icone": "chip",
           "titulo": "Junta",
           "sub": "500 Hz",
-          "detalhe": "No kit, o MuJoCo integra a 500 Hz com o PD dentro do atuador de posição. No robô, o PD roda no driver do motor, mais rápido ainda; o curso 2 mede o atraso entre os dois.",
+          "detalhe": "No kit, o MuJoCo integra a 500 Hz com o PD dentro do atuador de posiçêo. No robô, o PD roda no driver do motor, mais rápido ainda; o curso 2 mede o atraso entre os dois.",
           "itens": [
             {
               "icone": "lista",
@@ -99,7 +99,7 @@
           ]
         }
       ],
-      "legenda": "Não há termo I: o PID completo com integral e ajuste clássico é assunto do curso robot. Nos robôs de RL, quem corrige o erro que sobra é a política."
+      "legenda": "Nêo há termo I: o PID completo com integral e ajuste clássico é assunto do curso robot. Nos robôs de RL, quem corrige o erro que sobra é a política."
     },
     {
       "tipo": "codigo",
@@ -117,7 +117,7 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>sobressinal: 49 % · posição após 1 s: 0.78 rad (erro 0.02 rad)\nassentou (erro &lt; 0.02 rad): em 992 ms\nsobressinal: 1 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s\nsobressinal: 0 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s</pre><p>Duas linhas por kd (0, 2 e 10). Sem kd, o joelho passa 49 % do degrau e leva quase 1 s para assentar. Com kd 2, passa só 1 %. Com kd 2 ou 10, a junta para a 0,03 rad do alvo: sem termo integral, o PD precisa de um erro para fazer o torque que segura o peso da perna.</p>"
+            "html": "<pre>sobressinal: 49 % · posiçêo após 1 s: 0.78 rad (erro 0.02 rad)\nassentou (erro &lt; 0.02 rad): em 992 ms\nsobressinal: 1 % · posiçêo após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): nêo, em 1 s\nsobressinal: 0 % · posiçêo após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): nêo, em 1 s</pre><p>Duas linhas por kd (0, 2 e 10). Sem kd, o joelho passa 49 % do degrau e leva quase 1 s para assentar. Com kd 2, passa só 1 %. Com kd 2 ou 10, a junta para a 0,03 rad do alvo: sem termo integral, o PD precisa de um erro para fazer o torque que segura o peso da perna.</p>"
           }
         ]
       }
@@ -125,7 +125,7 @@
     {
       "tipo": "codigo",
       "titulo": "O G1 de pé só com o PD",
-      "sub": "O ficar_em_pe.py põe o robô no chão na pose padrão e segura cada junta por 5 s, sem política. De pé = pelve entre 0,70 e 0,85 m e inclinação abaixo de 20°.",
+      "sub": "O ficar_em_pe.py põe o robô no chêo na pose padrêo e segura cada junta por 5 s, sem política. De pé = pelve entre 0,70 e 0,85 m e inclinaçêo abaixo de 20°.",
       "blocos": [
         {
           "rot": "Terminal · kp 300, kd 5 em todas",
@@ -143,11 +143,11 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>ganhos: kp = 300 · kd = 5 em todas as juntas\naltura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinação: 1°\nmaior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim\nsaída: 0</pre><p>Com kp 300 em todas as juntas, o G1 vira uma estátua: fica de pé, inclinado 1°, pedindo no máximo 12 N·m.</p>"
+            "html": "<pre>ganhos: kp = 300 · kd = 5 em todas as juntas\naltura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinaçêo: 1°\nmaior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0\nde pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): sim\nsaída: 0</pre><p>Com kp 300 em todas as juntas, o G1 vira uma estátua: fica de pé, inclinado 1°, pedindo no máximo 12 N·m.</p>"
           },
           {
             "rot": "Ganhos do unitree_rl_lab",
-            "html": "<pre>ganhos: kp/kd por junta do unitree_rl_lab\naltura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinação: 95°\nmaior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): não\nsaída: 1</pre><p>Com os ganhos por junta do <code>deploy.yaml</code> (quadril 100/2, joelho 150/4, tornozelo 40/2, cintura 200/5, braços 40/10), o robô desaba e duas juntas batem no limite de torque. Medido aqui com o mesmo kp em todas as juntas, o G1 parado só fica de pé com kp a partir de uns 200.</p><p>Não é defeito: a política foi treinada com esses ganhos e é ela que fecha o equilíbrio. Trocar os ganhos invalida a política.</p>"
+            "html": "<pre>ganhos: kp/kd por junta do unitree_rl_lab\naltura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinaçêo: 95°\nmaior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2\nde pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): nêo\nsaída: 1</pre><p>Com os ganhos por junta do <code>deploy.yaml</code> (quadril 100/2, joelho 150/4, tornozelo 40/2, cintura 200/5, braços 40/10), o robô desaba e duas juntas batem no limite de torque. Medido aqui com o mesmo kp em todas as juntas, o G1 parado só fica de pé com kp a partir de uns 200.</p><p>Nêo é defeito: a política foi treinada com esses ganhos e é ela que fecha o equilíbrio. Trocar os ganhos invalida a política.</p>"
           },
           {
             "rot": "Erro comum: faltou o kd",
@@ -173,7 +173,7 @@
           "titulo": "Ordem",
           "sub": "a armadilha",
           "texto": [
-            "A pose padrão e as ações vêm na ordem do Isaac Lab, e <code>joint_ids_map</code> converte. Misturar as ordens derruba o robô em 1 s: o curso 2, aula 6, mostra o erro."
+            "A pose padrêo e as ações vêm na ordem do Isaac Lab, e <code>joint_ids_map</code> converte. Misturar as ordens derruba o robô em 1 s: o curso 2, aula 6, mostra o erro."
           ]
         },
         {
@@ -202,29 +202,29 @@
           "titulo": "E2 · De pé com PD",
           "min": "3 min",
           "texto": "Deixe o G1 de pé 5 s só com o PD rígido.",
-          "pronto": "<code>python3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\"</code> → <code>de pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim</code> e <code>saída: 0</code>."
+          "pronto": "<code>python3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\"</code> → <code>de pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): sim</code> e <code>saída: 0</code>."
         },
         {
           "id": "e3",
           "titulo": "E3 · Ache o limite",
           "min": "10 min",
           "texto": "Baixe o kp (mantendo kd 5) até o robô cair. Escreva o menor kp que ainda segura e compare com os 40 do tornozelo da política.",
-          "pronto": "você tem um kp com <code>de pé (…): sim</code> e um menor com <code>de pé (…): não</code> e <code>saída: 1</code> (em 19/10/2026: 200 segura, 175 cai)."
+          "pronto": "você tem um kp com <code>de pé (…): sim</code> e um menor com <code>de pé (…): nêo</code> e <code>saída: 1</code> (em 19/10/2026: 200 segura, 175 cai)."
         }
       ]
     },
     {
       "tipo": "quiz",
       "titulo": "Teste da aula",
-      "sub": "A explicação aparece depois da sua resposta.",
+      "sub": "A explicaçêo aparece depois da sua resposta.",
       "perguntas": [
         {
-          "p": "Com kd 2, o joelho para a 0,03 rad do alvo e não chega lá. Por quê?",
+          "p": "Com kd 2, o joelho para a 0,03 rad do alvo e nêo chega lá. Por quê?",
           "opcoes": [
             "O kd alto demais trava a junta antes do alvo final.",
             "O MuJoCo arredonda as posições das juntas para duas casas decimais em cada passo.",
             "Sem termo integral, o PD precisa de erro para fazer o torque contra o peso.",
-            "O encoder do Menagerie tem resolução de 0,03 rad."
+            "O encoder do Menagerie tem resoluçêo de 0,03 rad."
           ],
           "certa": 2,
           "explica": "Parado, o torque do PD é kp × erro. Para segurar o peso da perna, precisa sobrar um erro. Nos robôs de RL, quem corrige isso é a política, que aprende a pedir um alvo um pouco além.",
@@ -240,7 +240,7 @@
             "O kd dos braços (10) é que derruba o robô quando ele está parado."
           ],
           "certa": 0,
-          "explica": "PD mole + política é um sistema; PD mole sozinho não é. Por isso não se trocam os ganhos de uma política treinada.",
+          "explica": "PD mole + política é um sistema; PD mole sozinho nêo é. Por isso nêo se trocam os ganhos de uma política treinada.",
           "ref": "codigo"
         },
         {
@@ -285,7 +285,7 @@
           "icone": "git"
         },
         {
-          "t": "MuJoCo: atuador de posição (kp, kv) na referência do XML",
+          "t": "MuJoCo: atuador de posiçêo (kp, kv) na referência do XML",
           "href": "https://mujoco.readthedocs.io/en/stable/XMLreference.html#actuator-position",
           "icone": "arquivo"
         },

@@ -1,10 +1,10 @@
 # Recompensa de marcha do kit (FTH 1). Nomes, pesos e std seguem a tarefa de velocidade do mjlab
 # (src/mjlab/tasks/velocity/velocity_env_cfg.py, commit 8bb2bc9, 18/10/2026); "pose" usa um std só.
-# Cada termo vale weight × valor × 0,02 s por passo da política. Positivo = prêmio; negativo = punição.
+# Cada termo vale weight × valor × 0,02 s por passo da política. Positivo = prêmio; negativo = puniçêo.
 track_linear_velocity: {weight: 2.0, std: 0.5}     # exp(-erro² / std²) entre comando e velocidade xy
-track_angular_velocity: {weight: 2.0, std: 0.707}  # o mesmo para a rotação em z
+track_angular_velocity: {weight: 2.0, std: 0.707}  # o mesmo para a rotaçêo em z
 upright: {weight: 1.0, std: 0.447}                 # tronco em pé (gravidade sem componente x/y)
-pose: {weight: 1.0, std: 0.3}                      # juntas perto da pose padrão
+pose: {weight: 1.0, std: 0.3}                      # juntas perto da pose padrêo
 dof_pos_limits: {weight: -1.0}                     # quanto as juntas passaram do limite (rad)
-action_rate_l2: {weight: -0.1}                     # ação que muda de um passo para o outro
-foot_slip: {weight: -0.1}                          # pé que escorrega enquanto está no chão
+action_rate_l2: {weight: -0.1}                     # açêo que muda de um passo para o outro
+foot_slip: {weight: -0.1}                          # pé que escorrega enquanto está no chêo

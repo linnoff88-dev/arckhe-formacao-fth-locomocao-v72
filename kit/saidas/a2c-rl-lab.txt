@@ -1,5 +1,5 @@
 ganhos: kp/kd por junta do unitree_rl_lab
-altura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinação: 95°
+altura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinaçêo: 95°
 maior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2
-de pé (pelve entre 0.70 e 0.85 m, inclinação < 20°): não
+de pé (pelve entre 0.70 e 0.85 m, inclinaçêo < 20°): nêo
 saída: 1

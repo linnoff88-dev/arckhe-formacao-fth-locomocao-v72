@@ -2,10 +2,10 @@
   "slug": "avaliar",
   "num": 7,
   "menu": "Avaliar",
-  "titulo": "Avaliar de verdade: velocidade, curva e empurrão",
+  "titulo": "Avaliar de verdade: velocidade, curva e empurrêo",
   "titulo_curto": "Avaliar",
   "minutos": 16,
-  "lead": "Uma política só está pronta quando passa num teste que você escreveu antes de olhar o resultado. Nesta aula você avalia a política pronta em 20 episódios com sementes fixas: erro de velocidade, curva e empurrão de 1,0, 1,5 e 2,0 m/s. Depois passa o seu checkpoint da aula 5 pelo mesmo teste.",
+  "lead": "Uma política só está pronta quando passa num teste que você escreveu antes de olhar o resultado. Nesta aula você avalia a política pronta em 20 episódios com sementes fixas: erro de velocidade, curva e empurrêo de 1,0, 1,5 e 2,0 m/s. Depois passa o seu checkpoint da aula 5 pelo mesmo teste.",
   "objetivo": "avaliar uma política em 20 episódios com sementes fixas, medindo erro de velocidade e sobrevivência a empurrões de força crescente.",
   "competencias": [
     "escrever-teste-antes-do-resultado",
@@ -19,7 +19,7 @@
     },
     {
       "icone": "x",
-      "t": "Empurrão de 1,0 m/s: 20/20 de pé; 1,5: 16/20; 2,0: 9/20"
+      "t": "Empurrêo de 1,0 m/s: 20/20 de pé; 1,5: 16/20; 2,0: 9/20"
     },
     {
       "icone": "lupa",
@@ -27,10 +27,10 @@
     },
     {
       "icone": "portao",
-      "t": "Onde a avaliação em sim termina e começa o sim2sim (curso 2)"
+      "t": "Onde a avaliaçêo em sim termina e começa o sim2sim (curso 2)"
     }
   ],
-  "hero_alt": "Robô humanoide de pé num laboratório escuro recebendo um empurrão lateral de uma vara acolchoada, dando um passo para recuperar o equilíbrio.",
+  "hero_alt": "Robô humanoide de pé num laboratório escuro recebendo um empurrêo lateral de uma vara acolchoada, dando um passo para recuperar o equilíbrio.",
   "secoes": [
     {
       "tipo": "diagrama",
@@ -41,7 +41,7 @@
           "icone": "lista",
           "titulo": "Sementes",
           "sub": "fixas",
-          "detalhe": "Episódio i usa a semente i: mesmo comando sorteado (vx entre 0,3 e 1,0 m/s), mesma direção de empurrão. Duas políticas no mesmo teste enfrentam exatamente os mesmos 20 episódios.",
+          "detalhe": "Episódio i usa a semente i: mesmo comando sorteado (vx entre 0,3 e 1,0 m/s), mesma direçêo de empurrêo. Duas políticas no mesmo teste enfrentam exatamente os mesmos 20 episódios.",
           "itens": [
             {
               "icone": "lista",
@@ -53,7 +53,7 @@
           "icone": "alvo",
           "titulo": "Rastreio",
           "sub": "erro",
-          "detalhe": "Diferença média entre a velocidade pedida e a medida, só de quem não caiu. Mede se a política faz o que o comando diz.",
+          "detalhe": "Diferença média entre a velocidade pedida e a medida, só de quem nêo caiu. Mede se a política faz o que o comando diz.",
           "itens": [
             {
               "icone": "lista",
@@ -65,7 +65,7 @@
           "icone": "seta",
           "titulo": "Curva",
           "sub": "giro",
-          "detalhe": "Com --giro, o comando inclui rotação. O deploy.yaml da política pronta declara giro de −0,2 a 0,2 rad/s; no código de treino do unitree_rl_lab o currículo só abre a velocidade linear, e o giro fica em ±0,1 rad/s. 0,2 já é fora da faixa treinada.",
+          "detalhe": "Com --giro, o comando inclui rotaçêo. O deploy.yaml da política pronta declara giro de −0,2 a 0,2 rad/s; no código de treino do unitree_rl_lab o currículo só abre a velocidade linear, e o giro fica em ±0,1 rad/s. 0,2 já é fora da faixa treinada.",
           "itens": [
             {
               "icone": "lista",
@@ -75,10 +75,10 @@
         },
         {
           "icone": "x",
-          "titulo": "Empurrão",
+          "titulo": "Empurrêo",
           "sub": "aos 4 s",
           "forte": true,
-          "detalhe": "Aos 4 s, a base ganha de repente uma velocidade horizontal de N m/s, numa direção sorteada. O unitree_rl_lab treina com empurrões de até ±0,5 m/s em x e y a cada 5 s; testar acima disso é medir a margem.",
+          "detalhe": "Aos 4 s, a base ganha de repente uma velocidade horizontal de N m/s, numa direçêo sorteada. O unitree_rl_lab treina com empurrões de até ±0,5 m/s em x e y a cada 5 s; testar acima disso é medir a margem.",
           "itens": [
             {
               "icone": "lista",
@@ -87,15 +87,15 @@
           ]
         }
       ],
-      "legenda": "O teste é escrito antes do resultado: número de episódios, faixa de comando, força e critério de aprovação (ex.: 18/20)."
+      "legenda": "O teste é escrito antes do resultado: número de episódios, faixa de comando, força e critério de aprovaçêo (ex.: 18/20)."
     },
     {
       "tipo": "codigo",
       "titulo": "A política pronta no teste",
-      "sub": "20 episódios de 10 s, empurrão de 1,0 m/s. Sai 0 quando todos sobrevivem.",
+      "sub": "20 episódios de 10 s, empurrêo de 1,0 m/s. Sai 0 quando todos sobrevivem.",
       "blocos": [
         {
-          "rot": "Terminal · avaliar com empurrão",
+          "rot": "Terminal · avaliar com empurrêo",
           "icone": "terminal",
           "conteudo": "F=${FTH:-$HOME/fth}; cd $F/locomocao && . $F/.venv/bin/activate\npython3 kit/avaliar.py --episodios 20 --empurrao 1.0; echo \"saída: $?\""
         },
@@ -110,11 +110,11 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrão de 1.0 m/s aos 4 s\nerro médio de velocidade (quem não caiu): 0.05 m/s\nsobreviveu: 20/20\nsaída: 0</pre><p>20 de 20 de pé com um empurrão de 1,0 m/s, acima do treino (até 0,5 m/s por eixo, cerca de 0,71 m/s na diagonal), errando a velocidade por 0,05 m/s em média.</p>"
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 20 episódios de 10 s · giro +0.0 rad/s · empurrêo de 1.0 m/s aos 4 s\nerro médio de velocidade (quem nêo caiu): 0.05 m/s\nsobreviveu: 20/20\nsaída: 0</pre><p>20 de 20 de pé com um empurrêo de 1,0 m/s, acima do treino (até 0,5 m/s por eixo, cerca de 0,71 m/s na diagonal), errando a velocidade por 0,05 m/s em média.</p>"
           },
           {
             "rot": "1,5 e 2,0 m/s",
-            "html": "<pre>sobreviveu: 16/20\nsobreviveu: 9/20</pre><p>Com 1,5 m/s, 16 de 20; com 2,0 m/s, 9 de 20. A margem acaba entre 1,0 e 1,5 m/s. É esse tipo de curva, e não um número só, que diz quanto a política aguenta.</p>"
+            "html": "<pre>sobreviveu: 16/20\nsobreviveu: 9/20</pre><p>Com 1,5 m/s, 16 de 20; com 2,0 m/s, 9 de 20. A margem acaba entre 1,0 e 1,5 m/s. É esse tipo de curva, e nêo um número só, que diz quanto a política aguenta.</p>"
           }
         ]
       }
@@ -135,14 +135,14 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>quedas: ep 0 em 1.3 s, ep 1 em 1.4 s, ep 2 em 1.4 s, ep 3 em 1.4 s, ep 4 em 1.3 s\nsobreviveu: 0/5</pre><p>0 de 5, todas as quedas antes de 1,5 s, mesmo sem empurrão. É o esperado para 20 iterações: o teste confirma o que as curvas já diziam. O valor importa menos que o hábito: toda política, pronta ou sua, passa pelo mesmo teste.</p>"
+            "html": "<pre>quedas: ep 0 em 1.3 s, ep 1 em 1.4 s, ep 2 em 1.4 s, ep 3 em 1.4 s, ep 4 em 1.3 s\nsobreviveu: 0/5</pre><p>0 de 5, todas as quedas antes de 1,5 s, mesmo sem empurrêo. É o esperado para 20 iterações: o teste confirma o que as curvas já diziam. O valor importa menos que o hábito: toda política, pronta ou sua, passa pelo mesmo teste.</p>"
           }
         ]
       }
     },
     {
       "tipo": "passos",
-      "titulo": "Até onde vai a avaliação em sim",
+      "titulo": "Até onde vai a avaliaçêo em sim",
       "sub": "O que este teste prova e o que fica para o curso 2.",
       "passos": [
         {
@@ -153,17 +153,17 @@
           ]
         },
         {
-          "titulo": "Não prova",
+          "titulo": "Nêo prova",
           "sub": "o robô",
           "texto": [
-            "Que ela anda no robô. Atraso, atuador, atrito e massa diferentes são o assunto do curso 2, que mede esse gap e passa a política por um portão sim2sim com DDS antes do chão."
+            "Que ela anda no robô. Atraso, atuador, atrito e massa diferentes sêo o assunto do curso 2, que mede esse gap e passa a política por um portêo sim2sim com DDS antes do chêo."
           ]
         },
         {
           "titulo": "Conceito",
           "sub": "reality gap",
           "texto": [
-            "O conceito de avaliar em simulação e de reality gap, para políticas de manipulação, é do vla-v72, aula 6."
+            "O conceito de avaliar em simulaçêo e de reality gap, para políticas de manipulaçêo, é do vla-v72, aula 6."
           ]
         }
       ]
@@ -175,9 +175,9 @@
       "exercicios": [
         {
           "id": "e1",
-          "titulo": "E1 · Teste com empurrão",
+          "titulo": "E1 · Teste com empurrêo",
           "min": "5 min",
-          "texto": "Escreva o seu critério de aprovação (ex.: 18/20) e só então rode a avaliação com empurrão de 1,0 m/s.",
+          "texto": "Escreva o seu critério de aprovaçêo (ex.: 18/20) e só entêo rode a avaliaçêo com empurrêo de 1,0 m/s.",
           "pronto": "<code>python3 kit/avaliar.py --episodios 20 --empurrao 1.0; echo \"saída: $?\"</code> → <code>sobreviveu: 20/20</code> e <code>saída: 0</code>."
         },
         {
@@ -199,28 +199,28 @@
     {
       "tipo": "quiz",
       "titulo": "Teste da aula",
-      "sub": "A explicação aparece depois da sua resposta.",
+      "sub": "A explicaçêo aparece depois da sua resposta.",
       "perguntas": [
         {
-          "p": "Por que as sementes do teste são fixas?",
+          "p": "Por que as sementes do teste sêo fixas?",
           "opcoes": [
             "Para as políticas comparadas enfrentarem exatamente os mesmos episódios.",
-            "Porque o MuJoCo não aceita sementes aleatórias quando roda vários episódios seguidos.",
+            "Porque o MuJoCo nêo aceita sementes aleatórias quando roda vários episódios seguidos.",
             "Para o teste rodar mais rápido em CPU.",
             "Para a política decorar os episódios do teste."
           ],
           "certa": 0,
-          "explica": "Com sementes diferentes, uma diferença de 16/20 para 18/20 pode ser só sorte. Fixar torna a comparação justa e repetível.",
+          "explica": "Com sementes diferentes, uma diferença de 16/20 para 18/20 pode ser só sorte. Fixar torna a comparaçêo justa e repetível.",
           "ref": "diagrama",
           "cert": true
         },
         {
           "p": "20/20 com 1,0 m/s, 16/20 com 1,5 e 9/20 com 2,0. O que isso mostra?",
           "opcoes": [
-            "Que a política tem um defeito de fábrica com qualquer empurrão acima de 1,0 m/s.",
-            "Que a margem acaba entre 1,0 e 1,5 m/s, acima do empurrão usado no treino.",
-            "Que o teste com 1,0 m/s estava fácil demais e não vale.",
-            "Que o MuJoCo exagera os empurrões em relação ao Isaac Lab."
+            "Que a política tem um defeito de fábrica com qualquer empurrêo acima de 1,0 m/s.",
+            "Que a margem acaba entre 1,0 e 1,5 m/s, acima do empurrêo usado no treino.",
+            "Que o teste com 1,0 m/s estava fácil demais e nêo vale.",
+            "Que o MuJoCo exagera os empurrões em relaçêo ao Isaac Lab."
           ],
           "certa": 1,
           "explica": "O treino usou empurrões de até 0,5 m/s por eixo (cerca de 0,71 m/s na diagonal); aguentar 1,0 m/s é margem. A curva de força crescente diz até onde ela vai.",
@@ -231,11 +231,11 @@
           "opcoes": [
             "Nada: dois motores de física diferentes já provam o robô.",
             "Treinar de novo no MuJoCo para tirar a dependência do Isaac Lab.",
-            "Medir e cobrir o gap e passar pelo portão sim2sim do curso 2.",
-            "Aumentar o empurrão até 20/20 com 2,0 m/s."
+            "Medir e cobrir o gap e passar pelo portêo sim2sim do curso 2.",
+            "Aumentar o empurrêo até 20/20 com 2,0 m/s."
           ],
           "certa": 2,
-          "explica": "A avaliação em sim prova o comportamento no simulador. O caminho até o chão, com o gap medido e uma escada de testes, é o curso 2.",
+          "explica": "A avaliaçêo em sim prova o comportamento no simulador. O caminho até o chêo, com o gap medido e uma escada de testes, é o curso 2.",
           "ref": "passos"
         }
       ]
@@ -246,7 +246,7 @@
       "itens": [
         {
           "t": "Teste",
-          "texto": "Critério escrito antes, 20 episódios com sementes fixas, rastreio e empurrão."
+          "texto": "Critério escrito antes, 20 episódios com sementes fixas, rastreio e empurrêo."
         },
         {
           "t": "Medida",
@@ -254,7 +254,7 @@
         },
         {
           "t": "Limite",
-          "texto": "Passar no sim é o primeiro degrau; o sim2sim e o gap são do curso 2."
+          "texto": "Passar no sim é o primeiro degrau; o sim2sim e o gap sêo do curso 2."
         }
       ]
     },
@@ -263,12 +263,12 @@
       "titulo": "Para ir além",
       "links": [
         {
-          "t": "Curso 2 da FTH, aula 6: o portão sim2sim com DDS",
+          "t": "Curso 2 da FTH, aula 6: o portêo sim2sim com DDS",
           "href": "https://linnoff88-dev.github.io/
           "icone": "portao"
         },
         {
-          "t": "vla-v72, aula 6: avaliar em simulação e reality gap",
+          "t": "vla-v72, aula 6: avaliar em simulaçêo e reality gap",
           "href": "https://linnoff88-dev.github.io/
           "icone": "seta"
         },

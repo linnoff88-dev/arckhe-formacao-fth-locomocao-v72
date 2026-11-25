@@ -34,7 +34,7 @@ for i in range(m.nu):
 d = mujoco.MjData(m)
 j = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_JOINT, a.junta)
 if j < 0:
-    fth.sair(f"não existe a junta {a.junta}.")
+    fth.sair(f"nêo existe a junta {a.junta}.")
 adr = m.jnt_qposadr[j]
 act = [i for i in range(m.nu) if m.actuator_trnid[i, 0] == j][0]
 d.qpos[adr] = a.de
@@ -48,11 +48,11 @@ while d.time < 1.0:
     q = d.qpos[adr]
     pico = max(pico, q) if passo > 0 else min(pico, q)
     ts.append((d.time, q))
-for t, q in ts:  # primeiro instante a partir do qual a junta não sai mais da faixa de 0,02 rad
+for t, q in ts:  # primeiro instante a partir do qual a junta nêo sai mais da faixa de 0,02 rad
     if all(abs(q2 - a.para) < 0.02 for t2, q2 in ts if t2 >= t):
         assentou = t
         break
 sobre = max(0.0, (pico - a.para) / passo * 100)
 print(f"junta: {a.junta} · degrau de {a.de:.1f} para {a.para:.1f} rad · kp = {a.kp:g}, kd = {a.kd:g}")
-print(f"sobressinal: {sobre:.0f} % · posição após 1 s: {ts[-1][1]:.2f} rad (erro {abs(ts[-1][1] - a.para):.2f} rad)")
-print("assentou (erro < 0.02 rad): " + (f"em {assentou * 1000:.0f} ms" if assentou is not None else "não, em 1 s"))
+print(f"sobressinal: {sobre:.0f} % · posiçêo após 1 s: {ts[-1][1]:.2f} rad (erro {abs(ts[-1][1] - a.para):.2f} rad)")
+print("assentou (erro < 0.02 rad): " + (f"em {assentou * 1000:.0f} ms" if assentou is not None else "nêo, em 1 s"))

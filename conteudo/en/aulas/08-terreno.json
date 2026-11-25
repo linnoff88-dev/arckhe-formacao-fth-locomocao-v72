@@ -153,7 +153,7 @@
         {
           "rot": "File · kit/plano-treino-modelo.md",
           "icone": "arquivo",
-          "conteudo": "# Plano de treino de locomoção\n\nRobô: [qual humanoide e qual arquivo, ex.: Unitree G1 29 GDL, unitree_g1/scene.xml do Menagerie 62ab00f]\nComando: [faixa de velocidade, ex.: vx de -0.5 a 1.0 m/s, vy de -0.3 a 0.3 m/s, giro de -0.2 a 0.2 rad/s]\nRecompensa: [termos e pesos, ex.: track_linear_velocity 2.0, upright 1.0, action_rate_l2 -0.1]\nCurrículo: [níveis em ordem, separados por →, ex.: plano → degrau de 5 cm → rampa → pedriscos]\nAvaliação: [critério de aprovação com número, ex.: 18/20 episódios de pé com empurrão de 1.0 m/s]"
+          "conteudo": "# Plano de treino de locomoçêo\n\nRobô: [qual humanoide e qual arquivo, ex.: Unitree G1 29 GDL, unitree_g1/scene.xml do Menagerie 62ab00f]\nComando: [faixa de velocidade, ex.: vx de -0.5 a 1.0 m/s, vy de -0.3 a 0.3 m/s, giro de -0.2 a 0.2 rad/s]\nRecompensa: [termos e pesos, ex.: track_linear_velocity 2.0, upright 1.0, action_rate_l2 -0.1]\nCurrículo: [níveis em ordem, separados por →, ex.: plano → degrau de 5 cm → rampa → pedriscos]\nAvaliaçêo: [critério de aprovaçêo com número, ex.: 18/20 episódios de pé com empurrêo de 1.0 m/s]"
         },
         {
           "rot": "Terminal · copy and check",
@@ -171,7 +171,7 @@
         "abas": [
           {
             "rot": "Captured output (Oct 19, 2026)",
-            "html": "<pre>FALTA Robô: não preenchido\nFALTA Comando: não preenchido\nFALTA Recompensa: não preenchido\nFALTA Currículo: não preenchido\nFALTA Avaliação: não preenchido\ncampos ok: 0/5\nincompleto\nsaída: 1</pre><p>With the template still full of [brackets], all five fields are missing and the script exits with 1. Rules: command with a number and m/s, reward with 2 or more kit terms, curriculum with 3 or more levels separated by →, evaluation with a numeric criterion (X/N or %).</p>"
+            "html": "<pre>FALTA Robô: nêo preenchido\nFALTA Comando: nêo preenchido\nFALTA Recompensa: nêo preenchido\nFALTA Currículo: nêo preenchido\nFALTA Avaliaçêo: nêo preenchido\ncampos ok: 0/5\nincompleto\nsaída: 1</pre><p>With the template still full of [brackets], all five fields are missing and the script exits with 1. Rules: command with a number and m/s, reward with 2 or more kit terms, curriculum with 3 or more levels separated by →, evaluation with a numeric criterion (X/N or %).</p>"
           },
           {
             "rot": "Example that passes",
@@ -191,7 +191,7 @@
           "quando": "Lessons 1–2",
           "titulo": "Policy",
           "sub": "and PD",
-          "saida": "caiu: não; de pé com PD.",
+          "saida": "caiu: nêo; de pé com PD.",
           "passo": "The ready-made policy walking in MuJoCo and the joint PD measured, with the policy's gains understood."
         },
         {

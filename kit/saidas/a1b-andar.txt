@@ -1,6 +1,6 @@
 política: unitree_rl_lab velocity v0 (ONNX) · 480 → 29 · 50 Hz
-comando: vx = 0.7 m/s por 10 s · simulação a 500 Hz, política a 50 Hz
+comando: vx = 0.7 m/s por 10 s · simulaçêo a 500 Hz, política a 50 Hz
 andou: 6.6 m para a frente · desvio lateral: 0.5 m · velocidade média: 0.66 m/s
 altura final da pelve: 0.77 m
-caiu: não
+caiu: nêo
 saída: 0

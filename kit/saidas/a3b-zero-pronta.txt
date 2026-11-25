@@ -1,4 +1,4 @@
-ação zero: 70 passos · recompensa somada: 3.78
+açêo zero: 70 passos · recompensa somada: 3.78
 episódio terminou por: queda em t = 1.40 s
-ação pronta: 1000 passos · recompensa somada: 108.61
+açêo pronta: 1000 passos · recompensa somada: 108.61
 episódio terminou por: tempo em t = 20.00 s

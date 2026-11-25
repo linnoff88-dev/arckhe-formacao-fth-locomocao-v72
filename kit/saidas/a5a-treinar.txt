@@ -1,4 +1,4 @@
-PPO em CPU: 16 ambientes × 24 passos = 384 amostras por iteração · obs 96 → ação 29
+PPO em CPU: 16 ambientes × 24 passos = 384 amostras por iteraçêo · obs 96 → açêo 29
 it   1/20 · recompensa média  -1.75 · episódio médio  24.0 passos · quedas  0
 it   2/20 · recompensa média  -3.33 · episódio médio  42.8 passos · quedas  5
 it   3/20 · recompensa média  -4.85 · episódio médio  58.6 passos · quedas 10

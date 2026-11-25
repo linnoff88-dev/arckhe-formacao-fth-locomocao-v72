@@ -2,8 +2,8 @@
 
 Uso: python3 kit/terreno.py --degraus 0.02 0.05 0.10 [--vx 0.5]
 Monta, com o MjSpec, uma plataforma de altura h a 1,5 m do robô e manda andar por 8 s.
-Passou = não caiu e a pelve chegou a x > 2,5 m (em cima da plataforma).
-Os degraus que reprovam são os níveis seguintes de um currículo de terreno.
+Passou = nêo caiu e a pelve chegou a x > 2,5 m (em cima da plataforma).
+Os degraus que reprovam sêo os níveis seguintes de um currículo de terreno.
 """
 import argparse
 import sys

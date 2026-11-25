@@ -1,5 +1,5 @@
 ganhos: kp = 300 · kd = 5 em todas as juntas
-altura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinação: 1°
+altura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinaçêo: 1°
 maior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0
-de pé (pelve entre 0.70 e 0.85 m, inclinação < 20°): sim
+de pé (pelve entre 0.70 e 0.85 m, inclinaçêo < 20°): sim
 saída: 0

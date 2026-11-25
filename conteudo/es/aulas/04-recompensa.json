@@ -109,7 +109,7 @@
         {
           "rot": "Archivo · kit/recompensa.yaml",
           "icone": "arquivo",
-          "conteudo": "# Recompensa de marcha do kit (FTH 1). Nomes, pesos e std seguem a tarefa de velocidade do mjlab\n# (src/mjlab/tasks/velocity/velocity_env_cfg.py, commit 8bb2bc9, 18/10/2026); \"pose\" usa um std só.\n# Cada termo vale weight × valor × 0,02 s por passo da política. Positivo = prêmio; negativo = punição.\ntrack_linear_velocity: {weight: 2.0, std: 0.5}     # exp(-erro² / std²) entre comando e velocidade xy\ntrack_angular_velocity: {weight: 2.0, std: 0.707}  # o mesmo para a rotação em z\nupright: {weight: 1.0, std: 0.447}                 # tronco em pé (gravidade sem componente x/y)\npose: {weight: 1.0, std: 0.3}                      # juntas perto da pose padrão\ndof_pos_limits: {weight: -1.0}                     # quanto as juntas passaram do limite (rad)\naction_rate_l2: {weight: -0.1}                     # ação que muda de um passo para o outro\nfoot_slip: {weight: -0.1}                          # pé que escorrega enquanto está no chão"
+          "conteudo": "# Recompensa de marcha do kit (FTH 1). Nomes, pesos e std seguem a tarefa de velocidade do mjlab\n# (src/mjlab/tasks/velocity/velocity_env_cfg.py, commit 8bb2bc9, 18/10/2026); \"pose\" usa um std só.\n# Cada termo vale weight × valor × 0,02 s por passo da política. Positivo = prêmio; negativo = puniçêo.\ntrack_linear_velocity: {weight: 2.0, std: 0.5}     # exp(-erro² / std²) entre comando e velocidade xy\ntrack_angular_velocity: {weight: 2.0, std: 0.707}  # o mesmo para a rotaçêo em z\nupright: {weight: 1.0, std: 0.447}                 # tronco em pé (gravidade sem componente x/y)\npose: {weight: 1.0, std: 0.3}                      # juntas perto da pose padrêo\ndof_pos_limits: {weight: -1.0}                     # quanto as juntas passaram do limite (rad)\naction_rate_l2: {weight: -0.1}                     # açêo que muda de um passo para o outro\nfoot_slip: {weight: -0.1}                          # pé que escorrega enquanto está no chêo"
         }
       ]
     },
@@ -147,7 +147,7 @@
           },
           {
             "rot": "Error común: rollout no grabado",
-            "html": "<pre>ERRO: não achei ~/fth/treino/nao-existe.npz. Grave antes com: python3 kit/andar_demo.py --gravar ~/fth/treino/nao-existe.npz\nsaída: 1</pre><p>termos.py lee un archivo .npz grabado por andar_demo.py. Grábalo antes; el error te dice el comando.</p>"
+            "html": "<pre>ERRO: nêo achei ~/fth/treino/nao-existe.npz. Grave antes com: python3 kit/andar_demo.py --gravar ~/fth/treino/nao-existe.npz\nsaída: 1</pre><p>termos.py lee un archivo .npz grabado por andar_demo.py. Grábalo antes; el error te dice el comando.</p>"
           }
         ]
       }

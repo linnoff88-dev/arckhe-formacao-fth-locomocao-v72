@@ -1,9 +1,9 @@
 """treinar.py — treino curto de PPO, em CPU, com alguns G1 em paralelo no MuJoCo (aula 5).
 
 Uso: python3 kit/treinar.py --iters 20 [--envs 16] [--seed 0] [--saida ~/fth/treino/ppo] [--recompensa kit/recompensa.yaml]
-Cada iteração: cada ambiente dá 24 passos (num_steps_per_env do mjlab) → GAE → 5 épocas × 4 mini-lotes.
-Grava progresso.csv (uma linha por iteração) e o checkpoint modelo_<iters>.pt.
-Em CPU, 20 iterações não ensinam o G1 a andar: o que se confere é o laço, não a marcha.
+Cada iteraçêo: cada ambiente dá 24 passos (num_steps_per_env do mjlab) → GAE → 5 épocas × 4 mini-lotes.
+Grava progresso.csv (uma linha por iteraçêo) e o checkpoint modelo_<iters>.pt.
+Em CPU, 20 iterações nêo ensinam o G1 a andar: o que se confere é o laço, nêo a marcha.
 """
 import argparse
 import csv
@@ -37,7 +37,7 @@ n_obs, n_acao = envs[0].n_obs, envs[0].n_acao
 rede = AtorCritico(n_obs, n_acao)
 ppo = PPO(rede)
 T = PADRAO["num_steps_per_env"]
-print(f"PPO em CPU: {a.envs} ambientes × {T} passos = {a.envs * T} amostras por iteração · obs {n_obs} → ação {n_acao}")
+print(f"PPO em CPU: {a.envs} ambientes × {T} passos = {a.envs * T} amostras por iteraçêo · obs {n_obs} → açêo {n_acao}")
 obs = torch.as_tensor(np.stack([e.reset() for e in envs]))
 ret_ep = np.zeros(a.envs)
 len_ep = np.zeros(a.envs, int)
@@ -89,7 +89,7 @@ for it in range(1, a.iters + 1):
         rm, em = np.mean([f[0] for f in fins]), np.mean([f[1] for f in fins])
         for k in cfg_r:
             soma_termos[k] = np.mean([f[2][k] for f in fins])
-    else:  # nenhum episódio acabou nesta iteração: usa os que estão em andamento
+    else:  # nenhum episódio acabou nesta iteraçêo: usa os que estêo em andamento
         rm, em = float(np.mean(ret_ep)), float(np.mean(len_ep))
         for k in cfg_r:
             soma_termos[k] = np.mean([t[k] for t in termos_ep])

@@ -1,8 +1,8 @@
-observação: 96 números = (base_ang_vel 3 + projected_gravity 3 + velocity_commands 3 + joint_pos_rel 29 + joint_vel_rel 29 + last_action 29) × histórico 1
-ação: 29 números → alvo de cada junta = pose padrão + 0.25 × ação, a cada 20 ms
+observaçêo: 96 números = (base_ang_vel 3 + projected_gravity 3 + velocity_commands 3 + joint_pos_rel 29 + joint_vel_rel 29 + last_action 29) × histórico 1
+açêo: 29 números → alvo de cada junta = pose padrêo + 0.25 × açêo, a cada 20 ms
 recompensa: track_linear_velocity (+2), track_angular_velocity (+2), upright (+1), pose (+1), dof_pos_limits (-1), action_rate_l2 (-0.1), foot_slip (-0.1)
 terminações: queda (pelve inclinada > 70° ou abaixo de 0.3 m) · tempo (1000 passos = 20 s)
 comando sorteado: vx = -0.48 m/s · vy = +0.19 m/s · giro = +0.17 rad/s
-ação aleatoria: 67 passos · recompensa somada: -5.44
+açêo aleatoria: 67 passos · recompensa somada: -5.44
 episódio terminou por: queda em t = 1.34 s
 saída: 0

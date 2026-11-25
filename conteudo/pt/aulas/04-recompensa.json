@@ -5,7 +5,7 @@
   "titulo": "Desenhar a recompensa de marcha",
   "titulo_curto": "A recompensa",
   "minutos": 16,
-  "lead": "A política aprende o que a recompensa paga, não o que você quis dizer. Nesta aula você lê os termos de marcha da tarefa de velocidade do mjlab, grava um rollout andando e outro parado, mede quanto cada termo pagou e descobre que, com um peso trocado, ficar parado passa a valer mais do que andar.",
+  "lead": "A política aprende o que a recompensa paga, nêo o que você quis dizer. Nesta aula você lê os termos de marcha da tarefa de velocidade do mjlab, grava um rollout andando e outro parado, mede quanto cada termo pagou e descobre que, com um peso trocado, ficar parado passa a valer mais do que andar.",
   "objetivo": "medir quanto cada termo da recompensa paga num rollout gravado e prever o efeito de mudar um peso antes de treinar.",
   "competencias": [
     "ler-termos-de-recompensa",
@@ -54,7 +54,7 @@
           "icone": "robo",
           "titulo": "Postura",
           "sub": "+1 e +1",
-          "detalhe": "upright (tronco ereto, gravidade sem componente x e y no corpo) e pose (juntas perto da pose padrão). Pagam até para quem não anda.",
+          "detalhe": "upright (tronco ereto, gravidade sem componente x e y no corpo) e pose (juntas perto da pose padrêo). Pagam até para quem nêo anda.",
           "itens": [
             {
               "icone": "lista",
@@ -78,7 +78,7 @@
           "icone": "relogio",
           "titulo": "Suavidade",
           "sub": "−0,1",
-          "detalhe": "action_rate_l2 pune ação que muda muito de um passo para o outro. Sem ele, a política aprende a tremer, o que no robô aquece motor e gasta bateria.",
+          "detalhe": "action_rate_l2 pune açêo que muda muito de um passo para o outro. Sem ele, a política aprende a tremer, o que no robô aquece motor e gasta bateria.",
           "itens": [
             {
               "icone": "lista",
@@ -90,7 +90,7 @@
           "icone": "camadas",
           "titulo": "Contato",
           "sub": "−0,1",
-          "detalhe": "foot_slip pune o pé que escorrega enquanto está no chão. O mjlab tem ainda termos que o kit deixou de fora: altura do pé no balanço (foot_clearance, peso −2,0), pouso suave, momento angular e tempo de pé no ar (air_time, peso 0 no G1).",
+          "detalhe": "foot_slip pune o pé que escorrega enquanto está no chêo. O mjlab tem ainda termos que o kit deixou de fora: altura do pé no balanço (foot_clearance, peso −2,0), pouso suave, momento angular e tempo de pé no ar (air_time, peso 0 no G1).",
           "itens": [
             {
               "icone": "lista",
@@ -109,7 +109,7 @@
         {
           "rot": "Arquivo · kit/recompensa.yaml",
           "icone": "arquivo",
-          "conteudo": "# Recompensa de marcha do kit (FTH 1). Nomes, pesos e std seguem a tarefa de velocidade do mjlab\n# (src/mjlab/tasks/velocity/velocity_env_cfg.py, commit 8bb2bc9, 18/10/2026); \"pose\" usa um std só.\n# Cada termo vale weight × valor × 0,02 s por passo da política. Positivo = prêmio; negativo = punição.\ntrack_linear_velocity: {weight: 2.0, std: 0.5}     # exp(-erro² / std²) entre comando e velocidade xy\ntrack_angular_velocity: {weight: 2.0, std: 0.707}  # o mesmo para a rotação em z\nupright: {weight: 1.0, std: 0.447}                 # tronco em pé (gravidade sem componente x/y)\npose: {weight: 1.0, std: 0.3}                      # juntas perto da pose padrão\ndof_pos_limits: {weight: -1.0}                     # quanto as juntas passaram do limite (rad)\naction_rate_l2: {weight: -0.1}                     # ação que muda de um passo para o outro\nfoot_slip: {weight: -0.1}                          # pé que escorrega enquanto está no chão"
+          "conteudo": "# Recompensa de marcha do kit (FTH 1). Nomes, pesos e std seguem a tarefa de velocidade do mjlab\n# (src/mjlab/tasks/velocity/velocity_env_cfg.py, commit 8bb2bc9, 18/10/2026); \"pose\" usa um std só.\n# Cada termo vale weight × valor × 0,02 s por passo da política. Positivo = prêmio; negativo = puniçêo.\ntrack_linear_velocity: {weight: 2.0, std: 0.5}     # exp(-erro² / std²) entre comando e velocidade xy\ntrack_angular_velocity: {weight: 2.0, std: 0.707}  # o mesmo para a rotaçêo em z\nupright: {weight: 1.0, std: 0.447}                 # tronco em pé (gravidade sem componente x/y)\npose: {weight: 1.0, std: 0.3}                      # juntas perto da pose padrêo\ndof_pos_limits: {weight: -1.0}                     # quanto as juntas passaram do limite (rad)\naction_rate_l2: {weight: -0.1}                     # açêo que muda de um passo para o outro\nfoot_slip: {weight: -0.1}                          # pé que escorrega enquanto está no chêo"
         }
       ]
     },
@@ -139,15 +139,15 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>gravado: ~/fth/treino/andando.npz (500 passos)\ngravado: ~/fth/treino/parado.npz (500 passos)</pre><pre>rollout: andando.npz · 500 passos (10 s) · comando vx = 0.7 m/s\ntermo                     weight  valor médio    total\ntrack_linear_velocity          2        0.930    18.59\ntrack_angular_velocity         2        0.814    16.28\nupright                        1        0.995     9.95\npose                           1        0.925     9.25\ndof_pos_limits                -1        0.000     0.00\naction_rate_l2              -0.1        0.421    -0.42\nfoot_slip                   -0.1        0.054    -0.05\nRECOMPENSA DO EPISÓDIO                           53.60\nsaída: 0</pre><p>Andando, quem mais paga é rastrear a velocidade (18,59) e o giro (16,28). As punições quase não pesam: a política já é suave.</p>"
+            "html": "<pre>gravado: ~/fth/treino/andando.npz (500 passos)\ngravado: ~/fth/treino/parado.npz (500 passos)</pre><pre>rollout: andando.npz · 500 passos (10 s) · comando vx = 0.7 m/s\ntermo                     weight  valor médio    total\ntrack_linear_velocity          2        0.930    18.59\ntrack_angular_velocity         2        0.814    16.28\nupright                        1        0.995     9.95\npose                           1        0.925     9.25\ndof_pos_limits                -1        0.000     0.00\naction_rate_l2              -0.1        0.421    -0.42\nfoot_slip                   -0.1        0.054    -0.05\nRECOMPENSA DO EPISÓDIO                           53.60\nsaída: 0</pre><p>Andando, quem mais paga é rastrear a velocidade (18,59) e o giro (16,28). As punições quase nêo pesam: a política já é suave.</p>"
           },
           {
             "rot": "Parado",
             "html": "<pre>rollout: parado.npz · 500 passos (10 s) · comando vx = 0.7 m/s (trocado na conta)\ntermo                     weight  valor médio    total\ntrack_linear_velocity          2        0.140     2.80\ntrack_angular_velocity         2        0.999    19.98\nupright                        1        0.999     9.99\npose                           1        0.956     9.56\ndof_pos_limits                -1        0.000     0.00\naction_rate_l2              -0.1        0.003    -0.00\nfoot_slip                   -0.1        0.000    -0.00\nRECOMPENSA DO EPISÓDIO                           42.32</pre><p>Parado com pedido de 0,7 m/s, o rastreio linear cai de 18,59 para 2,80, mas giro, upright e pose pagam até mais. O total fica em 42,32 contra 53,60: ficar parado já vale 79 % de andar.</p>"
           },
           {
-            "rot": "Erro comum: rollout não gravado",
-            "html": "<pre>ERRO: não achei ~/fth/treino/nao-existe.npz. Grave antes com: python3 kit/andar_demo.py --gravar ~/fth/treino/nao-existe.npz\nsaída: 1</pre><p>O termos.py lê um arquivo .npz gravado pelo andar_demo.py. Grave antes; o erro diz o comando.</p>"
+            "rot": "Erro comum: rollout nêo gravado",
+            "html": "<pre>ERRO: nêo achei ~/fth/treino/nao-existe.npz. Grave antes com: python3 kit/andar_demo.py --gravar ~/fth/treino/nao-existe.npz\nsaída: 1</pre><p>O termos.py lê um arquivo .npz gravado pelo andar_demo.py. Grave antes; o erro diz o comando.</p>"
           }
         ]
       }
@@ -193,7 +193,7 @@
           ]
         },
         {
-          "titulo": "Inclinação",
+          "titulo": "Inclinaçêo",
           "sub": "−5",
           "texto": [
             "<code>flat_orientation_l2</code> com peso −5 pune o tronco inclinado, o papel que o <code>upright</code> faz no mjlab."
@@ -203,7 +203,7 @@
           "titulo": "Marcha",
           "sub": "+0,5",
           "texto": [
-            "<code>gait</code> com peso 0,5 premia o padrão de passo: período de 0,8 s, com os dois pés defasados em meio período (alternar). Sem um termo assim, a política pode achar um jeito estranho de se deslocar, como arrastar os pés."
+            "<code>gait</code> com peso 0,5 premia o padrêo de passo: período de 0,8 s, com os dois pés defasados em meio período (alternar). Sem um termo assim, a política pode achar um jeito estranho de se deslocar, como arrastar os pés."
           ]
         }
       ]
@@ -224,7 +224,7 @@
           "id": "e2",
           "titulo": "E2 · O parado",
           "min": "5 min",
-          "texto": "Rode o rollout parado cobrado como se devesse andar e calcule quanto ele vale em relação ao andando.",
+          "texto": "Rode o rollout parado cobrado como se devesse andar e calcule quanto ele vale em relaçêo ao andando.",
           "pronto": "a saída termina em <code>42.32</code> e você escreveu \"ficar parado vale 79 % de andar\"."
         },
         {
@@ -239,18 +239,18 @@
     {
       "tipo": "quiz",
       "titulo": "Teste da aula",
-      "sub": "A explicação aparece depois da sua resposta.",
+      "sub": "A explicaçêo aparece depois da sua resposta.",
       "perguntas": [
         {
           "p": "Parado com pedido de 0,7 m/s, o robô ainda soma 42,32. De onde vem a maior parte?",
           "opcoes": [
-            "Do rastreio de velocidade linear, que paga mesmo quando o robô não sai do lugar.",
+            "Do rastreio de velocidade linear, que paga mesmo quando o robô nêo sai do lugar.",
             "De dof_pos_limits, que dá prêmio a quem fica longe dos limites.",
-            "De foot_slip, porque o pé parado nunca escorrega no chão.",
+            "De foot_slip, porque o pé parado nunca escorrega no chêo.",
             "Do giro, de upright e de pose, que pagam a quem fica ereto e parado."
           ],
           "certa": 3,
-          "explica": "Comando de giro 0 é \"acertado\" por quem não gira, e upright e pose premiam a postura. Todos pagam sem andar: por isso o rastreio linear precisa pesar.",
+          "explica": "Comando de giro 0 é \"acertado\" por quem nêo gira, e upright e pose premiam a postura. Todos pagam sem andar: por isso o rastreio linear precisa pesar.",
           "ref": "codigo",
           "cert": true
         },
@@ -269,9 +269,9 @@
         {
           "p": "Para que serve action_rate_l2?",
           "opcoes": [
-            "Premiar a política por mudar de ação com frequência.",
+            "Premiar a política por mudar de açêo com frequência.",
             "Limitar o torque máximo que o PD pode pedir ao motor.",
-            "Punir ação que muda muito de um passo para o outro, o que vira tremor.",
+            "Punir açêo que muda muito de um passo para o outro, o que vira tremor.",
             "Medir quantas ações por segundo a política consegue mandar para os motores do robô."
           ],
           "certa": 2,
@@ -325,7 +325,7 @@
           "icone": "git"
         },
         {
-          "t": "vla-v72, aula 7: RL depois da imitação",
+          "t": "vla-v72, aula 7: RL depois da imitaçêo",
           "href": "https://linnoff88-dev.github.io/
           "icone": "seta"
         }

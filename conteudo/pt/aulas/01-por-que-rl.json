@@ -2,10 +2,10 @@
   "slug": "por-que-rl",
   "num": 1,
   "menu": "Por que RL",
-  "titulo": "Por que a locomoção virou RL",
+  "titulo": "Por que a locomoçêo virou RL",
   "titulo_curto": "Por que RL",
   "minutos": 16,
-  "lead": "O Unitree G1 deste curso anda porque uma rede neural manda 29 alvos de junta a cada 20 ms. Nesta aula você monta a bancada, roda a política de marcha pronta do Unitree G1 no MuJoCo, vê o mesmo robô cair sem ela e entende por que o controle clássico deu lugar ao RL em simulação massiva.",
+  "lead": "O Unitree G1 deste curso anda porque uma rede neural manda 29 alvos de junta a cada 20 ms. Nesta aula você monta a bancada, roda a política de marcha pronta do Unitree G1 no MuJoCo, vê o mesmo robô cair sem ela e entende por que o controle clássico deu lugar ao RL em simulaçêo massiva.",
   "objetivo": "rodar a política de marcha pronta do G1 no MuJoCo, medir o que ela faz e comparar com o robô sem política.",
   "competencias": [
     "rodar-politica-de-marcha-no-mujoco",
@@ -15,7 +15,7 @@
   "aprende": [
     {
       "icone": "camadas",
-      "t": "Controle clássico (modelo + otimização) × política aprendida em simulação"
+      "t": "Controle clássico (modelo + otimizaçêo) × política aprendida em simulaçêo"
     },
     {
       "icone": "robo",
@@ -35,7 +35,7 @@
     {
       "tipo": "diagrama",
       "titulo": "Dois jeitos de fazer um humanoide andar",
-      "sub": "Clique em cada bloco. Os três primeiros são o caminho clássico; os três últimos, o que o curso pratica.",
+      "sub": "Clique em cada bloco. Os três primeiros sêo o caminho clássico; os três últimos, o que o curso pratica.",
       "nos": [
         {
           "icone": "camadas",
@@ -45,7 +45,7 @@
           "itens": [
             {
               "icone": "lista",
-              "t": "física escrita à mão"
+              "t": "física escrita à mêo"
             }
           ]
         },
@@ -53,7 +53,7 @@
           "icone": "cerebro",
           "titulo": "MPC",
           "sub": "otimiza",
-          "detalhe": "O controle preditivo (MPC) resolve, a cada ciclo, uma otimização sobre os próximos instantes usando o modelo. É interpretável e dá garantias sobre o modelo, mas cada comportamento novo pede engenharia nova.",
+          "detalhe": "O controle preditivo (MPC) resolve, a cada ciclo, uma otimizaçêo sobre os próximos instantes usando o modelo. É interpretável e dá garantias sobre o modelo, mas cada comportamento novo pede engenharia nova.",
           "itens": [
             {
               "icone": "lista",
@@ -65,7 +65,7 @@
           "icone": "x",
           "titulo": "Limite",
           "sub": "código",
-          "detalhe": "A Figure relatou que o Helix 02 (27/01/2026) substituiu 109.504 linhas de C++ de controle por um controlador de corpo inteiro aprendido, a 1 kHz, com 10 M de parâmetros. A pesquisa do curso não achou comparação independente MPC × RL publicada em 2026.",
+          "detalhe": "A Figure relatou que o Helix 02 (27/01/2026) substituiu 109.504 linhas de C++ de controle por um controlador de corpo inteiro aprendido, a 1 kHz, com 10 M de parâmetros. A pesquisa do curso nêo achou comparaçêo independente MPC × RL publicada em 2026.",
           "itens": [
             {
               "icone": "lista",
@@ -90,7 +90,7 @@
           "titulo": "Política",
           "sub": "50 Hz",
           "forte": true,
-          "detalhe": "O resultado é uma rede pequena: lê a velocidade angular, a gravidade no corpo, o comando, as juntas e a última ação, e devolve 29 alvos de junta a cada 20 ms. É ela que você roda nesta aula.",
+          "detalhe": "O resultado é uma rede pequena: lê a velocidade angular, a gravidade no corpo, o comando, as juntas e a última açêo, e devolve 29 alvos de junta a cada 20 ms. É ela que você roda nesta aula.",
           "itens": [
             {
               "icone": "lista",
@@ -102,7 +102,7 @@
           "icone": "chip",
           "titulo": "PD",
           "sub": "junta",
-          "detalhe": "Os alvos não viram torque direto: um controlador PD em cada junta, bem mais rápido que a política, transforma alvo em torque. É a camada de baixo, assunto da aula 2.",
+          "detalhe": "Os alvos nêo viram torque direto: um controlador PD em cada junta, bem mais rápido que a política, transforma alvo em torque. É a camada de baixo, assunto da aula 2.",
           "itens": [
             {
               "icone": "lista",
@@ -111,7 +111,7 @@
           ]
         }
       ],
-      "legenda": "MPC segue vivo como conceito e onde se exige garantia. A prática deste curso é a coluna da direita: simulação, política e PD."
+      "legenda": "MPC segue vivo como conceito e onde se exige garantia. A prática deste curso é a coluna da direita: simulaçêo, política e PD."
     },
     {
       "tipo": "passos",
@@ -122,15 +122,15 @@
           "titulo": "O robô",
           "sub": "Menagerie",
           "texto": [
-            "O Unitree G1 de 29 graus de liberdade do MuJoCo Menagerie, fixado no commit 62ab00f (o mesmo do curso 0). Atuador de posição com o kp e o kd da política."
+            "O Unitree G1 de 29 graus de liberdade do MuJoCo Menagerie, fixado no commit 62ab00f (o mesmo do curso 0). Atuador de posiçêo com o kp e o kd da política."
           ]
         },
         {
           "titulo": "A política",
           "sub": "pronta e aberta",
           "texto": [
-            "A Unitree publica no unitree_rl_lab uma política de velocidade do G1 já treinada no Isaac Lab e exportada em ONNX, com o <code>deploy.yaml</code> (ordem das juntas, kp e kd, pose padrão). Licença Apache-2.0. O kit fixa o commit 4960b84.",
-            "Rodar no MuJoCo uma política treinada no Isaac Lab já é atravessar de um motor de física para outro. O curso 2 (sim2real) faz disso um portão."
+            "A Unitree publica no unitree_rl_lab uma política de velocidade do G1 já treinada no Isaac Lab e exportada em ONNX, com o <code>deploy.yaml</code> (ordem das juntas, kp e kd, pose padrêo). Licença Apache-2.0. O kit fixa o commit 4960b84.",
+            "Rodar no MuJoCo uma política treinada no Isaac Lab já é atravessar de um motor de física para outro. O curso 2 (sim2real) faz disso um portêo."
           ]
         },
         {
@@ -145,7 +145,7 @@
           "titulo": "Sem política",
           "sub": "o contraste",
           "texto": [
-            "<code>--sem-politica</code> deixa só o PD segurando a pose padrão. Ninguém corrige o equilíbrio e o robô cai: o que mantém o G1 de pé andando é o laço fechado da política."
+            "<code>--sem-politica</code> deixa só o PD segurando a pose padrêo. Ninguém corrige o equilíbrio e o robô cai: o que mantém o G1 de pé andando é o laço fechado da política."
           ]
         }
       ]
@@ -153,7 +153,7 @@
     {
       "tipo": "codigo",
       "titulo": "Montar a bancada ~/fth",
-      "sub": "Se você fez o curso 0, o venv e o Menagerie já estão lá: o bloco só acrescenta o que falta (onnxruntime, torch para CPU, a política). Versões fixas, testadas em 19/10/2026.",
+      "sub": "Se você fez o curso 0, o venv e o Menagerie já estêo lá: o bloco só acrescenta o que falta (onnxruntime, torch para CPU, a política). Versões fixas, testadas em 19/10/2026.",
       "blocos": [
         {
           "rot": "Terminal · preparar ~/fth",
@@ -166,11 +166,11 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>unitree_rl_lab 4960b84 (2025-11-19)\nmujoco 3.16.0 · onnxruntime 1.31.0 · torch 2.14.1+cpu</pre><p>Duas linhas e nenhum erro. Fixe os commits: um <code>policy.onnx</code> de outro commit pode ter outra ordem de entradas. O torch vem da página de wheels de CPU do PyTorch (o curso não precisa de GPU).</p>"
+            "html": "<pre>unitree_rl_lab 4960b84 (2025-11-19)\nmujoco 3.16.0 · onnxruntime 1.31.0 · torch 2.14.1+cpu</pre><p>Duas linhas e nenhum erro. Fixe os commits: um <code>policy.onnx</code> de outro commit pode ter outra ordem de entradas. O torch vem da página de wheels de CPU do PyTorch (o curso nêo precisa de GPU).</p>"
           },
           {
             "rot": "Erro comum: bancada fora do lugar",
-            "html": "<pre>ERRO: não achei /tmp/sem-bancada/unitree_rl_lab/deploy/robots/g1_29dof/config/policy/velocity/v0/exported/policy.onnx. Rode a preparação da aula 1.\nsaída: 1</pre><p>Os scripts procuram tudo em ~/fth, ou na pasta da variável <code>FTH</code>. Se a preparação não rodou (ou rodou noutra pasta), o erro diz o caminho que faltou.</p>"
+            "html": "<pre>ERRO: nêo achei /tmp/sem-bancada/unitree_rl_lab/deploy/robots/g1_29dof/config/policy/velocity/v0/exported/policy.onnx. Rode a preparaçêo da aula 1.\nsaída: 1</pre><p>Os scripts procuram tudo em ~/fth, ou na pasta da variável <code>FTH</code>. Se a preparaçêo nêo rodou (ou rodou noutra pasta), o erro diz o caminho que faltou.</p>"
           }
         ]
       }
@@ -178,7 +178,7 @@
     {
       "tipo": "codigo",
       "titulo": "O G1 andando, e o G1 sem política",
-      "sub": "10 s pedindo 0,7 m/s para a frente. Sai 0 se não caiu, 1 se caiu.",
+      "sub": "10 s pedindo 0,7 m/s para a frente. Sai 0 se nêo caiu, 1 se caiu.",
       "blocos": [
         {
           "rot": "Terminal · andar com a política",
@@ -201,15 +201,15 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 480 → 29 · 50 Hz\ncomando: vx = 0.7 m/s por 10 s · simulação a 500 Hz, política a 50 Hz\nandou: 6.6 m para a frente · desvio lateral: 0.5 m · velocidade média: 0.66 m/s\naltura final da pelve: 0.77 m\ncaiu: não\nsaída: 0</pre><p>6,6 m em 10 s (0,66 m/s para 0,70 pedidos) e a pelve termina a 0,77 m. O desvio lateral de 0,5 m é normal: ninguém corrige a direção, só a velocidade.</p>"
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · 480 → 29 · 50 Hz\ncomando: vx = 0.7 m/s por 10 s · simulaçêo a 500 Hz, política a 50 Hz\nandou: 6.6 m para a frente · desvio lateral: 0.5 m · velocidade média: 0.66 m/s\naltura final da pelve: 0.77 m\ncaiu: nêo\nsaída: 0</pre><p>6,6 m em 10 s (0,66 m/s para 0,70 pedidos) e a pelve termina a 0,77 m. O desvio lateral de 0,5 m é normal: ninguém corrige a direçêo, só a velocidade.</p>"
           },
           {
             "rot": "Sem política",
-            "html": "<pre>política: nenhuma (só PD na pose padrão)\ncomando: vx = 0.7 m/s por 10 s · simulação a 500 Hz, política a 50 Hz\nandou: 0.8 m para a frente · desvio lateral: 0.0 m · velocidade média: 0.57 m/s\naltura final da pelve: 0.33 m\ncaiu: sim, em t = 1.4 s</pre><p>Queda aos 1,4 s. A \"velocidade média\" de 0,57 m/s aqui é o corpo tombando para a frente, não andar: sempre leia a velocidade junto com <code>caiu</code>.</p>"
+            "html": "<pre>política: nenhuma (só PD na pose padrêo)\ncomando: vx = 0.7 m/s por 10 s · simulaçêo a 500 Hz, política a 50 Hz\nandou: 0.8 m para a frente · desvio lateral: 0.0 m · velocidade média: 0.57 m/s\naltura final da pelve: 0.33 m\ncaiu: sim, em t = 1.4 s</pre><p>Queda aos 1,4 s. A \"velocidade média\" de 0,57 m/s aqui é o corpo tombando para a frente, nêo andar: sempre leia a velocidade junto com <code>caiu</code>.</p>"
           },
           {
             "rot": "1,0 m/s",
-            "html": "<pre>andou: 9.0 m para a frente · desvio lateral: 1.2 m · velocidade média: 0.90 m/s\naltura final da pelve: 0.76 m\ncaiu: não</pre><p>9,0 m em 10 s. 1,0 m/s é o teto de velocidade para a frente com que a política foi treinada (faixa de comando do unitree_rl_lab: −0,5 a 1,0 m/s).</p>"
+            "html": "<pre>andou: 9.0 m para a frente · desvio lateral: 1.2 m · velocidade média: 0.90 m/s\naltura final da pelve: 0.76 m\ncaiu: nêo</pre><p>9,0 m em 10 s. 1,0 m/s é o teto de velocidade para a frente com que a política foi treinada (faixa de comando do unitree_rl_lab: −0,5 a 1,0 m/s).</p>"
           }
         ]
       }
@@ -223,7 +223,7 @@
           "id": "e1",
           "titulo": "E1 · Bancada pronta",
           "min": "10 min",
-          "texto": "Rode o bloco de preparação. Se o curso 0 já montou ~/fth, ele só acrescenta o que falta.",
+          "texto": "Rode o bloco de preparaçêo. Se o curso 0 já montou ~/fth, ele só acrescenta o que falta.",
           "pronto": "o bloco termina em <code>unitree_rl_lab 4960b84 (2025-11-19)</code> e <code>mujoco 3.16.0 · onnxruntime 1.31.0 · torch 2.14.1+cpu</code>."
         },
         {
@@ -231,27 +231,27 @@
           "titulo": "E2 · O G1 anda",
           "min": "3 min",
           "texto": "Rode a política com 0,7 m/s por 10 s e anote quantos metros a pelve andou.",
-          "pronto": "<code>python3 kit/andar_demo.py --vx 0.7 --s 10; echo \"saída: $?\"</code> → <code>caiu: não</code> e <code>saída: 0</code>."
+          "pronto": "<code>python3 kit/andar_demo.py --vx 0.7 --s 10; echo \"saída: $?\"</code> → <code>caiu: nêo</code> e <code>saída: 0</code>."
         },
         {
           "id": "e3",
           "titulo": "E3 · O contraste",
           "min": "5 min",
           "texto": "Rode com <code>--sem-politica</code> e escreva, numa frase, o que mantém o robô de pé quando ele anda.",
-          "pronto": "a saída mostra <code>caiu: sim, em t = 1.4 s</code>; sua frase diz que é o laço fechado da política (o PD sozinho não corrige o equilíbrio)."
+          "pronto": "a saída mostra <code>caiu: sim, em t = 1.4 s</code>; sua frase diz que é o laço fechado da política (o PD sozinho nêo corrige o equilíbrio)."
         }
       ]
     },
     {
       "tipo": "quiz",
       "titulo": "Teste da aula",
-      "sub": "A explicação aparece depois da sua resposta.",
+      "sub": "A explicaçêo aparece depois da sua resposta.",
       "perguntas": [
         {
           "p": "O que a política de marcha do G1 entrega a cada 20 ms?",
           "opcoes": [
             "Torques em N·m aplicados direto em cada motor do robô.",
-            "29 alvos de posição de junta, que o PD transforma em torque.",
+            "29 alvos de posiçêo de junta, que o PD transforma em torque.",
             "A trajetória completa dos pés para os próximos dois segundos.",
             "Um comando de velocidade para o controlador de equilíbrio."
           ],
@@ -265,23 +265,23 @@
           "opcoes": [
             "O PD sozinho consegue andar, só que mais devagar e com passos mais curtos que a política.",
             "A política estava ligada por engano no modo --sem-politica.",
-            "O comando de 0,7 m/s foi aplicado como empurrão inicial.",
-            "É o corpo tombando para a frente; velocidade sem \"caiu: não\" não é marcha."
+            "O comando de 0,7 m/s foi aplicado como empurrêo inicial.",
+            "É o corpo tombando para a frente; velocidade sem \"caiu: nêo\" nêo é marcha."
           ],
           "certa": 3,
-          "explica": "A pelve se deslocou porque o robô caiu para a frente. Toda métrica de locomoção se lê junto com a queda; é a mesma armadilha das curvas de treino (aula 6).",
+          "explica": "A pelve se deslocou porque o robô caiu para a frente. Toda métrica de locomoçêo se lê junto com a queda; é a mesma armadilha das curvas de treino (aula 6).",
           "ref": "codigo"
         },
         {
           "p": "O que a Figure relatou sobre o Helix 02, em janeiro de 2026?",
           "opcoes": [
             "Um controlador de corpo inteiro aprendido no lugar de 109.504 linhas de C++.",
-            "Que o MPC venceu o RL numa comparação independente publicada em 2026 por universidades.",
+            "Que o MPC venceu o RL numa comparaçêo independente publicada em 2026 por universidades.",
             "Que o robô passou a andar sem nenhum controle de baixo nível.",
-            "Que o treino foi feito no robô real, sem simulação nenhuma."
+            "Que o treino foi feito no robô real, sem simulaçêo nenhuma."
           ],
           "certa": 0,
-          "explica": "É o relato da própria Figure (1 kHz, 10 M de parâmetros). Comparação independente MPC × RL a pesquisa do curso não achou: por isso o curso trata o MPC como conceito e o RL como prática.",
+          "explica": "É o relato da própria Figure (1 kHz, 10 M de parâmetros). Comparaçêo independente MPC × RL a pesquisa do curso nêo achou: por isso o curso trata o MPC como conceito e o RL como prática.",
           "ref": "diagrama"
         }
       ]
@@ -292,7 +292,7 @@
       "itens": [
         {
           "t": "Mudança",
-          "texto": "A marcha de humanoide passou de modelo + otimização para política treinada em simulação massiva."
+          "texto": "A marcha de humanoide passou de modelo + otimizaçêo para política treinada em simulaçêo massiva."
         },
         {
           "t": "Camadas",

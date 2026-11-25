@@ -2,11 +2,11 @@
   "slug": "ambiente",
   "num": 3,
   "menu": "O ambiente",
-  "titulo": "Observação, ação, recompensa e fim de episódio",
+  "titulo": "Observaçêo, açêo, recompensa e fim de episódio",
   "titulo_curto": "O ambiente",
   "minutos": 16,
-  "lead": "Antes de treinar, o problema precisa virar um ambiente: o que a política vê, o que ela manda, quanto ganha e quando o episódio acaba. Nesta aula você lê as quatro partes no formato \"manager-based\" do Isaac Lab e do mjlab, numa versão mínima em MuJoCo puro, e roda um episódio com três políticas diferentes.",
-  "objetivo": "ler as partes de um ambiente de locomoção e rodar um episódio com três ações diferentes.",
+  "lead": "Antes de treinar, o problema precisa virar um ambiente: o que a política vê, o que ela manda, quanto ganha e quando o episódio acaba. Nesta aula você lê as quatro partes no formato \"manager-based\" do Isaac Lab e do mjlab, numa versêo mínima em MuJoCo puro, e roda um episódio com três políticas diferentes.",
+  "objetivo": "ler as partes de um ambiente de locomoçêo e rodar um episódio com três ações diferentes.",
   "competencias": [
     "ler-ambiente-manager-based",
     "dimensionar-observacao-e-acao",
@@ -15,11 +15,11 @@
   "aprende": [
     {
       "icone": "camadas",
-      "t": "Ambiente \"manager-based\": termos com nome, não um step() opaco"
+      "t": "Ambiente \"manager-based\": termos com nome, nêo um step() opaco"
     },
     {
       "icone": "lista",
-      "t": "Observação de 96 números (480 com histórico de 5) e ação de 29"
+      "t": "Observaçêo de 96 números (480 com histórico de 5) e açêo de 29"
     },
     {
       "icone": "x",
@@ -27,14 +27,14 @@
     },
     {
       "icone": "grafico",
-      "t": "Ação aleatória cai em 1,3 s; a pronta chega aos 20 s"
+      "t": "Açêo aleatória cai em 1,3 s; a pronta chega aos 20 s"
     }
   ],
-  "hero_alt": "Notebook aberto numa bancada escura mostrando um robô humanoide em simulação 3D, desfocado, com caderno e caneca ao lado.",
+  "hero_alt": "Notebook aberto numa bancada escura mostrando um robô humanoide em simulaçêo 3D, desfocado, com caderno e caneca ao lado.",
   "secoes": [
     {
       "tipo": "diagrama",
-      "titulo": "As peças de um ambiente de locomoção",
+      "titulo": "As peças de um ambiente de locomoçêo",
       "sub": "Clique em cada bloco. No Isaac Lab e no mjlab, cada um é uma lista de termos com nome e peso.",
       "nos": [
         {
@@ -51,9 +51,9 @@
         },
         {
           "icone": "lupa",
-          "titulo": "Observação",
+          "titulo": "Observaçêo",
           "sub": "o que vê",
-          "detalhe": "Seis termos: velocidade angular da base, gravidade projetada no corpo, comando, posição e velocidade das juntas (relativas à pose padrão) e a última ação. 3 + 3 + 3 + 29 + 29 + 29 = 96. A política pronta empilha 5 instantes: 480.",
+          "detalhe": "Seis termos: velocidade angular da base, gravidade projetada no corpo, comando, posiçêo e velocidade das juntas (relativas à pose padrêo) e a última açêo. 3 + 3 + 3 + 29 + 29 + 29 = 96. A política pronta empilha 5 instantes: 480.",
           "itens": [
             {
               "icone": "lista",
@@ -63,10 +63,10 @@
         },
         {
           "icone": "robo",
-          "titulo": "Ação",
+          "titulo": "Açêo",
           "sub": "29 números",
           "forte": true,
-          "detalhe": "Um número por junta. O alvo de cada junta é a pose padrão + 0,25 × ação, a cada 20 ms; o PD da aula 2 faz o resto. Ação zero = ficar na pose padrão.",
+          "detalhe": "Um número por junta. O alvo de cada junta é a pose padrêo + 0,25 × açêo, a cada 20 ms; o PD da aula 2 faz o resto. Açêo zero = ficar na pose padrêo.",
           "itens": [
             {
               "icone": "lista",
@@ -99,12 +99,12 @@
           ]
         }
       ],
-      "legenda": "O mjlab e o Isaac Lab têm ainda eventos (empurrão, randomização) e currículo, que entram nas aulas 7 e 8."
+      "legenda": "O mjlab e o Isaac Lab têm ainda eventos (empurrêo, randomizaçêo) e currículo, que entram nas aulas 7 e 8."
     },
     {
       "tipo": "codigo",
-      "titulo": "Um episódio com ação aleatória",
-      "sub": "O checar_ambiente.py imprime as quatro partes e roda um episódio. Ação aleatória é o que uma política recém-criada, antes de qualquer treino, faz.",
+      "titulo": "Um episódio com açêo aleatória",
+      "sub": "O checar_ambiente.py imprime as quatro partes e roda um episódio. Açêo aleatória é o que uma política recém-criada, antes de qualquer treino, faz.",
       "blocos": [
         {
           "rot": "Terminal · as quatro partes",
@@ -117,15 +117,15 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>observação: 96 números = (base_ang_vel 3 + projected_gravity 3 + velocity_commands 3 + joint_pos_rel 29 + joint_vel_rel 29 + last_action 29) × histórico 1\nação: 29 números → alvo de cada junta = pose padrão + 0.25 × ação, a cada 20 ms\nrecompensa: track_linear_velocity (+2), track_angular_velocity (+2), upright (+1), pose (+1), dof_pos_limits (-1), action_rate_l2 (-0.1), foot_slip (-0.1)\nterminações: queda (pelve inclinada &gt; 70° ou abaixo de 0.3 m) · tempo (1000 passos = 20 s)\ncomando sorteado: vx = -0.48 m/s · vy = +0.19 m/s · giro = +0.17 rad/s\nação aleatoria: 67 passos · recompensa somada: -5.44\nepisódio terminou por: queda em t = 1.34 s\nsaída: 0</pre><p>96 números de observação, 29 de ação, 7 termos de recompensa e duas terminações. Com ação aleatória, queda em 1,34 s e recompensa negativa: as punições (limites, tremor) pesaram mais que os prêmios.</p>"
+            "html": "<pre>observaçêo: 96 números = (base_ang_vel 3 + projected_gravity 3 + velocity_commands 3 + joint_pos_rel 29 + joint_vel_rel 29 + last_action 29) × histórico 1\naçêo: 29 números → alvo de cada junta = pose padrêo + 0.25 × açêo, a cada 20 ms\nrecompensa: track_linear_velocity (+2), track_angular_velocity (+2), upright (+1), pose (+1), dof_pos_limits (-1), action_rate_l2 (-0.1), foot_slip (-0.1)\nterminações: queda (pelve inclinada &gt; 70° ou abaixo de 0.3 m) · tempo (1000 passos = 20 s)\ncomando sorteado: vx = -0.48 m/s · vy = +0.19 m/s · giro = +0.17 rad/s\naçêo aleatoria: 67 passos · recompensa somada: -5.44\nepisódio terminou por: queda em t = 1.34 s\nsaída: 0</pre><p>96 números de observaçêo, 29 de açêo, 7 termos de recompensa e duas terminações. Com açêo aleatória, queda em 1,34 s e recompensa negativa: as punições (limites, tremor) pesaram mais que os prêmios.</p>"
           }
         ]
       }
     },
     {
       "tipo": "codigo",
-      "titulo": "Ação zero e ação pronta",
-      "sub": "Mesma semente, mesmo comando sorteado. Muda só quem decide a ação.",
+      "titulo": "Açêo zero e açêo pronta",
+      "sub": "Mesma semente, mesmo comando sorteado. Muda só quem decide a açêo.",
       "blocos": [
         {
           "rot": "Terminal · zero × pronta",
@@ -138,7 +138,7 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>ação zero: 70 passos · recompensa somada: 3.78\nepisódio terminou por: queda em t = 1.40 s\nação pronta: 1000 passos · recompensa somada: 108.61\nepisódio terminou por: tempo em t = 20.00 s</pre><p>Ação zero também cai (1,40 s), mas com recompensa positiva: ficou um pouco ereto e perto da pose antes de cair. A política pronta chega ao corte de tempo (1.000 passos) com 108,61 de recompensa. O episódio que termina por <code>tempo</code> é o que o treino quer.</p>"
+            "html": "<pre>açêo zero: 70 passos · recompensa somada: 3.78\nepisódio terminou por: queda em t = 1.40 s\naçêo pronta: 1000 passos · recompensa somada: 108.61\nepisódio terminou por: tempo em t = 20.00 s</pre><p>Açêo zero também cai (1,40 s), mas com recompensa positiva: ficou um pouco ereto e perto da pose antes de cair. A política pronta chega ao corte de tempo (1.000 passos) com 108,61 de recompensa. O episódio que termina por <code>tempo</code> é o que o treino quer.</p>"
           }
         ]
       }
@@ -146,13 +146,13 @@
     {
       "tipo": "passos",
       "titulo": "O mesmo ambiente no mjlab (mostrado)",
-      "sub": "Como as peças aparecem no arquivo de configuração da tarefa de velocidade do mjlab (commit 8bb2bc9, 18/10/2026). Não roda aqui: pede GPU NVIDIA.",
+      "sub": "Como as peças aparecem no arquivo de configuraçêo da tarefa de velocidade do mjlab (commit 8bb2bc9, 18/10/2026). Nêo roda aqui: pede GPU NVIDIA.",
       "passos": [
         {
           "titulo": "Classes",
           "sub": "uma por peça",
           "texto": [
-            "Em <code>velocity_env_cfg.py</code>, observações, ações, comandos, recompensas, terminações, eventos e currículo são dicionários de termos (<code>ObservationTermCfg</code>, <code>RewardTermCfg</code>, <code>TerminationTermCfg</code>…), cada um com nome, função e parâmetros."
+            "Em <code>velocity_env_cfg.py</code>, observações, ações, comandos, recompensas, terminações, eventos e currículo sêo dicionários de termos (<code>ObservationTermCfg</code>, <code>RewardTermCfg</code>, <code>TerminationTermCfg</code>…), cada um com nome, funçêo e parâmetros."
           ]
         },
         {
@@ -166,7 +166,7 @@
           "titulo": "Por robô",
           "sub": "sobrescreve",
           "texto": [
-            "A tarefa base é genérica; a pasta <code>config/g1</code> sobrescreve o que é do G1 (escala da ação, pesos). No unitree_rl_lab, o equivalente fica em <code>tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py</code>, com 4.096 ambientes."
+            "A tarefa base é genérica; a pasta <code>config/g1</code> sobrescreve o que é do G1 (escala da açêo, pesos). No unitree_rl_lab, o equivalente fica em <code>tasks/locomotion/robots/g1/29dof/velocity_env_cfg.py</code>, com 4.096 ambientes."
           ]
         }
       ]
@@ -180,8 +180,8 @@
           "id": "e1",
           "titulo": "E1 · As quatro partes",
           "min": "5 min",
-          "texto": "Rode o checar_ambiente.py com ação aleatória e confira a conta 3 + 3 + 3 + 29 + 29 + 29.",
-          "pronto": "<code>python3 kit/checar_ambiente.py --acao aleatoria; echo \"saída: $?\"</code> → <code>observação: 96 números</code> e <code>episódio terminou por: queda em t = 1.34 s</code>."
+          "texto": "Rode o checar_ambiente.py com açêo aleatória e confira a conta 3 + 3 + 3 + 29 + 29 + 29.",
+          "pronto": "<code>python3 kit/checar_ambiente.py --acao aleatoria; echo \"saída: $?\"</code> → <code>observaçêo: 96 números</code> e <code>episódio terminou por: queda em t = 1.34 s</code>."
         },
         {
           "id": "e2",
@@ -194,7 +194,7 @@
           "id": "e3",
           "titulo": "E3 · Outra semente",
           "min": "5 min",
-          "texto": "Rode com <code>--seed 1</code>, <code>2</code> e <code>3</code> (ação aleatória) e veja o comando mudar. Escreva por que a semente fixa importa para comparar dois treinos.",
+          "texto": "Rode com <code>--seed 1</code>, <code>2</code> e <code>3</code> (açêo aleatória) e veja o comando mudar. Escreva por que a semente fixa importa para comparar dois treinos.",
           "pronto": "três linhas <code>comando sorteado:</code> diferentes, e a mesma semente repetida dá a mesma saída."
         }
       ]
@@ -202,31 +202,31 @@
     {
       "tipo": "quiz",
       "titulo": "Teste da aula",
-      "sub": "A explicação aparece depois da sua resposta.",
+      "sub": "A explicaçêo aparece depois da sua resposta.",
       "perguntas": [
         {
-          "p": "Por que a política pronta recebe 480 números e não 96?",
+          "p": "Por que a política pronta recebe 480 números e nêo 96?",
           "opcoes": [
-            "Ela empilha 5 instantes da observação de 96.",
-            "Ela também recebe a imagem de uma câmera de baixa resolução.",
+            "Ela empilha 5 instantes da observaçêo de 96.",
+            "Ela também recebe a imagem de uma câmera de baixa resoluçêo.",
             "O G1 do unitree_rl_lab tem mais juntas que o do Menagerie.",
-            "As 96 observações são repetidas para cada perna e cada braço."
+            "As 96 observações sêo repetidas para cada perna e cada braço."
           ],
           "certa": 0,
-          "explica": "Histórico de 5 passos × 96 = 480. O histórico dá à política uma noção de tendência (velocidade, aceleração) sem memória interna.",
+          "explica": "Histórico de 5 passos × 96 = 480. O histórico dá à política uma noçêo de tendência (velocidade, aceleraçêo) sem memória interna.",
           "ref": "diagrama",
           "cert": true
         },
         {
-          "p": "Ação zero cai em 1,40 s, mas a recompensa somada é positiva. Por quê?",
+          "p": "Açêo zero cai em 1,40 s, mas a recompensa somada é positiva. Por quê?",
           "opcoes": [
             "A queda dá um prêmio fixo de fim de episódio no kit.",
             "A recompensa só é calculada depois que o episódio termina.",
-            "Antes de cair, o robô ficou ereto e perto da pose padrão, e esses termos pagam.",
-            "O comando sorteado era zero, então qualquer ação mandada pela política estava certa."
+            "Antes de cair, o robô ficou ereto e perto da pose padrêo, e esses termos pagam.",
+            "O comando sorteado era zero, entêo qualquer açêo mandada pela política estava certa."
           ],
           "certa": 2,
-          "explica": "A recompensa é somada passo a passo. Em 70 passos de pé, upright e pose pagam mais do que as punições. É por isso que a duração do episódio entra na leitura das curvas (aula 6).",
+          "explica": "A recompensa é somada passo a passo. Em 70 passos de pé, upright e pose pagam mais do que as punições. É por isso que a duraçêo do episódio entra na leitura das curvas (aula 6).",
           "ref": "codigo"
         },
         {
@@ -238,7 +238,7 @@
             "Queda é medida na pelve e tempo é medido nos pés do robô."
           ],
           "certa": 1,
-          "explica": "No mjlab e no Isaac Lab, o corte por tempo é marcado como time_out, para o algoritmo não tratá-lo como se o robô tivesse falhado.",
+          "explica": "No mjlab e no Isaac Lab, o corte por tempo é marcado como time_out, para o algoritmo nêo tratá-lo como se o robô tivesse falhado.",
           "ref": "diagrama"
         }
       ]
@@ -249,11 +249,11 @@
       "itens": [
         {
           "t": "Peças",
-          "texto": "Comando, observação, ação, recompensa e término, cada um como lista de termos com nome."
+          "texto": "Comando, observaçêo, açêo, recompensa e término, cada um como lista de termos com nome."
         },
         {
           "t": "Tamanhos",
-          "texto": "96 números de observação (480 com histórico) e 29 de ação, alvo = pose padrão + 0,25 × ação."
+          "texto": "96 números de observaçêo (480 com histórico) e 29 de açêo, alvo = pose padrêo + 0,25 × açêo."
         },
         {
           "t": "Medida",

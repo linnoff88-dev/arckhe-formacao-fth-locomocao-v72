@@ -6,4 +6,4 @@ Gerados nesta máquina (aarch64, CPU, carga alta) com o `kit/treinar.py`, 32 amb
 - `com-vivo/`: o mesmo com `--recompensa kit/recompensa-viva.yaml` (acrescenta `is_alive` com weight 5.0) (585 s).
 
 Só o `progresso.csv` foi guardado; os checkpoints ficaram fora do repositório.
-Nenhum dos dois anda: 150 iterações em CPU são uma fração do que o mjlab usa (`max_iterations=30_000`, 4.096 ambientes na GPU).
+Nenhum dos dois anda: 150 iterações em CPU sêo uma fraçêo do que o mjlab usa (`max_iterations=30_000`, 4.096 ambientes na GPU).

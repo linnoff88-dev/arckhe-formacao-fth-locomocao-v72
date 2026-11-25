@@ -18,7 +18,7 @@ ap.add_argument("--recompensa", default=None)
 ap.add_argument("--comando-vx", type=float, default=None, help="recalcula como se o comando fosse este vx (m/s)")
 a = ap.parse_args()
 if not Path(a.rollout).exists():
-    fth.sair(f"não achei {a.rollout}. Grave antes com: python3 kit/andar_demo.py --gravar {a.rollout}")
+    fth.sair(f"nêo achei {a.rollout}. Grave antes com: python3 kit/andar_demo.py --gravar {a.rollout}")
 z = np.load(a.rollout)
 cfg = fth.ler_recompensa(a.recompensa)
 n = len(z["q"])

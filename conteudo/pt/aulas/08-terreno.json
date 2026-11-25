@@ -27,7 +27,7 @@
     },
     {
       "icone": "arquivo",
-      "t": "O plano-treino.md com robô, comando, recompensa, currículo e avaliação"
+      "t": "O plano-treino.md com robô, comando, recompensa, currículo e avaliaçêo"
     }
   ],
   "hero_alt": "Pista de teste num laboratório escuro com rampa de madeira, degraus baixos e pedriscos, e um robô humanoide subindo o primeiro degrau preso a um trilho de segurança.",
@@ -41,7 +41,7 @@
           "icone": "camadas",
           "titulo": "Plano",
           "sub": "nível 0",
-          "detalhe": "Todo treino começa no chão plano. O gerador de terreno do unitree_rl_lab (commit 4960b84) tem um único sub-terreno, flat: a política pronta foi treinada só no plano.",
+          "detalhe": "Todo treino começa no chêo plano. O gerador de terreno do unitree_rl_lab (commit 4960b84) tem um único sub-terreno, flat: a política pronta foi treinada só no plano.",
           "itens": [
             {
               "icone": "lista",
@@ -64,8 +64,8 @@
         {
           "icone": "grafico",
           "titulo": "Rampa",
-          "sub": "inclinação",
-          "detalhe": "Rampas pedem que a política ajuste o passo à inclinação. Nível seguinte de um currículo típico.",
+          "sub": "inclinaçêo",
+          "detalhe": "Rampas pedem que a política ajuste o passo à inclinaçêo. Nível seguinte de um currículo típico.",
           "itens": [
             {
               "icone": "lista",
@@ -92,7 +92,7 @@
     {
       "tipo": "codigo",
       "titulo": "Até que degrau a política pronta vai",
-      "sub": "O terreno.py monta, com o MjSpec, uma plataforma de altura h a 1,5 m do robô e manda andar 8 s a 0,5 m/s. Passou = não caiu e a pelve chegou em cima (x > 2,5 m).",
+      "sub": "O terreno.py monta, com o MjSpec, uma plataforma de altura h a 1,5 m do robô e manda andar 8 s a 0,5 m/s. Passou = nêo caiu e a pelve chegou em cima (x > 2,5 m).",
       "blocos": [
         {
           "rot": "Terminal · cinco degraus",
@@ -105,7 +105,7 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · comando vx = 0.5 m/s · 8 s · degrau a 1.5 m\ndegrau    2 cm: passou (pelve em x = 3.4 m)\ndegrau    3 cm: passou (pelve em x = 4.1 m)\ndegrau    4 cm: caiu (pelve em x = 2.0 m)\ndegrau    6 cm: caiu (pelve em x = 2.0 m)\ndegrau   10 cm: caiu (pelve em x = 2.2 m)\ndegraus vencidos: 2/5\nsaída: 0</pre><p>2 e 3 cm passam; de 4 cm em diante, o robô cai em x ≈ 2 m, antes de subir na plataforma. Os degraus que reprovam são os próximos níveis de um currículo: é para eles que se treina de novo.</p>"
+            "html": "<pre>política: unitree_rl_lab velocity v0 (ONNX) · comando vx = 0.5 m/s · 8 s · degrau a 1.5 m\ndegrau    2 cm: passou (pelve em x = 3.4 m)\ndegrau    3 cm: passou (pelve em x = 4.1 m)\ndegrau    4 cm: caiu (pelve em x = 2.0 m)\ndegrau    6 cm: caiu (pelve em x = 2.0 m)\ndegrau   10 cm: caiu (pelve em x = 2.2 m)\ndegraus vencidos: 2/5\nsaída: 0</pre><p>2 e 3 cm passam; de 4 cm em diante, o robô cai em x ≈ 2 m, antes de subir na plataforma. Os degraus que reprovam sêo os próximos níveis de um currículo: é para eles que se treina de novo.</p>"
           }
         ]
       }
@@ -119,7 +119,7 @@
           "titulo": "Terreno",
           "sub": "por distância",
           "texto": [
-            "No mjlab, no fim de cada episódio, o robô que andou mais de 80 % da distância pedida sobe um nível de terreno; o que andou menos de 50 % desce. Cada robô tem o seu nível: no mesmo treino, uns estão no plano e outros nos pedriscos."
+            "No mjlab, no fim de cada episódio, o robô que andou mais de 80 % da distância pedida sobe um nível de terreno; o que andou menos de 50 % desce. Cada robô tem o seu nível: no mesmo treino, uns estêo no plano e outros nos pedriscos."
           ]
         },
         {
@@ -130,10 +130,10 @@
           ]
         },
         {
-          "titulo": "Empurrão",
+          "titulo": "Empurrêo",
           "sub": "fixo",
           "texto": [
-            "O empurrão não entra no currículo nesses dois repositórios: ±0,5 m/s em x e y, a cada 5 s no unitree_rl_lab; no mjlab, a cada 1 a 3 s, com ±0,4 m/s também em z e giros em roll, pitch e yaw."
+            "O empurrêo nêo entra no currículo nesses dois repositórios: ±0,5 m/s em x e y, a cada 5 s no unitree_rl_lab; no mjlab, a cada 1 a 3 s, com ±0,4 m/s também em z e giros em roll, pitch e yaw."
           ]
         },
         {
@@ -153,7 +153,7 @@
         {
           "rot": "Arquivo · kit/plano-treino-modelo.md",
           "icone": "arquivo",
-          "conteudo": "# Plano de treino de locomoção\n\nRobô: [qual humanoide e qual arquivo, ex.: Unitree G1 29 GDL, unitree_g1/scene.xml do Menagerie 62ab00f]\nComando: [faixa de velocidade, ex.: vx de -0.5 a 1.0 m/s, vy de -0.3 a 0.3 m/s, giro de -0.2 a 0.2 rad/s]\nRecompensa: [termos e pesos, ex.: track_linear_velocity 2.0, upright 1.0, action_rate_l2 -0.1]\nCurrículo: [níveis em ordem, separados por →, ex.: plano → degrau de 5 cm → rampa → pedriscos]\nAvaliação: [critério de aprovação com número, ex.: 18/20 episódios de pé com empurrão de 1.0 m/s]"
+          "conteudo": "# Plano de treino de locomoçêo\n\nRobô: [qual humanoide e qual arquivo, ex.: Unitree G1 29 GDL, unitree_g1/scene.xml do Menagerie 62ab00f]\nComando: [faixa de velocidade, ex.: vx de -0.5 a 1.0 m/s, vy de -0.3 a 0.3 m/s, giro de -0.2 a 0.2 rad/s]\nRecompensa: [termos e pesos, ex.: track_linear_velocity 2.0, upright 1.0, action_rate_l2 -0.1]\nCurrículo: [níveis em ordem, separados por →, ex.: plano → degrau de 5 cm → rampa → pedriscos]\nAvaliaçêo: [critério de aprovaçêo com número, ex.: 18/20 episódios de pé com empurrêo de 1.0 m/s]"
         },
         {
           "rot": "Terminal · copiar e conferir",
@@ -171,7 +171,7 @@
         "abas": [
           {
             "rot": "Saída capturada (19/10/2026)",
-            "html": "<pre>FALTA Robô: não preenchido\nFALTA Comando: não preenchido\nFALTA Recompensa: não preenchido\nFALTA Currículo: não preenchido\nFALTA Avaliação: não preenchido\ncampos ok: 0/5\nincompleto\nsaída: 1</pre><p>Com o modelo ainda cheio de [colchetes], os cinco campos faltam e o script sai com 1. Regras: comando com número e m/s, recompensa com 2 ou mais termos do kit, currículo com 3 ou mais níveis separados por →, avaliação com um critério numérico (X/N ou %).</p>"
+            "html": "<pre>FALTA Robô: nêo preenchido\nFALTA Comando: nêo preenchido\nFALTA Recompensa: nêo preenchido\nFALTA Currículo: nêo preenchido\nFALTA Avaliaçêo: nêo preenchido\ncampos ok: 0/5\nincompleto\nsaída: 1</pre><p>Com o modelo ainda cheio de [colchetes], os cinco campos faltam e o script sai com 1. Regras: comando com número e m/s, recompensa com 2 ou mais termos do kit, currículo com 3 ou mais níveis separados por →, avaliaçêo com um critério numérico (X/N ou %).</p>"
           },
           {
             "rot": "Exemplo que passa",
@@ -191,7 +191,7 @@
           "quando": "Aulas 1–2",
           "titulo": "Política",
           "sub": "e PD",
-          "saida": "caiu: não; de pé com PD.",
+          "saida": "caiu: nêo; de pé com PD.",
           "passo": "A política pronta andando no MuJoCo e o PD de junta medido, com os ganhos da política entendidos."
         },
         {
@@ -219,7 +219,7 @@
           "titulo": "Teste",
           "sub": "e plano",
           "saida": "20/20; plano ok.",
-          "passo": "A política avaliada com empurrão e degrau e o seu plano de treino conferido."
+          "passo": "A política avaliada com empurrêo e degrau e o seu plano de treino conferido."
         }
       ],
       "resultado": {
@@ -229,7 +229,7 @@
       },
       "rolagem_fim": {
         "titulo": "O curso inteiro",
-        "texto": "Quatro entregas em sequência. O curso 2 leva a política deste curso do simulador ao chão."
+        "texto": "Quatro entregas em sequência. O curso 2 leva a política deste curso do simulador ao chêo."
       },
       "legenda": "A ordem importa: o plano da aula 8 usa a recompensa da aula 4 e o teste da aula 7."
     },
@@ -309,7 +309,7 @@
           "id": "e3",
           "titulo": "E3 · O seu plano",
           "min": "20 min",
-          "texto": "Preencha o ~/fth/treino/plano-treino.md com as suas escolhas: um currículo que comece no plano e passe pelos degraus que reprovaram no E1, e uma avaliação com número.",
+          "texto": "Preencha o ~/fth/treino/plano-treino.md com as suas escolhas: um currículo que comece no plano e passe pelos degraus que reprovaram no E1, e uma avaliaçêo com número.",
           "pronto": "<code>python3 kit/conferir_plano.py $F/treino/plano-treino.md; echo \"saída: $?\"</code> → <code>campos ok: 5/5</code>, <code>ok</code> e <code>saída: 0</code>."
         }
       ]
@@ -317,14 +317,14 @@
     {
       "tipo": "quiz",
       "titulo": "Teste da aula",
-      "sub": "A explicação aparece depois da sua resposta.",
+      "sub": "A explicaçêo aparece depois da sua resposta.",
       "perguntas": [
         {
           "p": "No currículo de terreno do mjlab, quando um robô sobe de nível?",
           "opcoes": [
             "A cada 1.000 iterações de treino, para todos os robôs do treino ao mesmo tempo.",
             "Quando a recompensa média do treino passa de zero.",
-            "Quando o operador muda o nível no arquivo de configuração.",
+            "Quando o operador muda o nível no arquivo de configuraçêo.",
             "Quando, no fim do episódio, andou mais de 80 % da distância pedida."
           ],
           "certa": 3,
@@ -338,7 +338,7 @@
             "Trocar o robô por outro com pernas mais longas.",
             "Pôr os degraus que reprovaram como os próximos níveis do currículo.",
             "Aumentar o kp do tornozelo até a política conseguir subir os 4 cm sem cair.",
-            "Tirar os degraus da avaliação para a política passar."
+            "Tirar os degraus da avaliaçêo para a política passar."
           ],
           "certa": 1,
           "explica": "O teste de terreno mostra onde a política para; o currículo é o caminho para passar dali. Trocar os ganhos invalida a política (aula 2).",
@@ -347,7 +347,7 @@
         {
           "p": "Por que o unitree_rl_lab começa pedindo só ±0,1 m/s?",
           "opcoes": [
-            "Porque o G1 não anda acima de 0,1 m/s no começo da bateria.",
+            "Porque o G1 nêo anda acima de 0,1 m/s no começo da bateria.",
             "Porque o Isaac Lab limita a velocidade do robô nas primeiras mil iterações do treino.",
             "Para aprender o fácil primeiro; a faixa abre quando o rastreio passa de 80 %.",
             "Porque velocidades maiores pedem outro robô no treino."
@@ -372,7 +372,7 @@
         },
         {
           "t": "Plano",
-          "texto": "Robô, comando, recompensa, currículo e avaliação escritos e conferidos antes de treinar."
+          "texto": "Robô, comando, recompensa, currículo e avaliaçêo escritos e conferidos antes de treinar."
         }
       ]
     },
@@ -381,7 +381,7 @@
       "titulo": "Para ir além",
       "links": [
         {
-          "t": "Próximo curso da FTH: Do simulador ao chão (sim-to-real em humanoides)",
+          "t": "Próximo curso da FTH: Do simulador ao chêo (sim-to-real em humanoides)",
           "href": "https://linnoff88-dev.github.io/
           "icone": "robo"
         },

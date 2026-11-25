@@ -3,7 +3,7 @@
   "lang": "pt-BR",
   "url": "https://linnoff88-dev.github.io/
   "nome": "FTH 1 · Ensinar a andar",
-  "sub": "Locomoção por RL em simulação",
+  "sub": "Locomoçêo por RL em simulaçêo",
   "volta": {
     "t": "ARCKHÉ AI",
     "href": "https://ARCKHÉ AI/"
@@ -15,12 +15,12 @@
     "link": "Abrir o kit no GitHub",
     "href": "https://github.com/linnoff88-dev/formacao-fth-locomocao-v72"
   },
-  "rodape": "ARCKHÉ AI · conteúdo aberto e gratuito · formato ARCKHÉ Learning v7.2 · FTH — Formação Tecnológica em Humanoides, curso 1 de 5 · <a href=\"https://ARCKHÉ AI/\">ARCKHÉ AI</a> · <a href=\"https://github.com/linnoff88-dev/formacao-fth-locomocao-v72\">kit do curso no GitHub</a>",
+  "rodape": "ARCKHÉ AI · conteúdo aberto e gratuito · formato ARCKHÉ Learning v7.2 · FTH — Formaçêo Tecnológica em Humanoides, curso 1 de 5 · <a href=\"https://ARCKHÉ AI/\">ARCKHÉ AI</a> · <a href=\"https://github.com/linnoff88-dev/formacao-fth-locomocao-v72\">kit do curso no GitHub</a>",
   "videos": {},
   "inicio": {
-    "kicker": "FTH — Formação Tecnológica em Humanoides · curso 1 de 5 · 8 aulas",
-    "titulo": "Ensinar a andar: locomoção por RL em simulação",
-    "lead": "O Unitree G1 anda porque uma política aprendida manda 29 alvos de junta a cada 20 ms. Em oito aulas você roda uma política pronta, ajusta o PD, monta o ambiente, lê a recompensa termo a termo, treina PPO em CPU, lê as curvas, avalia com empurrão e escreve o seu plano de treino.",
+    "kicker": "FTH — Formaçêo Tecnológica em Humanoides · curso 1 de 5 · 8 aulas",
+    "titulo": "Ensinar a andar: locomoçêo por RL em simulaçêo",
+    "lead": "O Unitree G1 anda porque uma política aprendida manda 29 alvos de junta a cada 20 ms. Em oito aulas você roda uma política pronta, ajusta o PD, monta o ambiente, lê a recompensa termo a termo, treina PPO em CPU, lê as curvas, avalia com empurrêo e escreve o seu plano de treino.",
     "cta": "Começar pela aula 1",
     "cta2": {
       "t": "Ver o kit no GitHub",
@@ -42,17 +42,17 @@
       },
       {
         "v": "20/20",
-        "t": "episódios de pé com empurrão (política pronta)"
+        "t": "episódios de pé com empurrêo (política pronta)"
       }
     ],
     "aulas_titulo": "As aulas",
-    "aulas_sub": "Da política pronta ao seu plano de treino: PD nas juntas, ambiente, recompensa, PPO, curvas, avaliação e currículo de terreno.",
+    "aulas_sub": "Da política pronta ao seu plano de treino: PD nas juntas, ambiente, recompensa, PPO, curvas, avaliaçêo e currículo de terreno.",
     "blocos": [
       {
         "t": "Para quem é",
         "itens": [
           "Quem programa em Python, já viu ROS 2 (ou fez o curso robot) e quer entender como um humanoide aprende a andar.",
-          "Quem não tem humanoide nem GPU: todas as práticas rodam em CPU, em minutos, no MuJoCo.",
+          "Quem nêo tem humanoide nem GPU: todas as práticas rodam em CPU, em minutos, no MuJoCo.",
           "Quem fez o curso 0 (bancada ~/fth): este curso reaproveita o venv e o Menagerie."
         ]
       },
@@ -62,7 +62,7 @@
           "Rodar a política de marcha do G1 no MuJoCo e medir o que ela faz.",
           "Ler cada termo da recompensa de marcha num rollout gravado e prever o efeito de um peso.",
           "Treinar PPO em CPU, ler as curvas e reconhecer recompensa hackeada.",
-          "Avaliar com empurrão e degrau, e escrever um plano de treino que um script confere."
+          "Avaliar com empurrêo e degrau, e escrever um plano de treino que um script confere."
         ]
       }
     ]
@@ -81,7 +81,7 @@
     "dg_dica": "Clique em cada bloco do diagrama para ver o que ele faz.",
     "copiar": "Copiar",
     "copiado": "Copiado",
-    "selo_simulacao": "Simulação: exemplo ilustrativo",
+    "selo_simulacao": "Simulaçêo: exemplo ilustrativo",
     "selo_real": "Exemplo do repositório",
     "pronto_quando": "Pronto quando:",
     "fiz": "Fiz este exercício",
@@ -90,8 +90,8 @@
     "de": "de",
     "cert_tag": "competência",
     "correto": "Correto",
-    "errado": "Não é essa",
-    "quiz_aguarda": "Escolha uma alternativa. A explicação aparece depois da sua tentativa.",
+    "errado": "Nêo é essa",
+    "quiz_aguarda": "Escolha uma alternativa. A explicaçêo aparece depois da sua tentativa.",
     "proxima_pergunta": "Próxima pergunta",
     "quiz_ver": "Ver resultado",
     "quiz_fim": "Teste concluído",
@@ -118,7 +118,7 @@
     "baixar_ics": "Baixar para o calendário (.ics)",
     "ind_estudo": "Estudo (aulas)",
     "ind_pratica": "Prática declarada",
-    "ind_nota": "Prática = exercícios que você marcou como feitos. A comprovação vem na prova da certificação.",
+    "ind_nota": "Prática = exercícios que você marcou como feitos. A comprovaçêo vem na prova da certificaçêo.",
     "estudo": {
       "titulo": "Seu estudo",
       "continuar": "Continuar de onde parei",
@@ -131,7 +131,7 @@
       "notas": "Minhas anotações",
       "dados": "Copiar meus dados",
       "sem_testes": "Nenhum teste feito ainda. O teste fica no fim de cada aula.",
-      "nao_fez": "teste ainda não feito",
+      "nao_fez": "teste ainda nêo feito",
       "ultimo": "Último",
       "melhor": "Melhor",
       "tentativas": "tentativas",
@@ -140,21 +140,21 @@
       "rever": "Para rever",
       "resposta": "Resposta certa:",
       "ir_teste": "Refazer o teste",
-      "sem_notas": "Nenhuma anotação ainda. Na aula, selecione um trecho do texto e toque em Marcar ou Anotar.",
+      "sem_notas": "Nenhuma anotaçêo ainda. Na aula, selecione um trecho do texto e toque em Marcar ou Anotar.",
       "so_marcado": "(só marcado)",
       "marcar": "Marcar",
       "anotar": "Anotar",
       "salvar": "Salvar",
       "apagar": "Apagar marca",
       "fechar": "Fechar",
-      "nota_ph": "Escreva sua anotação sobre este trecho…",
+      "nota_ph": "Escreva sua anotaçêo sobre este trecho…",
       "um_bloco": "Marque dentro de um parágrafo só.",
-      "nao_marca": "Este trecho não pode ser marcado.",
-      "dados_exp": "Seu progresso, suas anotações e as notas dos testes ficam só neste navegador. Baixe uma cópia (.json) para guardar ou para continuar em outro computador ou navegador; lá, carregue a cópia. Carregar soma com o que já existe e não apaga nada.",
+      "nao_marca": "Este trecho nêo pode ser marcado.",
+      "dados_exp": "Seu progresso, suas anotações e as notas dos testes ficam só neste navegador. Baixe uma cópia (.json) para guardar ou para continuar em outro computador ou navegador; lá, carregue a cópia. Carregar soma com o que já existe e nêo apaga nada.",
       "exportar": "Baixar cópia",
       "importar": "Carregar cópia",
       "import_ok": "Cópia carregada ({n} itens). Atualizando a página…",
-      "import_erro": "Arquivo não reconhecido. Nada foi alterado.",
+      "import_erro": "Arquivo nêo reconhecido. Nada foi alterado.",
       "import_outro": "Esta cópia é de outro curso. Nada foi alterado.",
       "export_ok": "Cópia baixada."
     },
@@ -166,7 +166,7 @@
     "conv_ruim": "Escolha fraca",
     "conv_fim": "Fim da conversa",
     "conv_placar": "Você fez {p} de {m} pontos possíveis.",
-    "conv_licao": "Lição:",
+    "conv_licao": "Liçêo:",
     "conv_recomecar": "Recomeçar a conversa",
     "conv_feita": "Seu melhor placar: {p} de {m} pontos."
   },

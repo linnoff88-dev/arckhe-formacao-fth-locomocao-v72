@@ -1,8 +1,8 @@
-"""avaliar.py — avaliação de uma política em vários episódios: rastreio de velocidade, curva e empurrão (aula 7).
+"""avaliar.py — avaliaçêo de uma política em vários episódios: rastreio de velocidade, curva e empurrêo (aula 7).
 
 Uso: python3 kit/avaliar.py [--politica pronta|<checkpoint.pt>] [--episodios 20] [--empurrao 1.0] [--giro 0]
 Episódio i: semente i, comando vx sorteado entre 0.3 e 1.0 m/s, 10 s; com --empurrao, aos 4 s a base
-leva um empurrão horizontal de N m/s (direção sorteada). Mesmas sementes = mesmos episódios.
+leva um empurrêo horizontal de N m/s (direçêo sorteada). Mesmas sementes = mesmos episódios.
 """
 import argparse
 import math
@@ -47,9 +47,9 @@ for ep in range(a.episodios):
     else:
         quedas_t.append((ep, env.d.time))
 print(f"política: {pol.nome} · {a.episodios} episódios de {a.s:.0f} s · giro {a.giro:+.1f} rad/s"
-      + (f" · empurrão de {a.empurrao:.1f} m/s aos 4 s" if a.empurrao else " · sem empurrão"))
+      + (f" · empurrêo de {a.empurrao:.1f} m/s aos 4 s" if a.empurrao else " · sem empurrêo"))
 if erros:
-    print(f"erro médio de velocidade (quem não caiu): {np.mean(erros):.2f} m/s")
+    print(f"erro médio de velocidade (quem nêo caiu): {np.mean(erros):.2f} m/s")
 if quedas_t:
     print("quedas: " + ", ".join(f"ep {e} em {t:.1f} s" for e, t in quedas_t[:6]) + (" …" if len(quedas_t) > 6 else ""))
 print(f"sobreviveu: {vivos}/{a.episodios}")

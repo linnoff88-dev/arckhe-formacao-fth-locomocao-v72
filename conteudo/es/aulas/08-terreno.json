@@ -27,7 +27,7 @@
     },
     {
       "icone": "arquivo",
-      "t": "El plano-treino.md con robô, comando, recompensa, currículo y avaliação"
+      "t": "El plano-treino.md con robô, comando, recompensa, currículo y avaliaçêo"
     }
   ],
   "hero_alt": "Pista de pruebas en un laboratorio oscuro con rampa de madera, escalones bajos y gravilla, y un robot humanoide subiendo el primer escalón sujeto a un riel de seguridad.",
@@ -153,7 +153,7 @@
         {
           "rot": "Archivo · kit/plano-treino-modelo.md",
           "icone": "arquivo",
-          "conteudo": "# Plano de treino de locomoção\n\nRobô: [qual humanoide e qual arquivo, ex.: Unitree G1 29 GDL, unitree_g1/scene.xml do Menagerie 62ab00f]\nComando: [faixa de velocidade, ex.: vx de -0.5 a 1.0 m/s, vy de -0.3 a 0.3 m/s, giro de -0.2 a 0.2 rad/s]\nRecompensa: [termos e pesos, ex.: track_linear_velocity 2.0, upright 1.0, action_rate_l2 -0.1]\nCurrículo: [níveis em ordem, separados por →, ex.: plano → degrau de 5 cm → rampa → pedriscos]\nAvaliação: [critério de aprovação com número, ex.: 18/20 episódios de pé com empurrão de 1.0 m/s]"
+          "conteudo": "# Plano de treino de locomoçêo\n\nRobô: [qual humanoide e qual arquivo, ex.: Unitree G1 29 GDL, unitree_g1/scene.xml do Menagerie 62ab00f]\nComando: [faixa de velocidade, ex.: vx de -0.5 a 1.0 m/s, vy de -0.3 a 0.3 m/s, giro de -0.2 a 0.2 rad/s]\nRecompensa: [termos e pesos, ex.: track_linear_velocity 2.0, upright 1.0, action_rate_l2 -0.1]\nCurrículo: [níveis em ordem, separados por →, ex.: plano → degrau de 5 cm → rampa → pedriscos]\nAvaliaçêo: [critério de aprovaçêo com número, ex.: 18/20 episódios de pé com empurrêo de 1.0 m/s]"
         },
         {
           "rot": "Terminal · copiar y comprobar",
@@ -171,7 +171,7 @@
         "abas": [
           {
             "rot": "Salida capturada (19/10/2026)",
-            "html": "<pre>FALTA Robô: não preenchido\nFALTA Comando: não preenchido\nFALTA Recompensa: não preenchido\nFALTA Currículo: não preenchido\nFALTA Avaliação: não preenchido\ncampos ok: 0/5\nincompleto\nsaída: 1</pre><p>Con la plantilla aún llena de [corchetes], faltan los cinco campos y el script sale con 1. Reglas: comando con número y m/s, recompensa con 2 o más términos del kit, currículo con 3 o más niveles separados por →, evaluación con un criterio numérico (X/N o %).</p>"
+            "html": "<pre>FALTA Robô: nêo preenchido\nFALTA Comando: nêo preenchido\nFALTA Recompensa: nêo preenchido\nFALTA Currículo: nêo preenchido\nFALTA Avaliaçêo: nêo preenchido\ncampos ok: 0/5\nincompleto\nsaída: 1</pre><p>Con la plantilla aún llena de [corchetes], faltan los cinco campos y el script sale con 1. Reglas: comando con número y m/s, recompensa con 2 o más términos del kit, currículo con 3 o más niveles separados por →, evaluación con un criterio numérico (X/N o %).</p>"
           },
           {
             "rot": "Ejemplo que pasa",
@@ -191,7 +191,7 @@
           "quando": "Clases 1–2",
           "titulo": "Policy",
           "sub": "y PD",
-          "saida": "caiu: não; de pé com PD.",
+          "saida": "caiu: nêo; de pé com PD.",
           "passo": "La policy lista caminando en MuJoCo y el PD de articulación medido, con las ganancias de la policy entendidas."
         },
         {

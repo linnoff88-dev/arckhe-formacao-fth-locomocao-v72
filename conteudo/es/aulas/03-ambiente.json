@@ -117,7 +117,7 @@
         "abas": [
           {
             "rot": "Salida capturada (19/10/2026)",
-            "html": "<pre>observação: 96 números = (base_ang_vel 3 + projected_gravity 3 + velocity_commands 3 + joint_pos_rel 29 + joint_vel_rel 29 + last_action 29) × histórico 1\nação: 29 números → alvo de cada junta = pose padrão + 0.25 × ação, a cada 20 ms\nrecompensa: track_linear_velocity (+2), track_angular_velocity (+2), upright (+1), pose (+1), dof_pos_limits (-1), action_rate_l2 (-0.1), foot_slip (-0.1)\nterminações: queda (pelve inclinada &gt; 70° ou abaixo de 0.3 m) · tempo (1000 passos = 20 s)\ncomando sorteado: vx = -0.48 m/s · vy = +0.19 m/s · giro = +0.17 rad/s\nação aleatoria: 67 passos · recompensa somada: -5.44\nepisódio terminou por: queda em t = 1.34 s\nsaída: 0</pre><p>96 números de observación, 29 de acción, 7 términos de reward y dos terminaciones. Con acción aleatoria, caída en 1,34 s y reward negativo: los castigos (límites, temblor) pesaron más que los premios.</p>"
+            "html": "<pre>observaçêo: 96 números = (base_ang_vel 3 + projected_gravity 3 + velocity_commands 3 + joint_pos_rel 29 + joint_vel_rel 29 + last_action 29) × histórico 1\naçêo: 29 números → alvo de cada junta = pose padrêo + 0.25 × açêo, a cada 20 ms\nrecompensa: track_linear_velocity (+2), track_angular_velocity (+2), upright (+1), pose (+1), dof_pos_limits (-1), action_rate_l2 (-0.1), foot_slip (-0.1)\nterminações: queda (pelve inclinada &gt; 70° ou abaixo de 0.3 m) · tempo (1000 passos = 20 s)\ncomando sorteado: vx = -0.48 m/s · vy = +0.19 m/s · giro = +0.17 rad/s\naçêo aleatoria: 67 passos · recompensa somada: -5.44\nepisódio terminou por: queda em t = 1.34 s\nsaída: 0</pre><p>96 números de observación, 29 de acción, 7 términos de reward y dos terminaciones. Con acción aleatoria, caída en 1,34 s y reward negativo: los castigos (límites, temblor) pesaron más que los premios.</p>"
           }
         ]
       }
@@ -138,7 +138,7 @@
         "abas": [
           {
             "rot": "Salida capturada (19/10/2026)",
-            "html": "<pre>ação zero: 70 passos · recompensa somada: 3.78\nepisódio terminou por: queda em t = 1.40 s\nação pronta: 1000 passos · recompensa somada: 108.61\nepisódio terminou por: tempo em t = 20.00 s</pre><p>La acción cero también cae (1,40 s), pero con reward positivo: se mantuvo un poco erguido y cerca de la pose por defecto antes de caer. La policy lista llega al corte de tiempo (1.000 pasos) con 108,61 de reward. El episodio que termina por <code>tempo</code> es el que el entrenamiento quiere.</p>"
+            "html": "<pre>açêo zero: 70 passos · recompensa somada: 3.78\nepisódio terminou por: queda em t = 1.40 s\naçêo pronta: 1000 passos · recompensa somada: 108.61\nepisódio terminou por: tempo em t = 20.00 s</pre><p>La acción cero también cae (1,40 s), pero con reward positivo: se mantuvo un poco erguido y cerca de la pose por defecto antes de caer. La policy lista llega al corte de tiempo (1.000 pasos) con 108,61 de reward. El episodio que termina por <code>tempo</code> es el que el entrenamiento quiere.</p>"
           }
         ]
       }
@@ -181,7 +181,7 @@
           "titulo": "E1 · Las cuatro partes",
           "min": "5 min",
           "texto": "Corre checar_ambiente.py con acción aleatoria y comprueba la cuenta 3 + 3 + 3 + 29 + 29 + 29.",
-          "pronto": "<code>python3 kit/checar_ambiente.py --acao aleatoria; echo \"saída: $?\"</code> → <code>observação: 96 números</code> y <code>episódio terminou por: queda em t = 1.34 s</code>."
+          "pronto": "<code>python3 kit/checar_ambiente.py --acao aleatoria; echo \"saída: $?\"</code> → <code>observaçêo: 96 números</code> y <code>episódio terminou por: queda em t = 1.34 s</code>."
         },
         {
           "id": "e2",

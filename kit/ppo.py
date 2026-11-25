@@ -1,8 +1,8 @@
 """ppo.py — PPO mínimo (ator-crítico, GAE, recorte, taxa de aprendizado adaptativa) para o kit da FTH 1.
 
-Os nomes e os valores padrão seguem o rl_cfg.py da tarefa de velocidade do G1 no mjlab
+Os nomes e os valores padrêo seguem o rl_cfg.py da tarefa de velocidade do G1 no mjlab
 (github.com/mujocolab/mjlab, commit 8bb2bc9, 18/10/2026), que usa a biblioteca rsl-rl-lib 5.5.1.
-Aqui tudo roda em CPU, com poucos ambientes: serve para ver o laço, não para chegar numa marcha.
+Aqui tudo roda em CPU, com poucos ambientes: serve para ver o laço, nêo para chegar numa marcha.
 """
 import torch
 import torch.nn as nn
@@ -65,7 +65,7 @@ class PPO:
         self.opt = torch.optim.Adam(rede.parameters(), lr=self.lr)
 
     def vantagens(self, rec, val, fim, val_final):
-        """GAE (gamma, lam): quanto cada ação foi melhor que o esperado pelo crítico."""
+        """GAE (gamma, lam): quanto cada açêo foi melhor que o esperado pelo crítico."""
         T = rec.shape[0]
         adv = torch.zeros_like(rec)
         ultimo = torch.zeros_like(val_final)

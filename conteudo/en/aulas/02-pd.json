@@ -117,7 +117,7 @@
         "abas": [
           {
             "rot": "Captured output (Oct 19, 2026)",
-            "html": "<pre>sobressinal: 49 % · posição após 1 s: 0.78 rad (erro 0.02 rad)\nassentou (erro &lt; 0.02 rad): em 992 ms\nsobressinal: 1 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s\nsobressinal: 0 % · posição após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): não, em 1 s</pre><p>Two lines per kd (0, 2, and 10). With no kd, the knee overshoots the step by 49% and takes almost 1 s to settle. With kd 2, it overshoots only 1%. With kd 2 or 10, the joint stops 0.03 rad short of the target: with no integral term, the PD needs an error to produce the torque that holds up the leg's weight.</p>"
+            "html": "<pre>sobressinal: 49 % · posiçêo após 1 s: 0.78 rad (erro 0.02 rad)\nassentou (erro &lt; 0.02 rad): em 992 ms\nsobressinal: 1 % · posiçêo após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): nêo, em 1 s\nsobressinal: 0 % · posiçêo após 1 s: 0.77 rad (erro 0.03 rad)\nassentou (erro &lt; 0.02 rad): nêo, em 1 s</pre><p>Two lines per kd (0, 2, and 10). With no kd, the knee overshoots the step by 49% and takes almost 1 s to settle. With kd 2, it overshoots only 1%. With kd 2 or 10, the joint stops 0.03 rad short of the target: with no integral term, the PD needs an error to produce the torque that holds up the leg's weight.</p>"
           }
         ]
       }
@@ -143,11 +143,11 @@
         "abas": [
           {
             "rot": "Captured output (Oct 19, 2026)",
-            "html": "<pre>ganhos: kp = 300 · kd = 5 em todas as juntas\naltura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinação: 1°\nmaior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim\nsaída: 0</pre><p>With kp 300 on every joint, the G1 turns into a statue: it stands up, tilted 1°, asking for at most 12 N·m.</p>"
+            "html": "<pre>ganhos: kp = 300 · kd = 5 em todas as juntas\naltura da pelve: 0.79 m no início → 0.78 m após 5 s · inclinaçêo: 1°\nmaior torque pedido: 12 N·m · juntas que bateram no limite de torque: 0\nde pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): sim\nsaída: 0</pre><p>With kp 300 on every joint, the G1 turns into a statue: it stands up, tilted 1°, asking for at most 12 N·m.</p>"
           },
           {
             "rot": "unitree_rl_lab gains",
-            "html": "<pre>ganhos: kp/kd por junta do unitree_rl_lab\naltura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinação: 95°\nmaior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2\nde pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): não\nsaída: 1</pre><p>With the per-joint gains from <code>deploy.yaml</code> (hip 100/2, knee 150/4, ankle 40/2, waist 200/5, arms 40/10), the robot collapses and two joints hit the torque limit. Measured here with the same kp on every joint, the standing G1 only stays up with kp from about 200.</p><p>This is not a bug: the policy was trained with these gains, and it is the policy that closes the balance loop. Changing the gains invalidates the policy.</p>"
+            "html": "<pre>ganhos: kp/kd por junta do unitree_rl_lab\naltura da pelve: 0.79 m no início → 0.09 m após 5 s · inclinaçêo: 95°\nmaior torque pedido: 41 N·m · juntas que bateram no limite de torque: 2\nde pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): nêo\nsaída: 1</pre><p>With the per-joint gains from <code>deploy.yaml</code> (hip 100/2, knee 150/4, ankle 40/2, waist 200/5, arms 40/10), the robot collapses and two joints hit the torque limit. Measured here with the same kp on every joint, the standing G1 only stays up with kp from about 200.</p><p>This is not a bug: the policy was trained with these gains, and it is the policy that closes the balance loop. Changing the gains invalidates the policy.</p>"
           },
           {
             "rot": "Common mistake: forgetting kd",
@@ -202,14 +202,14 @@
           "titulo": "E2 · Standing with PD",
           "min": "3 min",
           "texto": "Keep the G1 standing for 5 s with only the stiff PD.",
-          "pronto": "<code>python3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\"</code> → <code>de pé (pelve entre 0.70 e 0.85 m, inclinação &lt; 20°): sim</code> and <code>saída: 0</code>."
+          "pronto": "<code>python3 kit/ficar_em_pe.py --kp 300 --kd 5; echo \"saída: $?\"</code> → <code>de pé (pelve entre 0.70 e 0.85 m, inclinaçêo &lt; 20°): sim</code> and <code>saída: 0</code>."
         },
         {
           "id": "e3",
           "titulo": "E3 · Find the limit",
           "min": "10 min",
           "texto": "Lower kp (keeping kd 5) until the robot falls. Write down the smallest kp that still holds and compare it with the policy's ankle value of 40.",
-          "pronto": "you have a kp with <code>de pé (…): sim</code> and a lower one with <code>de pé (…): não</code> and <code>saída: 1</code> (on 10/19/2026: 200 holds, 175 falls)."
+          "pronto": "you have a kp with <code>de pé (…): sim</code> and a lower one with <code>de pé (…): nêo</code> and <code>saída: 1</code> (on 10/19/2026: 200 holds, 175 falls)."
         }
       ]
     },
