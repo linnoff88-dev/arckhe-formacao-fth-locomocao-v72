@@ -2,7 +2,7 @@ F=${FTH:-$HOME/fth}; mkdir -p $F && cd $F
 [ -d .venv ] || python3.12 -m venv .venv
 . .venv/bin/activate && pip install -q mujoco==3.16.0 numpy pyyaml onnxruntime==1.31.0
 pip install -q torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
-[ -d locomocao ] || git clone -q --depth 1 https://github.com/inematds/formacao-fth-locomocao-v72 locomocao
+[ -d locomocao ] || git clone -q --depth 1 https://github.com/linnoff88-dev/formacao-fth-locomocao-v72 locomocao
 [ -d mujoco_menagerie ] || git clone -q --filter=blob:none --sparse https://github.com/google-deepmind/mujoco_menagerie
 (cd mujoco_menagerie && git sparse-checkout add unitree_g1 && git checkout -q 62ab00f)
 [ -d unitree_rl_lab ] || git clone -q --filter=blob:none --sparse https://github.com/unitreerobotics/unitree_rl_lab
